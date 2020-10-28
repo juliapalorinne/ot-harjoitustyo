@@ -10,4 +10,3 @@ Tässä ovat **viikon 1** tehtävät:
 
 [*komentorivi.txt*](https://github.com/juliapalorinne/ot-harjoitustyo/blob/main/laskarit/viikko1/komentorivi.txt)
 
-<br/><br/>
