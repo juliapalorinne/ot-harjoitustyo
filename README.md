@@ -2,7 +2,7 @@
 
 ## Viikko 1
 ***(26.10.2020-1.11.2020)***
-<br/>
+<br/><br/>
 
 Tässä ovat **viikon 1** tehtävät:
 
@@ -10,4 +10,4 @@ Tässä ovat **viikon 1** tehtävät:
 
 [*komentorivi.txt*](https://github.com/juliapalorinne/ot-harjoitustyo/blob/main/laskarit/viikko1/komentorivi.txt)
 
-<br/>
+<br/><br/>
