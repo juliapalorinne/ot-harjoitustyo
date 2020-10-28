@@ -4,8 +4,6 @@
 
 Tässä ovat **viikon 1** tehtävät:
 
-[tree](https://github.com/juliapalorinne/ot-harjoitustyo/blob/main/laskarit/viikko1/komentorivi.txt)
+[*gitlog.txt*](https://github.com/juliapalorinne/ot-harjoitustyo/blob/main/laskarit/viikko1/gitlog.txt)
 
-[gitlog](https://github.com/juliapalorinne/ot-harjoitustyo/blob/main/laskarit/viikko1/gitlog.txt)
-
-
+[*komentorivi.txt*](https://github.com/juliapalorinne/ot-harjoitustyo/blob/main/laskarit/viikko1/komentorivi.txt)
