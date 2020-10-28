@@ -1,0 +1,107 @@
+commit 91fe154531671e51d93bcee4c0bbde9363a1592d
+Author: juliapalorinne <julia.palorinne@helsinki.fi>
+Date:   Wed Oct 28 19:26:07 2020 +0200
+
+    file22 ja file3
+
+ tiedostoja/file1  | 0
+ tiedostoja/file2  | 0
+ tiedostoja/file22 | 0
+ 3 files changed, 0 insertions(+), 0 deletions(-)
+
+commit d89e353355163bda6169378607aebd72ae28a726
+Author: juliapalorinne <julia.palorinne@helsinki.fi>
+Date:   Wed Oct 28 19:22:24 2020 +0200
+
+    tiedostoja luotu
+
+ tiedostoja/file1 | 0
+ tiedostoja/file2 | 0
+ tiedostoja/file3 | 0
+ 3 files changed, 0 insertions(+), 0 deletions(-)
+
+commit 6ebf4090d9dc35060de84544876c01ee025ea197
+Author: juliapalorinne <julia.palorinne@helsinki.fi>
+Date:   Wed Oct 28 17:59:01 2020 +0200
+
+    tiedostoja muokattu
+
+ eka.txt    | 2 ++
+ kolmas.txt | 2 +-
+ 2 files changed, 3 insertions(+), 1 deletion(-)
+
+commit 6287ffbb32b5ccf78ba133b9652d6d7dd549872f
+Author: juliapalorinne <julia.palorinne@helsinki.fi>
+Date:   Wed Oct 28 17:55:08 2020 +0200
+
+    tiedosto uudelleennimetty ja toinen poistettu
+
+ eka.txt      | 14 ++++++++++++++
+ toinen.txt   |  1 -
+ tiedosto.txt | 14 --------------
+ 3 files changed, 14 insertions(+), 15 deletions(-)
+
+commit 270fc42d134ed500c8f3936cfeb4d4f7aceaae5c
+Author: juliapalorinne <julia.palorinne@helsinki.fi>
+Date:   Wed Oct 28 17:52:33 2020 +0200
+
+    tiedostoon tiedosto.txt lisätty lisää tekstiä
+
+ tiedosto.txt | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+commit 12eff79c1a37ab7812aadfb11d4e3ff342600269
+Author: juliapalorinne <julia.palorinne@helsinki.fi>
+Date:   Wed Oct 28 17:51:40 2020 +0200
+
+    tiedostoon tiedosto.txt lisätty tekstiä
+
+ tiedosto.txt | 15 ++++++++++++++-
+ 1 file changed, 14 insertions(+), 1 deletion(-)
+
+commit feaf279dd75f523e10cb85d6e96a71b1e0e3bc88
+Author: juliapalorinne <julia.palorinne@helsinki.fi>
+Date:   Wed Oct 28 17:42:28 2020 +0200
+
+    stuff lisätty
+
+ stuff/jokintiedosto.txt | 0
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+
+commit d62637bed6f03bc5ecac877600cd50ce6d62c5b7
+Author: juliapalorinne <julia.palorinne@helsinki.fi>
+Date:   Wed Oct 28 17:41:32 2020 +0200
+
+    tiedostoja toinen ja kolmas muokattu
+
+ kolmas.txt | 1 +
+ toinen.txt | 1 +
+ 2 files changed, 2 insertions(+)
+
+commit dce9ffc782d4961f9d7f31827ba84ced10f61321
+Author: juliapalorinne <julia.palorinne@helsinki.fi>
+Date:   Wed Oct 28 17:40:03 2020 +0200
+
+    kolmas.txt lisätty
+
+ kolmas.txt | 0
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+
+commit 748f70398ca3cbd73460b5aeb5d1267feaf4e948
+Author: juliapalorinne <julia.palorinne@helsinki.fi>
+Date:   Wed Oct 28 17:09:25 2020 +0200
+
+    muutos ja lisäys
+
+ tiedosto.txt | 1 +
+ toinen.txt   | 0
+ 2 files changed, 1 insertion(+)
+
+commit 9add895049aab0ad90af7e3b1813a8ad33ebabef
+Author: juliapalorinne <julia.palorinne@helsinki.fi>
+Date:   Wed Oct 28 17:07:41 2020 +0200
+
+    tiedosto.txt luotu
+
+ tiedosto.txt | 0
+ 1 file changed, 0 insertions(+), 0 deletions(-)
