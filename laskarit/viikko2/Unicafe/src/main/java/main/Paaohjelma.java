@@ -1,4 +1,7 @@
-package com.mycompany.unicafe;
+package main;
+
+import com.mycompany.unicafe.Kassapaate;
+import com.mycompany.unicafe.Maksukortti;
 
 public class Paaohjelma {
 
