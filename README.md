@@ -22,5 +22,7 @@ Tässä ovat **viikon 2** laskarit:
 <br/><br/>
 
 Tässä ovat **viikon 2** harjoitustyöhön liittyvät tehtävät:
+
 [*Työaikakirjanpito*](https://github.com/juliapalorinne/ot-harjoitustyo/blob/main/Project/documentation/tyoaikakirjanpito.md)
+
 [*Vaatimusmäärittely*](https://github.com/juliapalorinne/ot-harjoitustyo/blob/main/Project/documentation/vaatimusmaarittely.md)
