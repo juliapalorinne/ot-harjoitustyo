@@ -5,7 +5,8 @@
 
 ### Tietokantataulun koodi
 
-[User]1-*[Observation]*-1[Species]
+[User]1-*[Observation]
+[Observation]*-1[Species]
 [Observation]*-1[Place]
 
 [User|username: string; name: string; password: string||login(user, password)]
