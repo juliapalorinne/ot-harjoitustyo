@@ -1,7 +1,7 @@
 # Arkkitehtuuri
 
 ## Tietokantataulu
-![][https://github.com/juliapalorinne/ot-harjoitustyo/blob/main/Project/documentation/tietokantataulut.jpg]
+![Tietokantataulut](https://github.com/juliapalorinne/ot-harjoitustyo/blob/main/Project/documentation/tietokantataulut.jpg)
 
 
 ### Tietokantataulun koodi
