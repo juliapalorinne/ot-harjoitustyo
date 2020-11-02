@@ -1,6 +1,7 @@
 # Arkkitehtuuri
 
 ## Tietokantataulu
+![][tietokantataulut.jpg]
 
 
 ### Tietokantataulun koodi
