@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package project.domain;
 
 import org.junit.After;
@@ -15,23 +11,25 @@ import static org.junit.Assert.*;
 
 public class ObservationtTest {
     
-    public ObservationtTest() {
+    @Test
+    public void equalWhenSameId() {
+        Observation obs1 = new Observation(1, null, null, null, null, null, null);
+        Observation obs2 = new Observation(1, null, null, null, null, null, null);
+        assertTrue(obs1.equals(obs2));
     }
+  
+    @Test
+    public void notEqualWhenDifferentId() {
+        Observation obs1 = new Observation(1, null, null, null, null, null, null);
+        Observation obs2 = new Observation(11, null, null, null, null, null, null);
+        assertFalse(obs1.equals(obs2));
+    }   
     
-    @BeforeClass
-    public static void setUpClass() {
-    }
-    
-    @AfterClass
-    public static void tearDownClass() {
-    }
-    
-    @Before
-    public void setUp() {
-    }
-    
-    @After
-    public void tearDown() {
-    }
+    @Test
+    public void nonEqualWhenDifferentType() {
+        Observation obs1 = new Observation(1, null, null, null, null, null, null);
+        Object o = new Object();
+        assertFalse(obs1.equals(o));
+    }      
 
 }

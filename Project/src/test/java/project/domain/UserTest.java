@@ -11,24 +11,26 @@ import static org.junit.Assert.*;
 
 public class UserTest {
     
-    public UserTest() {
+    @Test
+    public void equalWhenSameUsername() {
+        User u1 = new User("user", "Matti", "salasana");
+        User u2 = new User("user", "Matti", "jotainmuuta");
+        assertTrue(u1.equals(u2));
     }
     
-    @BeforeClass
-    public static void setUpClass() {
-    }
+    @Test
+    public void nonEqualWhenDifferentUsername() {
+        User u1 = new User("user", "Matti", "salasana");
+        User u2 = new User("kayttaja", "Liisa", "jotainmuuta");
+        assertFalse(u1.equals(u2));
+    } 
     
-    @AfterClass
-    public static void tearDownClass() {
-    }
-    
-    @Before
-    public void setUp() {
-    }
-    
-    @After
-    public void tearDown() {
-    }
+    @Test
+    public void nonEqualWhenDifferentType() {
+        User u1 = new User("user", "Matti", "salasana");
+        Object o = new Object();
+        assertFalse(u1.equals(o));
+    }     
 
     
 }
