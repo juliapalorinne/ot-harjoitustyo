@@ -2,30 +2,45 @@
 
 ## Sovelluksen tarkoitus
 
-Sovellus on tarkoitettu lintuhavaintojen kirjaamiseen.
+Sovellus on tarkoitettu lintuhavaintojen kirjaamiseen. Sovellus on suunniteltu lintuharrastajille, jotka haluavat pitää kirjaa havaitsemistaan linnuista.
 <br/>
 
 
 ## Käyttäjät
+Sovelluksessa on aluksi vain yksi käyttäjärooli, **normaali käyttäjä**. Sovellukseen voidaan lisätä myöhemmin esimerkiksi **yhdistyskäyttäjä**, joka hallinnoi tietyn lintuyhdistyksen alueen havaintoja.
 
-Sovellus on suunniteltu lintuharrastajille.
 <br/>
 
 
 ## Toiminnallisuudet
 
-Kustakin havainnosta kirjataan lintulaji, yksilöiden lukumäärä, havaintopaikka, havaintoaika
-ja linnun tila (esim. muuttava/paikallinen, laulava/muuten ääntelevä/nähty).
-Käyttäjä määrittelee havainnot salaisiksi tai julkisiksi. Lisäksi käyttääjä voi kirjata havainnosta
-lisätietoja erilliseen lisätietokenttään.
-<br/>
+- Käyttäjä voi luoda palveluun tunnukset ja kirjautua niillä sisään.
+- Käyttäjä kirjaa palveluun **havaintoja**, joista tallennetaan seuraavat tiedot:
+    - lintulaji
+    - yksilöiden lukumäärä
+    - havaintopaikka
+    - havaintoaika
+    - linnun tila (esim. muuttava/paikallinen, laulava/muuten ääntelevä/nähty)
+    - mahdolliset lisätiedot.
+- Käyttäjä voi etsiä kirjaamiaan havaintoja esimerkiksi lajin, ajan tai paikan perusteella.
+- Käyttäjä voi tarkastella ja muokata kirjaamiaan havaintoja.
+- Käyttäjä määrittelee havainnot salaisiksi tai julkisiksi. 
+- Käyttäjä voi tarkastella toisten käyttäjien kirjaamia havaintoja.
+- Käyttäjä voi etsiä **lintulajeja** tai **havaintopaikkoja** nimen perusteella ja lisätä uusia, jos niitä ei vielä löydy tietokannasta.
+- Käyttäjä näkee tilastoja kirjaamistaan havainnoista, esim.
+    - kuluvana vuonna havaittujen lajien määrä
+    - tietyssä paikassa havaittujen lajien määrä
+    - tiettynä päivänä havaittujen lajien määrä
+    - kirjattujen havaintojen määrä laji- ja paikkakohtaisesti.
 
-Havaintopaikkoja voi etsiä erikseen nimen perusteella, ja käyttäjä voi lisätä uusia havaintopaikkoja,
-jos niitä ei vielä löydy tietokannasta.
-<br/>
 
-Havaintoja voi selata ja etsiä esim. käyttäjän, lajin, paikan tai ajan mukaan.
-<br/>
+## Jatkokehitys
+
+- Käyttäjä voi tarkastella omia havaintojaan kartalla.
+- Käyttäjä voi etsiä omia tai toisten käyttäjien havaintoja esim. lajin perusteella ja nähdä löydetyt havainnot kartalla.
+- Käyttäjä voi klikata kartalla näkyvää havaintoa ja saada sen tiedot näkyviin.
+- Käyttäjä voi tarkastella tilastoja myös muiden käyttäjien havainnoista.
+
 
 
 ## Käyttöliittymäluonnos
