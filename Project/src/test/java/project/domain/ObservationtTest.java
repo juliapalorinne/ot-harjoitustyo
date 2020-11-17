@@ -48,26 +48,26 @@ public class ObservationtTest {
         Object o = new Object();
         assertFalse(obs1.equals(o));
     }
-    
-    @Test
-    public void findBySpeciesReturnsObservationsWithSameSpecies() {
-        List<Observation> o = new ArrayList<>();
-        o.add(new Observation((long) 2, "magpie", "Turku", null, null, null, null));
-        o.add(new Observation((long) 3, "magpie", "Helsinki", null, null, null, null));
-        
-        
-        List<Observation> findBySpecies = observationDao.findBySpecies("magpie");
-        assertTrue(findBySpecies.toString().equals(o.toString()));
-    }
-
-    @Test
-    public void findByPlaceReturnsObservationsWithSamePlace() {
-        List<Observation> o = new ArrayList<>();
-        o.add(new Observation((long) 1, "crow", "Helsinki", null, null, null, null));
-        o.add(new Observation((long) 3, "magpie", "Helsinki", null, null, null, null));
-        
-        List<Observation> findByPlace = observationDao.findByPlace("Helsinki");
-        assertTrue(findByPlace.toString().equals(o.toString()));
-    }
+//    
+//    @Test
+//    public void findBySpeciesReturnsObservationsWithSameSpecies() {
+//        List<Observation> o = new ArrayList<>();
+//        o.add(new Observation((long) 2, "magpie", "Turku", null, null, null, null));
+//        o.add(new Observation((long) 3, "magpie", "Helsinki", null, null, null, null));
+//        
+//        
+//        List<Observation> findBySpecies = observationDao.findBySpecies("magpie");
+//        assertTrue(findBySpecies.toString().equals(o.toString()));
+//    }
+//
+//    @Test
+//    public void findByPlaceReturnsObservationsWithSamePlace() {
+//        List<Observation> o = new ArrayList<>();
+//        o.add(new Observation((long) 1, "crow", "Helsinki", null, null, null, null));
+//        o.add(new Observation((long) 3, "magpie", "Helsinki", null, null, null, null));
+//        
+//        List<Observation> findByPlace = observationDao.findByPlace("Helsinki");
+//        assertTrue(findByPlace.toString().equals(o.toString()));
+//    }
 
 }
