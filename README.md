@@ -1,6 +1,10 @@
 # Ohjelmistotekniikka, syksy 2020
 
-## Lintuhavaintopalvelu
+## Lintuhavaintosovellus
+
+Sovellus on tarkoitettu lintuhavaintojen tallentamiseen ja vanhojen havaintojen tarkasteluun.
+
+## Dokumentaatio
 
 [*Työaikakirjanpito*](https://github.com/juliapalorinne/ot-harjoitustyo/blob/main/Project/documentation/tyoaikakirjanpito.md)
 
