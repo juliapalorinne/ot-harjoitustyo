@@ -9,12 +9,14 @@ import project.domain.Observation;
 
 public interface ObservationDao {
 
-    Observation create(Observation todo) throws Exception;
+    public Observation create(Observation todo) throws Exception;
+    
+    public Observation findById(Long id);
 
-    List<Observation> getAll();
+    public List<Observation> getAll();
     
-    public Observation findBySpecies(String species);
+    public List<Observation> findBySpecies(String species);
     
-    public Observation findByPlace(String place);
+    public List<Observation> findByPlace(String place);
     
 }

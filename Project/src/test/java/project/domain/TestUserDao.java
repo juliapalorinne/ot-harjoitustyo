@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 import project.dao.UserDao;
 
-public class FakeUserDao implements UserDao {
+public class TestUserDao implements UserDao {
     List<User> users = new ArrayList<>();
 
-    public FakeUserDao() {
+    public TestUserDao() {
         users.add(new User("test_user", "Test User", "erinomainensalalause"));
     }
     
@@ -29,7 +29,7 @@ public class FakeUserDao implements UserDao {
 
     @Override
     public User findByName(String name) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return users.stream().filter(u->u.getName().equals(name)).findFirst().orElse(null);
     }
 
 }

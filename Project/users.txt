@@ -1,2 +1,1 @@
-0;we.athv;äöskrvj;Wed Oct 21 00:00:00 EEST 2020;11:11;öalskr ;project.domain.User@79dc3494
-0;we.athv;äöskrvj;Wed Oct 21 00:00:00 EEST 2020;11:11;öalskr ;project.domain.User@79dc3494
+0;Viiksitimali;VKL;Wed Oct 21 00:00:00 EEST 2020;09:15;10;project.domain.User@49f88dab

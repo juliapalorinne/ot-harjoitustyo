@@ -8,7 +8,7 @@ import java.util.List;
 
 
 public class Observation {
-    private int id;
+    private Long id;
     private final String species;
     private final String place;
     private final Date date;
@@ -17,7 +17,7 @@ public class Observation {
     private User user;
     
 
-    public Observation(int id, String species, String place, Date date, LocalTime time, String info, User user) {
+    public Observation(Long id, String species, String place, Date date, LocalTime time, String info, User user) {
         this.id = id;
         this.species = species;
         this.place = place;
@@ -36,11 +36,11 @@ public class Observation {
         this.user = user;
     }
    
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
    
-    public int getId() {
+    public Long getId() {
         return id;
     }
     

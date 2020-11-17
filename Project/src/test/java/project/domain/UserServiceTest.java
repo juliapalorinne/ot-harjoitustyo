@@ -11,13 +11,13 @@ import static org.junit.Assert.*;
 
 public class UserServiceTest {
 
-    FakeObservationDao obsDao;
-    FakeUserDao userDao;
+    TestObservationDao obsDao;
+    TestUserDao userDao;
     UserService service;
     
     @Before
     public void setUp() {
-        userDao = new FakeUserDao();
+        userDao = new TestUserDao();
         service = new UserService(obsDao, userDao);     
     }
     

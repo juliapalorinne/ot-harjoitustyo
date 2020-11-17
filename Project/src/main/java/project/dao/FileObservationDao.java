@@ -23,7 +23,7 @@ public class FileObservationDao implements ObservationDao {
             Scanner reader = new Scanner(new File(file));
             while (reader.hasNextLine()) {
                 String[] parts = reader.nextLine().split(";");
-                int id = Integer.parseInt(parts[0]);
+                Long id = Long.parseLong(parts[0]);
                 
                 SimpleDateFormat dformatter = new SimpleDateFormat("dd/MM/yyyy");
                 Date date = dformatter.parse(parts[3]);
@@ -50,8 +50,8 @@ public class FileObservationDao implements ObservationDao {
         } 
     }
     
-    private int generateId() {
-        return observations.size() + 1;
+    private Long generateId() {
+        return (long) observations.size() + 1;
     }
     
     
@@ -61,22 +61,26 @@ public class FileObservationDao implements ObservationDao {
     }
     
     @Override
-    public Observation findBySpecies(String species) {
-        return observations.stream()
-            .filter(o->o.getSpecies()
-            .equals(species))
-            .findFirst()
-            .orElse(null);
+    public List<Observation> findBySpecies(String species) {
+        List<Observation> observationsBySpecies = new ArrayList<>();
+        for (Observation obs : observations) {
+            if (obs.getSpecies().equals(species)) {
+                observationsBySpecies.add(obs);
+            }
+        }
+        return observationsBySpecies;
     }
-    
+
     @Override
-    public Observation findByPlace(String place) {
-                return observations.stream()
-            .filter(o->o.getPlace()
-            .equals(place))
-            .findFirst()
-            .orElse(null);
-    }    
+    public List<Observation> findByPlace(String place) {
+        List<Observation> observationsByPlace = new ArrayList<>();
+        for (Observation obs : observations) {
+            if (obs.getPlace().equals(place)) {
+                observationsByPlace.add(obs);
+            }
+        }
+        return observationsByPlace;
+    }
     
     @Override
     public Observation create(Observation obs) throws Exception {
@@ -84,6 +88,16 @@ public class FileObservationDao implements ObservationDao {
         save();
         return obs;
     }    
+
+    @Override
+    public Observation findById(Long id) {
+        for (Observation obs : observations) {
+            if (obs.getId().equals(id)) {
+                return obs;
+            }
+        }
+        return null;
+    }
 
 
     
