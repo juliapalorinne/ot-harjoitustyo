@@ -25,6 +25,7 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import project.dao.FileObservationDao;
 import project.dao.FileUserDao;
@@ -83,35 +84,39 @@ public class ProjectUi extends Application {
             obsNodes.getChildren().add(createObsNode(obs));
         });     
     }
-    
-    
-//    public HBox createNewHBox(int pane, int padding, String label) {
-//        HBox newPane = new HBox(pane);
-//        newPane.setPadding(new Insets(padding));
-//        TextField newInput = new TextField(); 
-//        Label newLabel = new Label(label);
-//        newLabel.setPrefWidth(100);
-//        newPane.getChildren().addAll(newLabel, newInput);
-//
-//        return newPane;
-//    }
 
+
+    public void setLabelStyle(Label label) {
+        label.setFont(Font.font("Arial", 14));
+        label.setStyle("-fx-font-weight: bold;");
+    }
+    
+    
+    public TextField createInputField(VBox pane, String name) {
+        HBox newPane = new HBox(10);
+        newPane.setPadding(new Insets(10));
+        TextField newInput = new TextField();
+        Label newLabel = new Label(name);
+        setLabelStyle(newLabel);
+        newLabel.setPrefWidth(100);
+        newPane.getChildren().addAll(newLabel, newInput);
+        pane.getChildren().addAll(newPane);
+        return newInput;
+    }
     
     
     @Override
     public void start(Stage primaryStage) throws Exception {
         
         VBox loginPane = new VBox(10);
-        HBox inputPane = new HBox(10);
+        loginPane.setStyle("-fx-background-color: #90EE90;");
         loginPane.setPadding(new Insets(10));
-        Label loginLabel = new Label("username");
-        TextField usernameInput = new TextField();
+        TextField usernameInput = createInputField(loginPane, "Username");
+        TextField passwordInput = createInputField(loginPane, "Password");
         
-        inputPane.getChildren().addAll(loginLabel, usernameInput);
         Label loginMessage = new Label();
-        
-        Button loginButton = new Button("login");
-        Button createButton = new Button("create new user");
+        Button loginButton = new Button("Login");
+        Button createButton = new Button("Create new user");
         loginButton.setOnAction(e->{
             String username = usernameInput.getText();
             menuLabel.setText(username + " logged in...");
@@ -131,10 +136,9 @@ public class ProjectUi extends Application {
             primaryStage.setScene(newUserScene);   
         });  
         
-        loginPane.getChildren().addAll(loginMessage, inputPane, loginButton, createButton);       
+        loginPane.getChildren().addAll(loginMessage, loginButton, createButton);       
         
-        loginScene = new Scene(loginPane, 300, 250);    
-   
+        loginScene = new Scene(loginPane, 300, 250);
         
         
         
@@ -142,27 +146,10 @@ public class ProjectUi extends Application {
         // new createNewUserScene
         
         VBox newUserPane = new VBox(10);
-        
-        HBox newUsernamePane = new HBox(10);
-        newUsernamePane.setPadding(new Insets(10));
-        TextField newUsernameInput = new TextField(); 
-        Label newUsernameLabel = new Label("username");
-        newUsernameLabel.setPrefWidth(100);
-        newUsernamePane.getChildren().addAll(newUsernameLabel, newUsernameInput);
-     
-        HBox newNamePane = new HBox(10);
-        newNamePane.setPadding(new Insets(10));
-        TextField newNameInput = new TextField();
-        Label newNameLabel = new Label("name");
-        newNameLabel.setPrefWidth(100);
-        newNamePane.getChildren().addAll(newNameLabel, newNameInput);      
-        
-        HBox newPasswordPane = new HBox(10);
-        newPasswordPane.setPadding(new Insets(10));
-        TextField newPasswordInput = new TextField();
-        Label newPasswordLabel = new Label("password");
-        newPasswordLabel.setPrefWidth(100);
-        newPasswordPane.getChildren().addAll(newPasswordLabel, newPasswordInput);      
+        newUserPane.setStyle("-fx-background-color: #FFB6C1;");
+        TextField newUsernameInput = createInputField(newUserPane, "Username");
+        TextField newNameInput = createInputField(newUserPane, "Name");
+        TextField newPasswordInput = createInputField(newUserPane, "Password");
         
         
         Label userCreationMessage = new Label();
@@ -190,7 +177,7 @@ public class ProjectUi extends Application {
  
         });  
         
-        newUserPane.getChildren().addAll(userCreationMessage, newUsernamePane, newNamePane, newPasswordPane, createNewUserButton);
+        newUserPane.getChildren().addAll(userCreationMessage, createNewUserButton);
        
         newUserScene = new Scene(newUserPane, 600, 400);
         
@@ -239,44 +226,12 @@ public class ProjectUi extends Application {
 
         
         VBox newObsPane = new VBox(10);
-        
-        HBox newSpeciesPane = new HBox(10);
-        newSpeciesPane.setPadding(new Insets(10));
-        TextField newSpeciesInput = new TextField(); 
-        Label newSpeciesLabel = new Label("Species");
-        newSpeciesLabel.setPrefWidth(100);
-        newSpeciesPane.getChildren().addAll(newSpeciesLabel, newSpeciesInput);
-        
-        HBox newPlacePane = new HBox(10);
-        newPlacePane.setPadding(new Insets(10));
-        TextField newPlaceInput = new TextField(); 
-        Label newPlaceLabel = new Label("Place");
-        newPlaceLabel.setPrefWidth(100);
-        newPlacePane.getChildren().addAll(newPlaceLabel, newPlaceInput);
-        
-        
-        HBox newDatePane = new HBox(10);
-        newDatePane.setPadding(new Insets(10));
-        TextField newDateInput = new TextField(); 
-        Label newDateLabel = new Label("Date (dd/mm/yyyy)");
-        newDateLabel.setPrefWidth(100);
-        newDatePane.getChildren().addAll(newDateLabel, newDateInput);
-        
-        HBox newTimePane = new HBox(10);
-        newTimePane.setPadding(new Insets(10));
-        TextField newTimeInput = new TextField(); 
-        Label newTimeLabel = new Label("Time (hh:mm)");
-        newTimeLabel.setPrefWidth(100);
-        newTimePane.getChildren().addAll(newTimeLabel, newTimeInput);
-        
-        HBox newInfoPane = new HBox(10);
-        newInfoPane.setPadding(new Insets(10));
-        TextField newInfoInput = new TextField(); 
-        Label newInfoLabel = new Label("Additional info");
-        newInfoLabel.setPrefWidth(100);
-        newInfoPane.getChildren().addAll(newInfoLabel, newInfoInput);
-        
-        
+        TextField newSpeciesInput = createInputField(newObsPane, "Species");
+        TextField newPlaceInput = createInputField(newObsPane, "Place");
+        TextField newDateInput = createInputField(newObsPane, "Date (dd/mm/yyyy)");
+        TextField newTimeInput = createInputField(newObsPane, "Time (hh:mm)");
+        TextField newInfoInput = createInputField(newObsPane, "Additional info");
+
         Label obsCreationMessage = new Label();
         Button createNewObsButton = new Button("create");
         createNewObsButton.setPadding(new Insets(10));
@@ -307,8 +262,7 @@ public class ProjectUi extends Application {
  
         });  
         
-        newObsPane.getChildren().addAll(userCreationMessage, newSpeciesPane, newPlacePane, newDatePane,
-                newTimePane,newInfoPane,createNewObsButton);
+        newObsPane.getChildren().addAll(userCreationMessage, createNewObsButton);
        
         newObsScene = new Scene(newObsPane, 600, 400);    
         

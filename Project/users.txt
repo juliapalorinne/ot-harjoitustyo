@@ -1,2 +1,0 @@
-0;Viiksitimali;Viiksitimali
-julia;Julia;Julia
