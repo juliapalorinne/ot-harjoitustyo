@@ -15,14 +15,23 @@ import static org.junit.Assert.*;
 public class ObservationServiceTest {
 
     TestObservationDao observationDao;
-    TestUserDao userDao;
     ObservationService observationService;
     
     @Before
     public void setUp() {
         observationDao = new TestObservationDao();
         observationService = new ObservationService(observationDao);
+        User user = new User("janedoe", "Jane Doe", "janespassword");
+        observationService.setLoggedUser(user);
     }
+    
+    @Test
+    public void loggedInUserCanBeSet() {
+        User user = new User("alias", "Adam Smith", "newpassword");
+        observationService.setLoggedUser(user);
+        assertEquals(user, observationService.getLoggedUser());
+    }
+    
     
     @Test
     public void userCanCreateNewObservations() {

@@ -17,9 +17,19 @@ public class ObservationService {
         this.obsDao = obsDao;
     }
     
+    public boolean createObservation() {
+        Observation obs = new Observation();
+        obs.setUser(loggedIn);
+        try {   
+            obsDao.create(obs);
+        } catch (Exception ex) {
+            return false;
+        }
+        return true;
+    }
     
     public boolean createObservation(String species, int individuals, String place, Date date, LocalTime time, String info) {
-        Observation obs = new Observation(species, place, date, time, info, loggedIn);
+        Observation obs = new Observation(species, individuals, place, date, time, info, loggedIn);
         try {   
             obsDao.create(obs);
         } catch (Exception ex) {
@@ -43,4 +53,8 @@ public class ObservationService {
     public void setLoggedUser(User user) {
         this.loggedIn = user;
     }
+    
+    public User getLoggedUser() {
+        return this.loggedIn;
+    }    
 }

@@ -13,54 +13,57 @@ public class UserServiceTest {
 
     TestObservationDao obsDao;
     TestUserDao userDao;
-    UserService service;
+    UserService userService;
+    ObservationService observationService;
     
     @Before
     public void setUp() {
         userDao = new TestUserDao();
-        service = new UserService(userDao);     
+        obsDao = new TestObservationDao();
+        observationService = new ObservationService(obsDao);
+        userService = new UserService(userDao, observationService);     
     }
     
     @Test
-    public void nonExistingUserCanLogIn() {
-        boolean result = service.login("nonexisting", "password");
+    public void nonExistingUserCannotLogIn() {
+        boolean result = userService.login("nonexisting", "password");
         assertFalse(result);
         
-        assertEquals(null, service.getLoggedUser());
+        assertEquals(null, userService.getLoggedUser());
     }    
     
     @Test
     public void existingUserCanLogIn() {
-        boolean result = service.login("test_user", "erinomainensalalause");
+        boolean result = userService.login("test_user", "erinomainensalalause");
         assertTrue(result);
         
-        User loggedIn = service.getLoggedUser();
+        User loggedIn = userService.getLoggedUser();
         assertEquals("Test User", loggedIn.getName() );
     }
     
     @Test
     public void loggedInUserCanLogout() {
-        service.login("test_user", "erinomainensalalause");
-        service.logout();
+        userService.login("test_user", "erinomainensalalause");
+        userService.logout();
         
-        assertEquals(null, service.getLoggedUser());
+        assertEquals(null, userService.getLoggedUser());
     }    
     
     @Test
     public void userCreationFailsIfNameNotUnique() throws Exception {
-        boolean result = service.createUser("test_user", "Test User", "erinomainensalalause");
+        boolean result = userService.createUser("test_user", "Test User", "erinomainensalalause");
         assertFalse(result);
     }
     
     @Test
     public void succesfullyCreatedUserCanLogIn() throws Exception {
-        boolean result = service.createUser("maijam", "Maija Meikäläinen", "jokulause");
+        boolean result = userService.createUser("maijam", "Maija Meikäläinen", "jokulause");
         assertTrue(result);
         
-        boolean loginOk = service.login("maijam", "jokulause");
+        boolean loginOk = userService.login("maijam", "jokulause");
         assertTrue(loginOk);
         
-        User loggedIn = service.getLoggedUser();
+        User loggedIn = userService.getLoggedUser();
         assertEquals("Maija Meikäläinen", loggedIn.getName() );
     } 
     

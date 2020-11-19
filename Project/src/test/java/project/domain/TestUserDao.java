@@ -17,6 +17,11 @@ public class TestUserDao implements UserDao {
     }
     
     @Override
+    public User findByName(String name) {
+        return users.stream().filter(u->u.getName().equals(name)).findFirst().orElse(null);
+    }
+    
+    @Override
     public User create(User user) {
         users.add(user);
         return user;
@@ -27,9 +32,5 @@ public class TestUserDao implements UserDao {
         return users;
     }
 
-    @Override
-    public User findByName(String name) {
-        return users.stream().filter(u->u.getName().equals(name)).findFirst().orElse(null);
-    }
 
 }

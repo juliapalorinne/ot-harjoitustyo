@@ -17,6 +17,8 @@ public class Observation {
     private String info;
     private User user;
     
+    public Observation() {
+    }
 
     public Observation(Long id, String species, int individuals, String place, Date date, LocalTime time, String info, User user) {
         this.id = id;
@@ -29,8 +31,9 @@ public class Observation {
         this.user = user;
     }
     
-    public Observation(String species, String place, Date date, LocalTime time, String info, User user) {
+    public Observation(String species, int individuals, String place, Date date, LocalTime time, String info, User user) {
         this.species = species;
+        this.individuals = individuals;
         this.place = place;
         this.date = date;
         this.time = time;

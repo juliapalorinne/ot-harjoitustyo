@@ -14,8 +14,9 @@ public class UserService {
     private User loggedIn;
     private ObservationService observationService;
     
-    public UserService(UserDao userDao) {
+    public UserService(UserDao userDao, ObservationService observationService) {
         this.userDao = userDao;
+        this.observationService = observationService;
     }
 
     public boolean login(String username, String password) {

@@ -61,7 +61,7 @@ public class ProjectUi extends Application {
         FileUserDao userDao = new FileUserDao(userFile);
         FileObservationDao obsDao = new FileObservationDao(obsFile, userDao);
         observationService = new ObservationService(obsDao);
-        userService = new UserService(userDao);
+        userService = new UserService(userDao, observationService);
         windowService = new WindowService();
     }
 
