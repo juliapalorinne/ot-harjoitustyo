@@ -34,15 +34,17 @@ import project.domain.ObservationService;
 import project.domain.UserService;
 
 public class ProjectUi extends Application {
-    private ObservationService obsService;
+    private ObservationService observationService;
     private UserService userService;
+    private WindowService windowService;
     
-    private Scene obsScene;
+    
+    private Scene observationScene;
     private Scene newUserScene;
     private Scene loginScene;
-    private Scene newObsScene;
+    private Scene newObservationScene;
     
-    private VBox obsNodes;
+    private VBox observationNodes;
     private Label menuLabel = new Label();
     
     
@@ -57,12 +59,13 @@ public class ProjectUi extends Application {
             
         FileUserDao userDao = new FileUserDao(userFile);
         FileObservationDao obsDao = new FileObservationDao(obsFile, userDao);
-        obsService = new ObservationService(obsDao, userDao);
+        observationService = new ObservationService(obsDao, userDao);
         userService = new UserService(obsDao, userDao);
+        windowService = new WindowService();
     }
 
     
-    public Node createObsNode(Observation obs) {
+    public Node createObservationNode(Observation obs) {
         HBox box = new HBox(10);
         Label label  = new Label(obs.getSpecies());
         label.setMinHeight(28);
@@ -76,33 +79,17 @@ public class ProjectUi extends Application {
     }
 
     
-    public void redrawObslist() {
-        obsNodes.getChildren().clear();     
+    public void redrawObservationList() {
+        observationNodes.getChildren().clear();     
 
-        List<Observation> obses = obsService.getAll();
+        List<Observation> obses = observationService.getAll();
         obses.forEach(obs->{
-            obsNodes.getChildren().add(createObsNode(obs));
+            observationNodes.getChildren().add(createObservationNode(obs));
         });     
     }
 
 
-    public void setLabelStyle(Label label) {
-        label.setFont(Font.font("Arial", 14));
-        label.setStyle("-fx-font-weight: bold;");
-    }
-    
-    
-    public TextField createInputField(VBox pane, String name) {
-        HBox newPane = new HBox(10);
-        newPane.setPadding(new Insets(10));
-        TextField newInput = new TextField();
-        Label newLabel = new Label(name);
-        setLabelStyle(newLabel);
-        newLabel.setPrefWidth(100);
-        newPane.getChildren().addAll(newLabel, newInput);
-        pane.getChildren().addAll(newPane);
-        return newInput;
-    }
+
     
     
     @Override
@@ -111,8 +98,8 @@ public class ProjectUi extends Application {
         VBox loginPane = new VBox(10);
         loginPane.setStyle("-fx-background-color: #90EE90;");
         loginPane.setPadding(new Insets(10));
-        TextField usernameInput = createInputField(loginPane, "Username");
-        TextField passwordInput = createInputField(loginPane, "Password");
+        TextField usernameInput = windowService.createInputField(loginPane, "Username");
+        TextField passwordInput = windowService.createInputField(loginPane, "Password");
         
         Label loginMessage = new Label();
         Button loginButton = new Button("Login");
@@ -120,10 +107,10 @@ public class ProjectUi extends Application {
         loginButton.setOnAction(e->{
             String username = usernameInput.getText();
             menuLabel.setText(username + " logged in...");
-            if ( obsService.login(username) ){
+            if ( observationService.login(username) ){
                 loginMessage.setText("");
-                redrawObslist();
-                primaryStage.setScene(obsScene);  
+                redrawObservationList();
+                primaryStage.setScene(observationScene);  
                 usernameInput.setText("");
             } else {
                 loginMessage.setText("user does not exist");
@@ -147,9 +134,9 @@ public class ProjectUi extends Application {
         
         VBox newUserPane = new VBox(10);
         newUserPane.setStyle("-fx-background-color: #FFB6C1;");
-        TextField newUsernameInput = createInputField(newUserPane, "Username");
-        TextField newNameInput = createInputField(newUserPane, "Name");
-        TextField newPasswordInput = createInputField(newUserPane, "Password");
+        TextField newUsernameInput = windowService.createInputField(newUserPane, "Username");
+        TextField newNameInput = windowService.createInputField(newUserPane, "Name");
+        TextField newPasswordInput = windowService.createInputField(newUserPane, "Password");
         
         
         Label userCreationMessage = new Label();
@@ -188,7 +175,7 @@ public class ProjectUi extends Application {
         
         ScrollPane obsScollbar = new ScrollPane();       
         BorderPane mainPane = new BorderPane(obsScollbar);
-        obsScene = new Scene(mainPane, 600, 600);
+        observationScene = new Scene(mainPane, 600, 600);
                 
         HBox menuPane = new HBox(10);    
         Region menuSpacer = new Region();
@@ -196,7 +183,7 @@ public class ProjectUi extends Application {
         Button logoutButton = new Button("Logout");      
         menuPane.getChildren().addAll(menuLabel, menuSpacer, logoutButton);
         logoutButton.setOnAction(e->{
-            obsService.logout();
+            observationService.logout();
             primaryStage.setScene(loginScene);
         });        
         
@@ -207,16 +194,16 @@ public class ProjectUi extends Application {
         createForm.getChildren().addAll(spacer, createObs);
         
         createObs.setOnAction(e->{
-            primaryStage.setScene(newObsScene);   
+            primaryStage.setScene(newObservationScene);   
         });  
         
         
-        obsNodes = new VBox(10);
-        obsNodes.setMaxWidth(280);
-        obsNodes.setMinWidth(280);
-        redrawObslist();
+        observationNodes = new VBox(10);
+        observationNodes.setMaxWidth(280);
+        observationNodes.setMinWidth(280);
+        redrawObservationList();
         
-        obsScollbar.setContent(obsNodes);
+        obsScollbar.setContent(observationNodes);
         mainPane.setBottom(createForm);
         mainPane.setTop(menuPane);
         
@@ -226,11 +213,12 @@ public class ProjectUi extends Application {
 
         
         VBox newObsPane = new VBox(10);
-        TextField newSpeciesInput = createInputField(newObsPane, "Species");
-        TextField newPlaceInput = createInputField(newObsPane, "Place");
-        TextField newDateInput = createInputField(newObsPane, "Date (dd/mm/yyyy)");
-        TextField newTimeInput = createInputField(newObsPane, "Time (hh:mm)");
-        TextField newInfoInput = createInputField(newObsPane, "Additional info");
+        TextField newSpeciesInput = windowService.createInputField(newObsPane, "Species");
+        TextField newIndividualInput = windowService.createInputField(newObsPane, "Number of individuals");
+        TextField newPlaceInput = windowService.createInputField(newObsPane, "Place");
+        TextField newDateInput = windowService.createInputField(newObsPane, "Date (dd/mm/yyyy)");
+        TextField newTimeInput = windowService.createInputField(newObsPane, "Time (hh:mm)");
+        TextField newInfoInput = windowService.createInputField(newObsPane, "Additional info");
 
         Label obsCreationMessage = new Label();
         Button createNewObsButton = new Button("create");
@@ -253,18 +241,18 @@ public class ProjectUi extends Application {
             if ( species.length()<3 || place.length()<2 ) {
                 userCreationMessage.setText("Species or place too short");
                 userCreationMessage.setTextFill(Color.RED);
-            } else if (obsService.createObservation(species, place, date, time, info)){
+            } else if (observationService.createObservation(species, place, date, time, info)){
                 obsCreationMessage.setText("New observation created");                
                 loginMessage.setText("Observations saved");
                 loginMessage.setTextFill(Color.YELLOW);
-                primaryStage.setScene(obsScene);      
+                primaryStage.setScene(observationScene);      
             }
  
         });  
         
         newObsPane.getChildren().addAll(userCreationMessage, createNewObsButton);
        
-        newObsScene = new Scene(newObsPane, 600, 400);    
+        newObservationScene = new Scene(newObsPane, 600, 400);    
         
         
         // seutp primary stage
@@ -274,8 +262,8 @@ public class ProjectUi extends Application {
         primaryStage.show();
         primaryStage.setOnCloseRequest(e->{
             System.out.println("closing");
-            System.out.println(obsService.getLoggedUser());
-            if (obsService.getLoggedUser()!=null) {
+            System.out.println(observationService.getLoggedUser());
+            if (observationService.getLoggedUser()!=null) {
                 e.consume();   
             }
             

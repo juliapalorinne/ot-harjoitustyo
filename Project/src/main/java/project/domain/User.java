@@ -13,6 +13,19 @@ public class User {
         this.password = password;
     }
 
+    public void setUsername(String username) {
+        this.username = username;
+    }    
+    
+    public void setUser(String name) {
+        this.name = name;
+    }    
+    
+    public void setPassword(String password) {
+        this.password = password;
+    }    
+    
+    
     public String getName() {
         return name;
     }
@@ -22,7 +35,7 @@ public class User {
     }
     
     public String getPassword() {
-        return name;
+        return password;
     }
 
     @Override

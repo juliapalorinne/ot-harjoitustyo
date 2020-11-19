@@ -24,14 +24,15 @@ public class FileObservationDao implements ObservationDao {
             while (reader.hasNextLine()) {
                 String[] parts = reader.nextLine().split(";");
                 Long id = Long.parseLong(parts[0]);
+                int individuals = Integer.parseInt(parts[2]);
                 
                 SimpleDateFormat dformatter = new SimpleDateFormat("dd/MM/yyyy");
-                Date date = dformatter.parse(parts[3]);
-                LocalTime time = LocalTime.parse(parts[4]);
+                Date date = dformatter.parse(parts[4]);
+                LocalTime time = LocalTime.parse(parts[5]);
                 
                 User user = users.getAll().stream().filter(u->u.getUsername().equals(parts[6])).findFirst().orElse(null);
                 
-                Observation obs = new Observation(id, parts[1], parts[2], date, time, parts[5], user);
+                Observation obs = new Observation(id, parts[1], individuals, parts[3], date, time, parts[6], user);
                 observations.add(obs);
             }
         } catch (Exception e) {
@@ -44,8 +45,8 @@ public class FileObservationDao implements ObservationDao {
     private void save() throws Exception{
         try (FileWriter writer = new FileWriter(new File(file))) {
             for (Observation obs : observations) {
-                writer.write(obs.getId() + ";" + obs.getSpecies() + ";" + obs.getPlace() + ";" + obs.getDate()
-                        + ";" + obs.getTime() + ";" + obs.getInfo() + ";" + obs.getUser() +  "\n");
+                writer.write(obs.getId() + ";" + obs.getSpecies() + ";" + obs.getIndividuals() + ";" + obs.getPlace() + ";"
+                        + obs.getDate() + ";" + obs.getTime() + ";" + obs.getInfo() + ";" + obs.getUser() +  "\n");
             }
         } 
     }

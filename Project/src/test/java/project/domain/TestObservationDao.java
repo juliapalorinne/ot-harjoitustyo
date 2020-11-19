@@ -11,7 +11,7 @@ public class TestObservationDao implements ObservationDao {
     
     
     public TestObservationDao() {
-        observations.add(new Observation((long)0, "bird", "place", null, null, "info", null));
+        // observations.add(new Observation((long)0, "bird", 1, "place", null, null, "info", null));
     }
     
     
@@ -40,22 +40,18 @@ public class TestObservationDao implements ObservationDao {
     @Override
     public List<Observation> findBySpecies(String species) {
         List<Observation> observationsBySpecies = new ArrayList<>();
-        for (Observation obs : observations) {
-            if (obs.getSpecies().equals(species)) {
-                observationsBySpecies.add(obs);
-            }
-        }
+        observations.stream().filter((obs) -> (obs.getSpecies().equals(species))).forEachOrdered((obs) -> {
+            observationsBySpecies.add(obs);
+        });
         return observationsBySpecies;
     }
 
     @Override
     public List<Observation> findByPlace(String place) {
         List<Observation> observationsByPlace = new ArrayList<>();
-        for (Observation obs : observations) {
-            if (obs.getPlace().equals(place)) {
-                observationsByPlace.add(obs);
-            }
-        }
+        observations.stream().filter((obs) -> (obs.getPlace().equals(place))).forEachOrdered((obs) -> {
+            observationsByPlace.add(obs);
+        });
         return observationsByPlace;
     }
 

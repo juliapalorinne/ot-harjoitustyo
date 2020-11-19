@@ -9,7 +9,7 @@ import project.domain.Observation;
 
 public interface ObservationDao {
 
-    public Observation create(Observation todo) throws Exception;
+    public Observation create(Observation observation) throws Exception;
     
     public Observation findById(Long id);
 
