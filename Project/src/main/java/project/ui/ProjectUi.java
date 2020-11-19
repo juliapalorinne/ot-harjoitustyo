@@ -44,6 +44,7 @@ public class ProjectUi extends Application {
     private Scene loginScene;
     private Scene newObservationScene;
     
+    
     private VBox observationNodes;
     private Label menuLabel = new Label();
     
@@ -59,8 +60,8 @@ public class ProjectUi extends Application {
             
         FileUserDao userDao = new FileUserDao(userFile);
         FileObservationDao obsDao = new FileObservationDao(obsFile, userDao);
-        observationService = new ObservationService(obsDao, userDao);
-        userService = new UserService(obsDao, userDao);
+        observationService = new ObservationService(obsDao);
+        userService = new UserService(userDao);
         windowService = new WindowService();
     }
 
@@ -106,8 +107,9 @@ public class ProjectUi extends Application {
         Button createButton = new Button("Create new user");
         loginButton.setOnAction(e->{
             String username = usernameInput.getText();
+            String password = passwordInput.getText();
             menuLabel.setText(username + " logged in...");
-            if ( observationService.login(username) ){
+            if ( userService.login(username, password)){
                 loginMessage.setText("");
                 redrawObservationList();
                 primaryStage.setScene(observationScene);  
@@ -183,7 +185,7 @@ public class ProjectUi extends Application {
         Button logoutButton = new Button("Logout");      
         menuPane.getChildren().addAll(menuLabel, menuSpacer, logoutButton);
         logoutButton.setOnAction(e->{
-            observationService.logout();
+            userService.logout();
             primaryStage.setScene(loginScene);
         });        
         
@@ -237,11 +239,12 @@ public class ProjectUi extends Application {
             }
             LocalTime time = LocalTime.parse(newTimeInput.getText());
             String info = newInfoInput.getText();
+            int individuals = Integer.parseInt(newIndividualInput.getText());
             
             if ( species.length()<3 || place.length()<2 ) {
                 userCreationMessage.setText("Species or place too short");
                 userCreationMessage.setTextFill(Color.RED);
-            } else if (observationService.createObservation(species, place, date, time, info)){
+            } else if (observationService.createObservation(species, individuals, place, date, time, info)){
                 obsCreationMessage.setText("New observation created");                
                 loginMessage.setText("Observations saved");
                 loginMessage.setTextFill(Color.YELLOW);
@@ -262,8 +265,8 @@ public class ProjectUi extends Application {
         primaryStage.show();
         primaryStage.setOnCloseRequest(e->{
             System.out.println("closing");
-            System.out.println(observationService.getLoggedUser());
-            if (observationService.getLoggedUser()!=null) {
+            System.out.println(userService.getLoggedUser());
+            if (userService.getLoggedUser()!=null) {
                 e.consume();   
             }
             

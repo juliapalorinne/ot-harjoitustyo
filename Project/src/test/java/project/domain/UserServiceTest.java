@@ -18,12 +18,12 @@ public class UserServiceTest {
     @Before
     public void setUp() {
         userDao = new TestUserDao();
-        service = new UserService(obsDao, userDao);     
+        service = new UserService(userDao);     
     }
     
     @Test
     public void nonExistingUserCanLogIn() {
-        boolean result = service.login("nonexisting");
+        boolean result = service.login("nonexisting", "password");
         assertFalse(result);
         
         assertEquals(null, service.getLoggedUser());
@@ -31,7 +31,7 @@ public class UserServiceTest {
     
     @Test
     public void existingUserCanLogIn() {
-        boolean result = service.login("test_user");
+        boolean result = service.login("test_user", "erinomainensalalause");
         assertTrue(result);
         
         User loggedIn = service.getLoggedUser();
@@ -40,7 +40,7 @@ public class UserServiceTest {
     
     @Test
     public void loggedInUserCanLogout() {
-        service.login("test_user");
+        service.login("test_user", "erinomainensalalause");
         service.logout();
         
         assertEquals(null, service.getLoggedUser());
@@ -57,7 +57,7 @@ public class UserServiceTest {
         boolean result = service.createUser("maijam", "Maija Meikäläinen", "jokulause");
         assertTrue(result);
         
-        boolean loginOk = service.login("maijam");
+        boolean loginOk = service.login("maijam", "jokulause");
         assertTrue(loginOk);
         
         User loggedIn = service.getLoggedUser();

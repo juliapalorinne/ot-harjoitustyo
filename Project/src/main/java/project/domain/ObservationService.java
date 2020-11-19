@@ -11,16 +11,14 @@ import project.dao.UserDao;
 
 public class ObservationService {
     private ObservationDao obsDao;
-    private UserDao userDao;
     private User loggedIn;
     
-    public ObservationService(ObservationDao obsDao, UserDao userDao) {
-        this.userDao = userDao;
+    public ObservationService(ObservationDao obsDao) {
         this.obsDao = obsDao;
     }
     
     
-    public boolean createObservation(String species, String place, Date date, LocalTime time, String info) {
+    public boolean createObservation(String species, int individuals, String place, Date date, LocalTime time, String info) {
         Observation obs = new Observation(species, place, date, time, info, loggedIn);
         try {   
             obsDao.create(obs);
@@ -42,23 +40,7 @@ public class ObservationService {
     }
     
 
-    public boolean login(String username) {
-        User user = userDao.findByUsername(username);
-        if (user == null) {
-            return false;
-        }
-        
-        loggedIn = user;
-        
-        return true;
+    public void setLoggedUser(User user) {
+        this.loggedIn = user;
     }
-    
-    public User getLoggedUser() {
-        return loggedIn;
-    }    
-    
-    public void logout() {
-        loggedIn = null;  
-    }
-
 }

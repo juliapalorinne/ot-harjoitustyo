@@ -10,23 +10,26 @@ import project.dao.ObservationDao;
 import project.dao.UserDao;
 
 public class UserService {
-    private ObservationDao obsDao;
     private UserDao userDao;
     private User loggedIn;
+    private ObservationService observationService;
     
-    public UserService(ObservationDao obsDao, UserDao userDao) {
+    public UserService(UserDao userDao) {
         this.userDao = userDao;
-        this.obsDao = obsDao;
     }
 
-    public boolean login(String username) {
+    public boolean login(String username, String password) {
         User user = userDao.findByUsername(username);
         if (user == null) {
             return false;
         }
+        if (user.getPassword().equals(password)) {
+            loggedIn = user;
+            observationService.setLoggedUser(loggedIn);
+            return true;
+        }
         
-        loggedIn = user;
-        return true;
+        return false;
     }
     
     
@@ -36,6 +39,7 @@ public class UserService {
     
     public void logout() {
         loggedIn = null;  
+        observationService.setLoggedUser(loggedIn);
     }
     
     
