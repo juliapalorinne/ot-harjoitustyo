@@ -51,7 +51,7 @@ public class UserService {
         User user = new User(username, name, password);
         try {
             userDao.create(user);
-        } catch(Exception e) {
+        } catch (Exception e) {
             return false;
         }
 

@@ -8,10 +8,13 @@ import java.util.List;
 import java.util.Scanner;
 import project.domain.User;
 
+
+/** Saves users in a file. */
 public class FileUserDao implements UserDao {
     
     private List<User> users;
     private String file;
+
 
     public FileUserDao(String file) throws Exception {
         users = new ArrayList<>();
@@ -30,7 +33,7 @@ public class FileUserDao implements UserDao {
         
     }
     
-    private void save() throws Exception{
+    private void save() throws Exception {
         try (FileWriter writer = new FileWriter(new File(file))) {
             for (User user : users) {
                 writer.write(user.getUsername() + ";" + user.getName() + ";" + user.getPassword() + "\n");
@@ -54,7 +57,7 @@ public class FileUserDao implements UserDao {
     
     @Override
     public User findByName(String name) {
-                return users.stream()
+        return users.stream()
             .filter(u->u.getName()
             .equals(name))
             .findFirst()

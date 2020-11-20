@@ -12,10 +12,13 @@ import java.util.Scanner;
 import project.domain.Observation;
 import project.domain.User;
 
+
+/** Saves observations in a file. */
 public class FileObservationDao implements ObservationDao {
     private List<Observation> observations;
     private String file;
 
+    
     public FileObservationDao(String file, UserDao users) throws Exception {
         observations = new ArrayList<>();
         this.file = file;
@@ -30,7 +33,7 @@ public class FileObservationDao implements ObservationDao {
                 Date date = dformatter.parse(parts[4]);
                 LocalTime time = LocalTime.parse(parts[5]);
                 
-                User user = users.getAll().stream().filter(u->u.getUsername().equals(parts[6])).findFirst().orElse(null);
+                User user = users.getAll().stream().filter(u->u.getUsername().equals(parts[7])).findFirst().orElse(null);
                 
                 Observation obs = new Observation(id, parts[1], individuals, parts[3], date, time, parts[6], user);
                 observations.add(obs);
@@ -42,7 +45,7 @@ public class FileObservationDao implements ObservationDao {
         
     }
     
-    private void save() throws Exception{
+    private void save() throws Exception {
         try (FileWriter writer = new FileWriter(new File(file))) {
             for (Observation obs : observations) {
                 writer.write(obs.getId() + ";" + obs.getSpecies() + ";" + obs.getIndividuals() + ";" + obs.getPlace() + ";"
@@ -85,6 +88,9 @@ public class FileObservationDao implements ObservationDao {
     
     @Override
     public Observation create(Observation obs) throws Exception {
+        if (obs.getId() == null) {
+            obs.setId(generateId());
+        }
         observations.add(obs);
         save();
         return obs;
