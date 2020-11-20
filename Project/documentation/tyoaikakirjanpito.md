@@ -9,3 +9,7 @@ Päivämäärä | Tehtävä | Käytetty aika
 10.11.2020 | Vaatimusmäärittelyn tarkentaminen | 0,5 h
 17.11.2020 | Testien parantelu, dokumentoinnin parantelu | 1,5 h
 18.11.2020 | Toistoa poistettu, ulkoasua muokattu | 1 h
+19.11.2020 | Lisää testejä | 2 h
+20.11.2020 | Lisää testejä ja checkstyle | 2,5 h
+ | | 
+ | **YHTEENSÄ**| 11 h
