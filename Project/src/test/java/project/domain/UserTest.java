@@ -1,6 +1,7 @@
 
 package project.domain;
 
+import junit.framework.Assert;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -10,6 +11,16 @@ import static org.junit.Assert.*;
 
 
 public class UserTest {
+    TestUserDao userDao;
+    User user;
+    
+        
+    @Before
+    public void setUp() {
+        this.userDao = new TestUserDao();
+        this.user = new User("anna1", "Anna", "salasana1");
+    }
+    
     
     @Test
     public void equalWhenSameUsername() {
@@ -31,6 +42,23 @@ public class UserTest {
         Object o = new Object();
         assertFalse(u1.equals(o));
     }     
-
     
-}
+    
+    @Test
+    public void usernameSetterAndGetterWork() {
+        user.setUsername("johanna");
+        assertEquals("johanna", user.getUsername());
+    }    
+
+    @Test
+    public void nameSetterAndGetterWork() {
+        user.setName("Johanna");
+        assertEquals("Johanna", user.getName());
+    }    
+
+
+    @Test
+    public void passwordSetterAndGetterWork() {
+        user.setPassword("Johannaspassword");
+        assertEquals("Johannaspassword", user.getPassword());
+    }    }

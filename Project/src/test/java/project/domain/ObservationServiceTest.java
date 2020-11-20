@@ -37,8 +37,9 @@ public class ObservationServiceTest {
     public void userCanCreateNewObservations() {
         int numberOfObservationsBefore = observationService.getAll().size();
         observationService.createObservation("crow", 1, "Helsinki", null, null, null);
+        observationService.createObservation();
         int numberOfObservationsAfter = observationService.getAll().size();
-        assertEquals(numberOfObservationsBefore+1, numberOfObservationsAfter);
+        assertEquals(numberOfObservationsBefore+2, numberOfObservationsAfter);
     }
     
     
@@ -65,6 +66,12 @@ public class ObservationServiceTest {
         assertEquals(2, observationsInTurku);
         assertEquals(4, observationService.getAll().size());
     }  
+    
+    @Test
+    public void ifLoggedInNullGetAllReturnsEmptyList() {
+        observationService.setLoggedUser(null);
+        assertEquals(new ArrayList<Observation>(), observationService.getAll());
+    }
     
     
 
