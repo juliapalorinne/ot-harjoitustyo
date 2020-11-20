@@ -12,4 +12,4 @@ Päivämäärä | Tehtävä | Käytetty aika
 19.11.2020 | Lisää testejä | 2 h
 20.11.2020 | Lisää testejä ja checkstyle | 2,5 h
  | | 
- | **YHTEENSÄ**| 11 h
+20.11.2020 | **YHTEENSÄ**| 11 h
