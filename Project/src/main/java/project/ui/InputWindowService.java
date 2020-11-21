@@ -8,10 +8,9 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 
-public class WindowService {
+public class InputWindowService {
 
 
-    
     
     public TextField createInputField(VBox pane, String name) {
         HBox newPane = new HBox(10);
@@ -27,9 +26,9 @@ public class WindowService {
     
     
     
-    
     public void setLabelStyle(Label label) {
         label.setFont(Font.font("Arial", 14));
         label.setStyle("-fx-font-weight: bold;");
     }    
+
 }

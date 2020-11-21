@@ -13,6 +13,7 @@ import java.util.logging.Logger;
 import javafx.application.Application;
 import static javafx.application.Application.launch;
 import javafx.geometry.Insets;
+import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -25,7 +26,6 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import project.dao.FileObservationDao;
 import project.dao.FileUserDao;
@@ -36,8 +36,8 @@ import project.domain.UserService;
 public class ProjectUi extends Application {
     private ObservationService observationService;
     private UserService userService;
-    private WindowService windowService;
-    
+    private InputWindowService windowService;
+    private ObservationTable observationTable;
     
     private Scene observationScene;
     private Scene newUserScene;
@@ -45,7 +45,7 @@ public class ProjectUi extends Application {
     private Scene newObservationScene;
     
     
-    private VBox observationNodes;
+    
     private Label menuLabel = new Label();
     
     
@@ -62,34 +62,9 @@ public class ProjectUi extends Application {
         FileObservationDao obsDao = new FileObservationDao(obsFile, userDao);
         observationService = new ObservationService(obsDao);
         userService = new UserService(userDao, observationService);
-        windowService = new WindowService();
+        windowService = new InputWindowService();
+        observationTable = new ObservationTable(observationService);
     }
-
-    
-    public Node createObservationNode(Observation obs) {
-        HBox box = new HBox(10);
-        Label label  = new Label(obs.getSpecies());
-        label.setMinHeight(28);
-                
-        Region spacer = new Region();
-        HBox.setHgrow(spacer, Priority.ALWAYS);
-        box.setPadding(new Insets(0,5,0,5));
-        
-        box.getChildren().addAll(label, spacer);
-        return box;
-    }
-
-    
-    public void redrawObservationList() {
-        observationNodes.getChildren().clear();     
-
-        List<Observation> obses = observationService.getAll();
-        obses.forEach(obs->{
-            observationNodes.getChildren().add(createObservationNode(obs));
-        });     
-    }
-
-
 
     
     
@@ -111,7 +86,8 @@ public class ProjectUi extends Application {
             menuLabel.setText(username + " logged in...");
             if ( userService.login(username, password)){
                 loginMessage.setText("");
-                redrawObservationList();
+                observationTable.redrawObservationList();
+                observationTable.createTable(observationScene);
                 primaryStage.setScene(observationScene);  
                 usernameInput.setText("");
             } else {
@@ -168,17 +144,15 @@ public class ProjectUi extends Application {
         
         newUserPane.getChildren().addAll(userCreationMessage, createNewUserButton);
        
-        newUserScene = new Scene(newUserPane, 600, 400);
+        newUserScene = new Scene(newUserPane, 400, 300);
         
         
         
         
         // main scene
+
+        observationScene = new Scene(new Group());
         
-        ScrollPane obsScollbar = new ScrollPane();       
-        BorderPane mainPane = new BorderPane(obsScollbar);
-        observationScene = new Scene(mainPane, 600, 600);
-                
         HBox menuPane = new HBox(10);    
         Region menuSpacer = new Region();
         HBox.setHgrow(menuSpacer, Priority.ALWAYS);
@@ -199,24 +173,19 @@ public class ProjectUi extends Application {
             primaryStage.setScene(newObservationScene);   
         });  
         
-        
-        observationNodes = new VBox(10);
-        observationNodes.setMaxWidth(280);
-        observationNodes.setMinWidth(280);
-        redrawObservationList();
-        
-        obsScollbar.setContent(observationNodes);
-        mainPane.setBottom(createForm);
-        mainPane.setTop(menuPane);
+        observationTable.createTable(observationScene);
+        //primaryStage.setScene(observationScene);
+        //primaryStage.show();
+        //mainPane.setBottom(createForm);
+        //mainPane.setTop(menuPane);
         
         
         
-        // new createNewObsScene
-
+        // new createNewObservationScene
         
         VBox newObsPane = new VBox(10);
         TextField newSpeciesInput = windowService.createInputField(newObsPane, "Species");
-        TextField newIndividualInput = windowService.createInputField(newObsPane, "Number of individuals");
+        TextField newIndividualInput = windowService.createInputField(newObsPane, "Individuals");
         TextField newPlaceInput = windowService.createInputField(newObsPane, "Place");
         TextField newDateInput = windowService.createInputField(newObsPane, "Date (dd/mm/yyyy)");
         TextField newTimeInput = windowService.createInputField(newObsPane, "Time (hh:mm)");
@@ -248,6 +217,7 @@ public class ProjectUi extends Application {
                 obsCreationMessage.setText("New observation created");                
                 loginMessage.setText("Observations saved");
                 loginMessage.setTextFill(Color.YELLOW);
+                observationTable.createTable(observationScene);
                 primaryStage.setScene(observationScene);      
             }
  
@@ -255,7 +225,7 @@ public class ProjectUi extends Application {
         
         newObsPane.getChildren().addAll(userCreationMessage, createNewObsButton);
        
-        newObservationScene = new Scene(newObsPane, 600, 400);    
+        newObservationScene = new Scene(newObsPane, 600, 500);    
         
         
         // seutp primary stage
