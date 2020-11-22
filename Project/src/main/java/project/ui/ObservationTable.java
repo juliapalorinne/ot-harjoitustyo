@@ -10,6 +10,7 @@ import javafx.geometry.Insets;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -24,10 +25,9 @@ import project.domain.Observation;
 import project.domain.ObservationService;
 
 public class ObservationTable {
-    private ObservationService observationService;
-    
+    private ObservationService observationService;    
     private TableView table = new TableView();
-//    private VBox observationNodes;
+    private Button addButton;
     
     private ObservableList<Observation> observations;
     
@@ -35,16 +35,18 @@ public class ObservationTable {
     public ObservationTable(ObservationService observationService) {
         this.observationService = observationService;
         this.observations = FXCollections.observableArrayList();
+        addButton = new Button("Add new observation");
     }  
     
     
     
-    public void createTable(Scene scene) {
+    public void createTable(Scene scene, Scene newObservationScene) {
         
         final Label label = new Label("Observations");
         label.setFont(new Font("Arial", 20));
  
         table.setEditable(true);
+        redrawObservationList();
  
         TableColumn speciesCol = new TableColumn("Species");
         speciesCol.setCellValueFactory(new PropertyValueFactory<Observation, String>("species"));
@@ -70,32 +72,33 @@ public class ObservationTable {
         final VBox vbox = new VBox();
         vbox.setSpacing(5);
         vbox.setPadding(new Insets(10, 0, 0, 10));
-        vbox.getChildren().addAll(label, table);
- 
+        vbox.getChildren().addAll(label, table, createObservation());
+        
+        
         ((Group) scene.getRoot()).getChildren().addAll(vbox);
         
     }  
     
-    
-    
-//    public Node createObservationNode(Observation obs) {
-//        HBox box = new HBox(10);
-//        Label label  = new Label(obs.getSpecies());
-//        label.setMinHeight(28);
-//                
-//        Region spacer = new Region();
-//        HBox.setHgrow(spacer, Priority.ALWAYS);
-//        box.setPadding(new Insets(0,5,0,5));
-//        
-//        box.getChildren().addAll(label, spacer);
-//        return box;
-//    }
 
     
     public void redrawObservationList() {
-        List<Observation> observations = observationService.getAll();
-        observations.forEach(obs->{
+        List<Observation> observationlist = observationService.getAll();
+        observationlist.forEach(obs->{
             observations.add(obs);
         });     
+    }
+    
+    
+    public HBox createObservation() {
+        HBox createForm = new HBox(10);
+        Region spacer = new Region();
+        HBox.setHgrow(spacer, Priority.ALWAYS);
+        createForm.getChildren().addAll(spacer, addButton());
+        return createForm;
+    }
+    
+    
+    public Button addButton() {
+        return this.addButton;
     }
 }

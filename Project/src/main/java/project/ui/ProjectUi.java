@@ -38,6 +38,7 @@ public class ProjectUi extends Application {
     private UserService userService;
     private InputWindowService windowService;
     private ObservationTable observationTable;
+    private NewObservation newObservation;
     
     private Scene observationScene;
     private Scene newUserScene;
@@ -64,6 +65,7 @@ public class ProjectUi extends Application {
         userService = new UserService(userDao, observationService);
         windowService = new InputWindowService();
         observationTable = new ObservationTable(observationService);
+        newObservation = new NewObservation(observationService, windowService); 
     }
 
     
@@ -86,8 +88,8 @@ public class ProjectUi extends Application {
             menuLabel.setText(username + " logged in...");
             if ( userService.login(username, password)){
                 loginMessage.setText("");
-                observationTable.redrawObservationList();
-                observationTable.createTable(observationScene);
+//                observationTable.redrawObservationList();
+                observationTable.createTable(observationScene, newObservationScene);
                 primaryStage.setScene(observationScene);  
                 usernameInput.setText("");
             } else {
@@ -152,7 +154,6 @@ public class ProjectUi extends Application {
         // main scene
 
         observationScene = new Scene(new Group());
-        
         HBox menuPane = new HBox(10);    
         Region menuSpacer = new Region();
         HBox.setHgrow(menuSpacer, Priority.ALWAYS);
@@ -163,69 +164,16 @@ public class ProjectUi extends Application {
             primaryStage.setScene(loginScene);
         });        
         
-        HBox createForm = new HBox(10);    
-        Button createObs = new Button("Create new");
-        Region spacer = new Region();
-        HBox.setHgrow(spacer, Priority.ALWAYS);
-        createForm.getChildren().addAll(spacer, createObs);
-        
-        createObs.setOnAction(e->{
+        observationTable.addButton().setOnAction(e->{
             primaryStage.setScene(newObservationScene);   
         });  
-        
-        observationTable.createTable(observationScene);
-        //primaryStage.setScene(observationScene);
-        //primaryStage.show();
-        //mainPane.setBottom(createForm);
-        //mainPane.setTop(menuPane);
-        
+
         
         
         // new createNewObservationScene
+        newObservationScene = newObservation.createNewObservation(observationScene, observationTable, newObservationScene);
+        primaryStage.setScene(newObservationScene);
         
-        VBox newObsPane = new VBox(10);
-        TextField newSpeciesInput = windowService.createInputField(newObsPane, "Species");
-        TextField newIndividualInput = windowService.createInputField(newObsPane, "Individuals");
-        TextField newPlaceInput = windowService.createInputField(newObsPane, "Place");
-        TextField newDateInput = windowService.createInputField(newObsPane, "Date (dd/mm/yyyy)");
-        TextField newTimeInput = windowService.createInputField(newObsPane, "Time (hh:mm)");
-        TextField newInfoInput = windowService.createInputField(newObsPane, "Additional info");
-
-        Label obsCreationMessage = new Label();
-        Button createNewObsButton = new Button("create");
-        createNewObsButton.setPadding(new Insets(10));
-
-        createNewObsButton.setOnAction(e->{
-            String species = newSpeciesInput.getText();
-            String place = newPlaceInput.getText();
-            String d = newDateInput.getText();
-            SimpleDateFormat dformatter = new SimpleDateFormat("dd/MM/yyyy");
-            Date date = null;
-            try {
-                date = dformatter.parse(d);
-            } catch (ParseException ex) {
-                Logger.getLogger(ProjectUi.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            LocalTime time = LocalTime.parse(newTimeInput.getText());
-            String info = newInfoInput.getText();
-            int individuals = Integer.parseInt(newIndividualInput.getText());
-            
-            if ( species.length()<3 || place.length()<2 ) {
-                userCreationMessage.setText("Species or place too short");
-                userCreationMessage.setTextFill(Color.RED);
-            } else if (observationService.createObservation(species, individuals, place, date, time, info)){
-                obsCreationMessage.setText("New observation created");                
-                loginMessage.setText("Observations saved");
-                loginMessage.setTextFill(Color.YELLOW);
-                observationTable.createTable(observationScene);
-                primaryStage.setScene(observationScene);      
-            }
- 
-        });  
-        
-        newObsPane.getChildren().addAll(userCreationMessage, createNewObsButton);
-       
-        newObservationScene = new Scene(newObsPane, 600, 500);    
         
         
         // seutp primary stage
@@ -248,7 +196,7 @@ public class ProjectUi extends Application {
     @Override
     public void stop() {
       // tee lopetustoimenpiteet täällä
-      System.out.println("sovellus sulkeutuu");
+      System.out.println("app is closing");
     }     
     
     
