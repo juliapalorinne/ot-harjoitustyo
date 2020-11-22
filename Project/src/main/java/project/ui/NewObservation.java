@@ -5,28 +5,15 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalTime;
 import java.util.Date;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
-import javafx.scene.Group;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
-import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
-import project.domain.Observation;
 import project.domain.ObservationService;
 
 public class NewObservation {
@@ -54,7 +41,7 @@ public class NewObservation {
         createNewObsButton.setPadding(new Insets(10));
         
         
-        createNewObsButton.setOnAction(e->{
+        createNewObsButton.setOnAction(e-> {
             String species = newSpeciesInput.getText();
             String place = newPlaceInput.getText();
             String d = newDateInput.getText();
@@ -72,10 +59,10 @@ public class NewObservation {
             Label observationCreationMessage = new Label();
             Label loginMessage = new Label();
             
-            if ( species.length()<3 || place.length()<2 ) {
+            if (species.length() < 3 || place.length() < 2) {
                 observationCreationMessage.setText("Species or place too short");
                 observationCreationMessage.setTextFill(Color.RED);
-            } else if (observationService.createObservation(species, individuals, place, date, time, info)){
+            } else if (observationService.createObservation(species, individuals, place, date, time, info)) {
                 obsCreationMessage.setText("New observation created");                
                 loginMessage.setText("Observations saved");
                 loginMessage.setTextFill(Color.YELLOW);
