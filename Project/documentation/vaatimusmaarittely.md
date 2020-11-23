@@ -14,8 +14,9 @@ Sovelluksessa on aluksi vain yksi käyttäjärooli, **normaali käyttäjä**. So
 
 ## Toiminnallisuudet
 
-- Käyttäjä voi luoda palveluun tunnukset ja kirjautua niillä sisään.
-- Käyttäjä kirjaa palveluun **havaintoja**, joista tallennetaan seuraavat tiedot:
+- Käyttäjä voi luoda palveluun tunnukset ja kirjautua niillä sisään. (Tehty!)
+- Käyttäjä kirjaa palveluun **havaintoja**. (Tehty!)
+- Havainnoista tallennetaan seuraavat tiedot: (Tehty!)
     - lintulaji
     - yksilöiden lukumäärä
     - havaintopaikka
