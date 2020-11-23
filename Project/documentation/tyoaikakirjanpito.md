@@ -13,5 +13,6 @@ Päivämäärä | Tehtävä | Käytetty aika
 20.11.2020 | Lisää testejä ja checkstyle | 2,5 h
 21.11.2020 | Taulukkonäkymä luotu | 1,5 h
 22.11.2020 | Ohjelmaa jaettu useampiin luokkiin ja taulukkonäkymä liitetty muuhun ohjelmaan | 2,5 h
+23.11.2020 | Dokumentointia paranneltu | 0,5 h
  | | 
-20.11.2020 | **YHTEENSÄ**| 15 h
+23.11.2020 | **YHTEENSÄ**| 17,5 h
