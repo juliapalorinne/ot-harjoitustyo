@@ -26,6 +26,7 @@ public class ObservationTable {
     private ObservationService observationService;    
     private TableView table = new TableView();
     private Button addButton;
+    private Button logoutButton;
     
     private ObservableList<Observation> observations;
     
@@ -34,47 +35,47 @@ public class ObservationTable {
         this.observationService = observationService;
         this.observations = FXCollections.observableArrayList();
         addButton = new Button("Add new observation");
+        logoutButton = new Button("Logout");
     }  
     
     
     
-    public void createTable(Scene scene, Scene newObservationScene) {
-        
-        final Label label = new Label("Observations");
+    public VBox createTable() {
+        Label label = new Label("Observations");
         label.setFont(new Font("Arial", 20));
  
         table.setEditable(true);
         redrawObservationList();
  
-        TableColumn speciesCol = new TableColumn("Species");
-        speciesCol.setCellValueFactory(new PropertyValueFactory<Observation, String>("species"));
+        TableColumn<Observation, String> speciesCol = new TableColumn("Species");
+        speciesCol.setCellValueFactory(new PropertyValueFactory<>("species"));
         
-        TableColumn individualCol = new TableColumn("Individuals");
-        individualCol.setCellValueFactory(new PropertyValueFactory<Observation, String>("individuals"));
+        TableColumn<Observation, Integer> individualCol = new TableColumn("Individuals");
+        individualCol.setCellValueFactory(new PropertyValueFactory<>("individuals"));
         
-        TableColumn placeCol = new TableColumn("Place");
-        placeCol.setCellValueFactory(new PropertyValueFactory<Observation, String>("place"));
+        TableColumn<Observation, String> placeCol = new TableColumn("Place");
+        placeCol.setCellValueFactory(new PropertyValueFactory<>("place"));
         
-        TableColumn dateCol = new TableColumn("Date");
-        dateCol.setCellValueFactory(new PropertyValueFactory<Observation, Date>("date"));
+        TableColumn<Observation, Date> dateCol = new TableColumn("Date");
+        dateCol.setCellValueFactory(new PropertyValueFactory<>("date"));
         
-        TableColumn timeCol = new TableColumn("Time");
-        timeCol.setCellValueFactory(new PropertyValueFactory<Observation, LocalTime>("species"));
+        TableColumn<Observation, LocalTime> timeCol = new TableColumn("Time");
+        timeCol.setCellValueFactory(new PropertyValueFactory<>("time"));
         
-        TableColumn infoCol = new TableColumn("Info");
-        infoCol.setCellValueFactory(new PropertyValueFactory<Observation, String>("info"));
+        TableColumn<Observation, String> infoCol = new TableColumn("Info");
+        infoCol.setCellValueFactory(new PropertyValueFactory<>("info"));
         
+        table.setItems(observations);
         table.getColumns().addAll(speciesCol, individualCol, placeCol, 
                 dateCol, timeCol, infoCol);
  
-        final VBox vbox = new VBox();
+        VBox vbox = new VBox();
+        vbox.setStyle("-fx-background-color: #FFB6C1;");
         vbox.setSpacing(5);
         vbox.setPadding(new Insets(10, 0, 0, 10));
-        vbox.getChildren().addAll(label, table, createObservation());
+        vbox.getChildren().addAll(menu(), label, table, createObservation());
         
-        
-        ((Group) scene.getRoot()).getChildren().addAll(vbox);
-        
+        return vbox;
     }  
     
 
@@ -82,7 +83,9 @@ public class ObservationTable {
     public void redrawObservationList() {
         List<Observation> observationlist = observationService.getAll();
         observationlist.forEach(obs-> {
-            observations.add(obs);
+            if (!observations.contains(obs)) {
+                observations.add(obs);
+            }
         });     
     }
     
@@ -95,8 +98,26 @@ public class ObservationTable {
         return createForm;
     }
     
+    public HBox menu() {
+        HBox menuPane = new HBox(10);
+        Label menuLabel = new Label("Menu");
+        Region menuSpacer = new Region();
+        HBox.setHgrow(menuSpacer, Priority.ALWAYS);
+        menuPane.getChildren().addAll(menuLabel, menuSpacer, logoutButton); 
+        return menuPane;
+    }
     
     public Button addButton() {
         return this.addButton;
+    }
+    
+    public Button logoutButton() {
+        return this.logoutButton;
+    }    
+    
+    public Scene observationScene() {
+        Scene observationScene = new Scene(new Group());
+        ((Group) observationScene.getRoot()).getChildren().addAll(createTable());
+        return observationScene;
     }
 }

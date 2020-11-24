@@ -14,30 +14,31 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.stage.Stage;
 import project.domain.ObservationService;
 
 public class NewObservation {
     private ObservationService observationService;
-    private InputWindowService windowService;
+    private InputWindow inputWindow;
     
     
-    public NewObservation(ObservationService observationService, InputWindowService windowService) {
+    public NewObservation(ObservationService observationService, InputWindow inputWindow) {
         this.observationService = observationService;
-        this.windowService = windowService;
+        this.inputWindow = inputWindow;
     } 
 
     
-    public Scene createNewObservation(Scene scene, ObservationTable observationTable, Scene newScene) {
+    public Scene createNewObservation(Stage stage, ObservationTable observationTable) {
         VBox newObsPane = new VBox(10);
-        TextField newSpeciesInput = windowService.createInputField(newObsPane, "Species");
-        TextField newIndividualInput = windowService.createInputField(newObsPane, "Individuals");
-        TextField newPlaceInput = windowService.createInputField(newObsPane, "Place");
-        TextField newDateInput = windowService.createInputField(newObsPane, "Date (dd/mm/yyyy)");
-        TextField newTimeInput = windowService.createInputField(newObsPane, "Time (hh:mm)");
-        TextField newInfoInput = windowService.createInputField(newObsPane, "Additional info");
+        TextField newSpeciesInput = inputWindow.createInputField(newObsPane, "Species");
+        TextField newIndividualInput = inputWindow.createInputField(newObsPane, "Individuals");
+        TextField newPlaceInput = inputWindow.createInputField(newObsPane, "Place");
+        TextField newDateInput = inputWindow.createInputField(newObsPane, "Date (dd/mm/yyyy)");
+        TextField newTimeInput = inputWindow.createInputField(newObsPane, "Time (hh:mm)");
+        TextField newInfoInput = inputWindow.createInputField(newObsPane, "Additional info");
         
         Label obsCreationMessage = new Label();
-        Button createNewObsButton = new Button("Create");
+        Button createNewObsButton = new Button("Add new observation");
         createNewObsButton.setPadding(new Insets(10));
         
         
@@ -66,15 +67,19 @@ public class NewObservation {
                 obsCreationMessage.setText("New observation created");                
                 loginMessage.setText("Observations saved");
                 loginMessage.setTextFill(Color.YELLOW);
-                observationTable.createTable(scene, newScene);
-                
+                stage.setScene(observationTable.observationScene());
                 newObsPane.getChildren().addAll(observationCreationMessage);
             }
  
         });  
-        newObsPane.getChildren().addAll(createNewObsButton);
+        newObsPane.getChildren().addAll(obsCreationMessage, createNewObsButton);
         Scene newObservationScene = new Scene(newObsPane, 600, 500);
         return newObservationScene;
     }  
+    
+    public Boolean newObservationCreated() {
+        
+        return false;
+    }
 
 }

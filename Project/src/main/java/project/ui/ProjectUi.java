@@ -29,14 +29,14 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import project.dao.FileObservationDao;
 import project.dao.FileUserDao;
-import project.domain.Observation;
 import project.domain.ObservationService;
 import project.domain.UserService;
 
 public class ProjectUi extends Application {
     private ObservationService observationService;
     private UserService userService;
-    private InputWindowService windowService;
+    
+    private InputWindow inputWindow;
     private ObservationTable observationTable;
     private NewObservation newObservation;
     
@@ -53,9 +53,7 @@ public class ProjectUi extends Application {
     @Override
     public void init() throws Exception {
         Properties properties = new Properties();
-
         properties.load(new FileInputStream("config.properties"));
-        
         String userFile = properties.getProperty("userFile");
         String obsFile = properties.getProperty("observationFile");
             
@@ -63,9 +61,9 @@ public class ProjectUi extends Application {
         FileObservationDao obsDao = new FileObservationDao(obsFile, userDao);
         observationService = new ObservationService(obsDao);
         userService = new UserService(userDao, observationService);
-        windowService = new InputWindowService();
+        inputWindow = new InputWindow();
         observationTable = new ObservationTable(observationService);
-        newObservation = new NewObservation(observationService, windowService); 
+        newObservation = new NewObservation(observationService, inputWindow); 
     }
 
     
@@ -76,8 +74,8 @@ public class ProjectUi extends Application {
         VBox loginPane = new VBox(10);
         loginPane.setStyle("-fx-background-color: #90EE90;");
         loginPane.setPadding(new Insets(10));
-        TextField usernameInput = windowService.createInputField(loginPane, "Username");
-        TextField passwordInput = windowService.createInputField(loginPane, "Password");
+        TextField usernameInput = inputWindow.createInputField(loginPane, "Username");
+        TextField passwordInput = inputWindow.createInputField(loginPane, "Password");
         
         Label loginMessage = new Label();
         Button loginButton = new Button("Login");
@@ -88,8 +86,6 @@ public class ProjectUi extends Application {
             menuLabel.setText(username + " logged in...");
             if ( userService.login(username, password)){
                 loginMessage.setText("");
-//                observationTable.redrawObservationList();
-                observationTable.createTable(observationScene, newObservationScene);
                 primaryStage.setScene(observationScene);  
                 usernameInput.setText("");
             } else {
@@ -114,9 +110,9 @@ public class ProjectUi extends Application {
         
         VBox newUserPane = new VBox(10);
         newUserPane.setStyle("-fx-background-color: #FFB6C1;");
-        TextField newUsernameInput = windowService.createInputField(newUserPane, "Username");
-        TextField newNameInput = windowService.createInputField(newUserPane, "Name");
-        TextField newPasswordInput = windowService.createInputField(newUserPane, "Password");
+        TextField newUsernameInput = inputWindow.createInputField(newUserPane, "Username");
+        TextField newNameInput = inputWindow.createInputField(newUserPane, "Name");
+        TextField newPasswordInput = inputWindow.createInputField(newUserPane, "Password");
         
         
         Label userCreationMessage = new Label();
@@ -145,7 +141,6 @@ public class ProjectUi extends Application {
         });  
         
         newUserPane.getChildren().addAll(userCreationMessage, createNewUserButton);
-       
         newUserScene = new Scene(newUserPane, 400, 300);
         
         
@@ -153,17 +148,11 @@ public class ProjectUi extends Application {
         
         // main scene
 
-        observationScene = new Scene(new Group());
-        HBox menuPane = new HBox(10);    
-        Region menuSpacer = new Region();
-        HBox.setHgrow(menuSpacer, Priority.ALWAYS);
-        Button logoutButton = new Button("Logout");      
-        menuPane.getChildren().addAll(menuLabel, menuSpacer, logoutButton);
-        logoutButton.setOnAction(e->{
+        observationScene = observationTable.observationScene();        
+        observationTable.logoutButton().setOnAction(e->{
             userService.logout();
             primaryStage.setScene(loginScene);
         });        
-        
         observationTable.addButton().setOnAction(e->{
             primaryStage.setScene(newObservationScene);   
         });  
@@ -171,9 +160,8 @@ public class ProjectUi extends Application {
         
         
         // new createNewObservationScene
-        newObservationScene = newObservation.createNewObservation(observationScene, observationTable, newObservationScene);
-        primaryStage.setScene(newObservationScene);
         
+        newObservationScene = newObservation.createNewObservation(primaryStage, observationTable);
         
         
         // seutp primary stage
