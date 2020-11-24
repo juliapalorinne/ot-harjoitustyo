@@ -88,6 +88,7 @@ public class ProjectUi extends Application {
                 loginMessage.setText("");
                 primaryStage.setScene(observationScene);  
                 usernameInput.setText("");
+                passwordInput.setText("");
             } else {
                 loginMessage.setText("user does not exist");
                 loginMessage.setTextFill(Color.RED);
@@ -96,6 +97,7 @@ public class ProjectUi extends Application {
         
         createButton.setOnAction(e->{
             usernameInput.setText("");
+            passwordInput.setText("");
             primaryStage.setScene(newUserScene);   
         });  
         

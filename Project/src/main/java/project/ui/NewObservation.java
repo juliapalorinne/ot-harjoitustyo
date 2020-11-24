@@ -36,8 +36,8 @@ public class NewObservation {
         TextField newDateInput = inputWindow.createInputField(newObsPane, "Date (dd/mm/yyyy)");
         TextField newTimeInput = inputWindow.createInputField(newObsPane, "Time (hh:mm)");
         TextField newInfoInput = inputWindow.createInputField(newObsPane, "Additional info");
-        
-        Label obsCreationMessage = new Label();
+
+        Label observationCreationMessage = new Label();
         Button createNewObsButton = new Button("Add new observation");
         createNewObsButton.setPadding(new Insets(10));
         
@@ -57,29 +57,24 @@ public class NewObservation {
             String info = newInfoInput.getText();
             int individuals = Integer.parseInt(newIndividualInput.getText());
             
-            Label observationCreationMessage = new Label();
-            Label loginMessage = new Label();
             
             if (species.length() < 3 || place.length() < 2) {
                 observationCreationMessage.setText("Species or place too short");
                 observationCreationMessage.setTextFill(Color.RED);
             } else if (observationService.createObservation(species, individuals, place, date, time, info)) {
-                obsCreationMessage.setText("New observation created");                
-                loginMessage.setText("Observations saved");
-                loginMessage.setTextFill(Color.YELLOW);
+                observationCreationMessage.setText("New observation created");
+                observationCreationMessage.setTextFill(Color.YELLOW);
                 stage.setScene(observationTable.observationScene());
                 newObsPane.getChildren().addAll(observationCreationMessage);
             }
  
         });  
-        newObsPane.getChildren().addAll(obsCreationMessage, createNewObsButton);
+        
+        
+        newObsPane.getChildren().addAll(observationCreationMessage, createNewObsButton);
         Scene newObservationScene = new Scene(newObsPane, 600, 500);
         return newObservationScene;
     }  
-    
-    public Boolean newObservationCreated() {
-        
-        return false;
-    }
+
 
 }
