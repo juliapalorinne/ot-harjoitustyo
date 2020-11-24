@@ -5,5 +5,4 @@
 
 ## Pakkauskaavio
 
-![Pakkauskaavio](https://github.com/juliapalorinne/ot-
-harjoitustyo/blob/main/Project/documentation/pakkauskaavio.jpg)
+![Pakkauskaavio](https://github.com/juliapalorinne/ot-harjoitustyo/blob/main/Project/documentation/pakkauskaavio.jpg)
