@@ -17,4 +17,4 @@ Päivämäärä | Tehtävä | Käytetty aika
 24.11.2020 | Sovelluksen toiminnallisuuksia kehitetty | 2,5 h
 1.12.2020 | Sovelluksen ongelmia korjattu ja ulkoasua kehitetty | 4 h
  | | 
-24.11.2020 | **YHTEENSÄ**| 24 h
+24.11.2020 | **YHTEENSÄ**| **24 h**
