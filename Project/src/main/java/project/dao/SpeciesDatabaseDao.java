@@ -181,7 +181,7 @@ public class SpeciesDatabaseDao implements SpeciesDao {
             stmt.execute(
                     "CREATE TABLE Species (id INTEGER PRIMARY KEY, englishName, scientificName, finnishName, abbreviation)");
         } catch (Exception e) {
-            System.out.println("Database schema already exists.");
+            
         }
 
     }

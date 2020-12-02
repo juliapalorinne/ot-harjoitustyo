@@ -184,7 +184,6 @@ public class ObservationDatabaseDao implements ObservationDao {
             stmt.execute(
                     "CREATE TABLE Observation (id INTEGER PRIMARY KEY, species, individuals, place, date, time, info, user)");
         } catch (Exception e) {
-            System.out.println("Database schema already exists.");
         }
 
     }

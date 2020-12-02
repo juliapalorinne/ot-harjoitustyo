@@ -1,6 +1,7 @@
 
 package project.domain;
 
+import java.io.File;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,6 +23,12 @@ public class ObservationServiceTest {
         observationService.setDatabase("jdbc:sqlite:testObservation.db");
         User user = new User("janedoe", "Jane Doe", "janespassword");
         observationService.setLoggedUser(user);
+    }
+    
+    @After
+    public void tearDown() {
+        File file1 = new File("testObservation.db");
+        file1.delete();
     }
     
     @Test

@@ -181,7 +181,7 @@ public class PlaceDatabaseDao implements PlaceDao {
             stmt.execute(
                     "CREATE TABLE Place (id INTEGER PRIMARY KEY, country, city, spot, type)");
         } catch (Exception e) {
-            System.out.println("Database schema already exists.");
+            
         }
 
     }

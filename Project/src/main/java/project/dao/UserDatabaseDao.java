@@ -172,7 +172,7 @@ public class UserDatabaseDao implements UserDao {
             stmt.execute(
                     "CREATE TABLE User (id INTEGER PRIMARY KEY, username, name, password)");
         } catch (Exception e) {
-            System.out.println("Database schema already exists.");
+            
         }
 
     }

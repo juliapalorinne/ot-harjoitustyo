@@ -1,6 +1,7 @@
 
 package project.domain;
 
+import java.io.File;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -23,6 +24,15 @@ public class UserServiceTest {
         
         userService.createUser("test_user", "Test User", "erinomainensalalause");
     }
+    
+    @After
+    public void tearDown() {
+        File file1 = new File("testObservation.db");
+        file1.delete();
+        File file2 = new File("testUser.db");
+        file2.delete();
+    }
+    
     
     @Test
     public void nonExistingUserCannotLogIn() throws Exception {
