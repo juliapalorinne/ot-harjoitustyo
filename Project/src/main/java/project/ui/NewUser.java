@@ -1,6 +1,8 @@
 
 package project.ui;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -44,17 +46,21 @@ public class NewUser {
             if (username.length() < 2 || name.length() < 2) {
                 userCreationMessage.setText("Username or name too short");
                 userCreationMessage.setTextFill(Color.RED);              
-            } else if (userService.createUser(username, name, password)) {
-                userCreationMessage.setText("");
-                
+            } else try {
+                if (userService.createUser(username, name, password)) {
+                    userCreationMessage.setText("");
+                    
 //                Label loginMessage = new Label();
 //                loginMessage.setText("New user created");
 //                loginMessage.setTextFill(Color.GREEN);
-                
-                stage.setScene(loginScene);      
-            } else {
-                userCreationMessage.setText("Username already in use");
-                userCreationMessage.setTextFill(Color.RED);        
+
+stage.setScene(loginScene);
+                } else {
+                    userCreationMessage.setText("Username already in use");
+                    userCreationMessage.setTextFill(Color.RED);        
+                }
+            } catch (Exception ex) {
+                Logger.getLogger(NewUser.class.getName()).log(Level.SEVERE, null, ex);
             }
  
         });  

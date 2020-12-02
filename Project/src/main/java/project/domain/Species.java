@@ -4,14 +4,14 @@ package project.domain;
 import project.dao.ObservationDao;
 
 public class Species {
-    private Long id;
+    private int id;
     private String englishName;
     private String scientificName;
     private String finnishName;
     private String abbreviation;
 
 
-    public Species(Long id, String englishName, String scientificName, String finnishName, String abbreviation) {
+    public Species(int id, String englishName, String scientificName, String finnishName, String abbreviation) {
         this.id = id;
         this.englishName = englishName;
         this.scientificName = scientificName;
@@ -26,7 +26,7 @@ public class Species {
         this.abbreviation = abbreviation;
     }    
     
-    public void setId(Long id) {
+    public void setId(int id) {
         this.id = id;
     }
     
@@ -46,7 +46,7 @@ public class Species {
         this.abbreviation = abbreviation;
     }
     
-    public Long getId() {
+    public int getId() {
         return id;
     }
     
@@ -74,7 +74,7 @@ public class Species {
         }
 
         Species other = (Species) object;
-        return id.equals(other.id);
+        return id == other.id;
     }
 
 

@@ -1,27 +1,24 @@
-
 package project.dao;
 
-import java.time.LocalTime;
-import java.util.Date;
 import java.util.List;
-import project.domain.Observation;
 import project.domain.Species;
 
-
+/**
+ * SpeciesDao Interface.
+ */
 public interface SpeciesDao {
+    
+    public void addSpecies(Species species) throws Exception;
+    
+    public void modifySpecies(String id, String englishName, String scientificName, String finnishName, String abbreviation) throws Exception;
+    
+    public void removeSpecies(String id) throws Exception;
+    
+    public Species findSpeciesById(String id) throws Exception;
+    
+    public Species findSpeciesByName(String name, String searchField) throws Exception;
 
-    public Species create(Species species) throws Exception;
-    
-    public Species findById(Long id);
-    
-    public Species findByEnglishName(String name);
-    
-    public Species findByScientificName(String name);
-    
-    public Species findByFinnishName(String name);
-    
-    public Species findByAbbreviation(String abbreviation);
+    public List<Species> getAllSpecies() throws Exception;
 
-    public List<Species> getAll();
-    
+    public List<Species> searchSpecies(String searchTerm, String searchField) throws Exception;
 }

@@ -1,26 +1,26 @@
 
 package project.domain;
 
-import java.time.*;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
-import project.dao.ObservationDao;
 import project.dao.UserDao;
+import project.dao.UserDatabaseDao;
 
 public class UserService {
     private UserDao userDao;
     private User loggedIn;
     private ObservationService observationService;
     
-    public UserService(UserDao userDao, ObservationService observationService) {
-        this.userDao = userDao;
+    public UserService(ObservationService observationService) {
+        this.userDao = new UserDatabaseDao("jdbc:sqlite:user.db");
         this.observationService = observationService;
     }
+    
+    public void setDatabase(String databaseAddress) {
+        userDao = new UserDatabaseDao(databaseAddress);
+    }
 
-    public boolean login(String username, String password) {
-        User user = userDao.findByUsername(username);
+    public boolean login(String username, String password) throws Exception {
+        User user = userDao.findUserByName(username, "username");
         if (user == null) {
             return false;
         }
@@ -44,17 +44,39 @@ public class UserService {
     }
     
     
-    public boolean createUser(String username, String name, String password)  {   
-        if (userDao.findByUsername(username) != null) {
+    public boolean createUser(String username, String name, String password) throws Exception  {   
+        User user = userDao.findUserByName(username, "username");
+        if (user != null) {
             return false;
         }
-        User user = new User(username, name, password);
+        user = new User(username, name, password);
         try {
-            userDao.create(user);
+            userDao.addUser(user);
         } catch (Exception e) {
             return false;
         }
-
         return true;
+    }
+    
+    public void removeUser(String id) throws Exception {
+        userDao.removeUser(id);
+    }
+    
+    public void modifyUser(String id, String username, String name, String password) throws Exception {
+        userDao.modifyUser(id, username, name, password);
+    }
+    
+    public User getUserById(String id) throws Exception {
+        User user = userDao.findUserById(id);
+        return user;
+    }
+    
+    public User getPlaceByName(String name, String searchField) throws Exception {
+        User user = userDao.findUserByName(name, searchField);
+        return user;
+    }
+    
+    public List<User> getAllUsers() throws Exception {
+        return userDao.getAllUsers();
     }
 }

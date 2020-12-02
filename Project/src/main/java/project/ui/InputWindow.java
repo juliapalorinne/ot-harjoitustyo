@@ -1,14 +1,20 @@
 
 package project.ui;
 
+import java.util.List;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
+import project.domain.Place;
+import project.domain.Species;
 
 public class InputWindow {
 
@@ -77,4 +83,22 @@ public class InputWindow {
         label.setPrefWidth(150);
     }    
 
+    
+//    public ListView<Object> createListView(VBox pane, List<Object> list, String name) {
+//        ObservableList<Object> observableList = FXCollections.observableArrayList();
+//        list.forEach(object -> {
+//            observableList.add(object);
+//        });
+//        
+//        ListView<Object> listView = new ListView<>();
+//        listView.setItems(observableList);
+//        
+//        HBox newPane = new HBox(10);
+//        Label newLabel = new Label(name);
+//        setLabelStyle(newLabel);
+//        
+//        newPane.getChildren().addAll(newLabel, listView); 
+//        pane.getChildren().addAll(newPane);
+//        return listView;
+//    }
 }

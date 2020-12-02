@@ -4,22 +4,29 @@ package project.domain;
 import project.dao.ObservationDao;
 
 public class Place {
-    private Long id;
+    private int id;
     private String country;
     private String city;
     private String spot;
     private String type;
 
 
-    public Place(Long id, String country, String city, String spot, String type) {
+    public Place(int id, String country, String city, String spot, String type) {
         this.id = id;
         this.country = country;
         this.city = city;
         this.spot = spot;
         this.type = type;
     }
-   
-    public void setId(Long id) {
+
+    public Place(String country, String city, String spot, String type) {
+        this.country = country;
+        this.city = city;
+        this.spot = spot;
+        this.type = type;
+    }    
+    
+    public void setId(int id) {
         this.id = id;
     }
     
@@ -39,7 +46,7 @@ public class Place {
         this.type = type;
     }
     
-    public Long getId() {
+    public int getId() {
         return id;
     }
     
@@ -67,7 +74,7 @@ public class Place {
         }
 
         Place other = (Place) object;
-        return id.equals(other.id);
+        return id == other.id;
     }
 
 

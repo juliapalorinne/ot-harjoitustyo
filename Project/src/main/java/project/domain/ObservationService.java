@@ -7,45 +7,50 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 import project.dao.ObservationDao;
+import project.dao.ObservationDatabaseDao;
 import project.dao.UserDao;
 
 public class ObservationService {
-    private ObservationDao obsDao;
+    private ObservationDao observationDao;
     private User loggedIn;
     
-    public ObservationService(ObservationDao obsDao) {
-        this.obsDao = obsDao;
+    public ObservationService() {
+        observationDao = new ObservationDatabaseDao("jdbc:sqlite:observation.db");
+    }
+    
+    public void setDatabase(String databaseAddress) {
+        observationDao = new ObservationDatabaseDao(databaseAddress);
     }
     
     public boolean createObservation() {
-        Observation obs = new Observation();
-        obs.setUser(loggedIn);
+        Observation observation = new Observation();
+        observation.setUser(loggedIn.getUsername());
         try {   
-            obsDao.create(obs);
+            observationDao.addObservation(observation);
         } catch (Exception ex) {
             return false;
         }
         return true;
     }
     
-    public boolean createObservation(String species, int individuals, String place, LocalDate date, LocalTime time, String info) {
-        Observation obs = new Observation(species, individuals, place, date, time, info, loggedIn);
+    public boolean createObservation(int species, int individuals, int place, LocalDate date, LocalTime time, String info) {
+        Observation observation = new Observation(species, individuals, place, date, time, info, loggedIn.getUsername());
         try {   
-            obsDao.create(obs);
+            observationDao.addObservation(observation);
         } catch (Exception ex) {
             return false;
         }
         return true;
     }
     
-    public List<Observation> getAll() {
+    public List<Observation> getAll() throws Exception {
         if (loggedIn == null) {
             return new ArrayList<>();
         }
           
-        return obsDao.getAll()
+        return observationDao.getAllObservations()
             .stream()
-            .filter(o-> o.getUser().equals(loggedIn))
+            .filter(o-> o.getUserId().equals(loggedIn.getUsername()))
             .collect(Collectors.toList());
     }
     

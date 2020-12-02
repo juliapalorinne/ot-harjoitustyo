@@ -1,8 +1,9 @@
 
 package project.ui;
 
-import java.io.FileInputStream;
-import java.util.Properties;
+
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.application.Application;
 import static javafx.application.Application.launch;
 import javafx.geometry.Insets;
@@ -13,42 +14,45 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-import project.dao.FileObservationDao;
-import project.dao.FileUserDao;
 import project.domain.ObservationService;
+import project.domain.PlaceService;
+import project.domain.SpeciesService;
 import project.domain.UserService;
 
 
 public class ProjectUi extends Application {
     private ObservationService observationService;
     private UserService userService;
+    private PlaceService placeService;
+    private SpeciesService speciesService;
     
     private InputWindow inputWindow;
     private NewUser newUser;
     private ObservationTable observationTable;
     private NewObservation newObservation;
+    private NewPlace newPlace;
+    private NewSpecies newSpecies;
     
     private Scene observationScene;
     private Scene newUserScene;
     private Scene loginScene;
     private Scene newObservationScene;
+    private Scene newPlaceScene;
+    private Scene newSpeciesScene;
     
     
     @Override
     public void init() throws Exception {
-        Properties properties = new Properties();
-        properties.load(new FileInputStream("config.properties"));
-        String userFile = properties.getProperty("userFile");
-        String obsFile = properties.getProperty("observationFile");
-            
-        FileUserDao userDao = new FileUserDao(userFile);
-        FileObservationDao obsDao = new FileObservationDao(obsFile, userDao);
-        observationService = new ObservationService(obsDao);
-        userService = new UserService(userDao, observationService);
+        observationService = new ObservationService();
+        userService = new UserService(observationService);
+        speciesService = new SpeciesService();
+        placeService = new PlaceService();
         inputWindow = new InputWindow();
         observationTable = new ObservationTable(observationService);
-        newObservation = new NewObservation(observationService, inputWindow); 
+        newObservation = new NewObservation(observationService, placeService, speciesService, inputWindow); 
         newUser = new NewUser(inputWindow, userService);
+        newSpecies = new NewSpecies(inputWindow, speciesService);
+        newPlace = new NewPlace(inputWindow, placeService);
     }
 
     
@@ -66,15 +70,19 @@ public class ProjectUi extends Application {
         loginButton.setOnAction(e->{
             String username = usernameInput.getText();
             String password = passwordInput.getText();
-            if ( userService.login(username, password)){
-                loginMessage.setText("");
-                primaryStage.setScene(observationScene);  
-                usernameInput.setText("");
-                passwordInput.setText("");
-            } else {
-                loginMessage.setText("user does not exist");
-                loginMessage.setTextFill(Color.RED);
-            }      
+            try {
+                if (userService.login(username, password)){
+                    loginMessage.setText("");
+                    primaryStage.setScene(observationScene);
+                    usernameInput.setText("");
+                    passwordInput.setText("");
+                } else {
+                    loginMessage.setText("user does not exist");
+                    loginMessage.setTextFill(Color.RED);      
+                }
+            } catch (Exception ex) {
+                Logger.getLogger(ProjectUi.class.getName()).log(Level.SEVERE, null, ex);
+            }
         });  
         
         createButton.setOnAction(e->{
@@ -117,7 +125,30 @@ public class ProjectUi extends Application {
         newObservationScene = newObservation.createNewObservation(primaryStage, observationTable);
         newObservation.returnButton().setOnAction(e-> {
             primaryStage.setScene(observationScene);
+        });
+        newObservation.addNewSpeciesButton().setOnAction(e-> {
+            primaryStage.setScene(newSpeciesScene);
         });        
+        newObservation.addNewPlaceButton().setOnAction(e-> {
+            primaryStage.setScene(newPlaceScene);
+        });        
+        
+        
+        
+        // new addNewSpeciesScene
+        
+        newSpeciesScene = newSpecies.newSpeciesScene(primaryStage, newObservationScene);
+        newSpecies.returnButton().setOnAction(e-> {
+            primaryStage.setScene(newObservationScene);
+        });
+        
+        
+        // new addNewPlaceScene
+        
+        newPlaceScene = newPlace.newPlaceScene(primaryStage, newObservationScene);
+        newPlace.returnButton().setOnAction(e-> {
+            primaryStage.setScene(newObservationScene);
+        });
         
         
         

@@ -40,7 +40,7 @@ public class ObservationTable {
     
     
     
-    public VBox createTable() {
+    public VBox createTable() throws Exception {
         table = new TableView();
         Label label = new Label("Observations");
         label.setFont(new Font("Arial", 20));
@@ -81,7 +81,7 @@ public class ObservationTable {
     
 
     
-    public void redrawObservationList() {
+    public void redrawObservationList() throws Exception {
         List<Observation> observationlist = observationService.getAll();
         observationlist.forEach(obs-> {
             if (!observations.contains(obs)) {
@@ -116,7 +116,7 @@ public class ObservationTable {
         return this.logoutButton;
     }    
     
-    public Scene observationScene() {
+    public Scene observationScene() throws Exception {
         Scene observationScene = new Scene(new Group());
         ((Group) observationScene.getRoot()).getChildren().addAll(createTable());
         return observationScene;

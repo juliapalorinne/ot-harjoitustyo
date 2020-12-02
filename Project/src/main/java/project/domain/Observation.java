@@ -8,53 +8,53 @@ import java.util.List;
 
 
 public class Observation {
-    private Long id;
-    private String species;
+    private int id;
+    private int speciesId;
     private int individuals;
-    private String place;
+    private int placeId;
     private LocalDate date;
     private LocalTime time;
     private String info;
-    private User user;
+    private String userId;
     
     public Observation() {
     }
 
-    public Observation(Long id, String species, int individuals, String place, LocalDate date, LocalTime time, String info, User user) {
+    public Observation(int id, int species, int individuals, int place, LocalDate date, LocalTime time, String info, String username) {
         this.id = id;
-        this.species = species;
+        this.speciesId = species;
         this.individuals = individuals;
-        this.place = place;
+        this.placeId = place;
         this.date = date;
         this.time = time;
         this.info = info;
-        this.user = user;
+        this.userId = username;
     }
     
-    public Observation(String species, int individuals, String place, LocalDate date, LocalTime time, String info, User user) {
-        this.species = species;
+    public Observation(int species, int individuals, int place, LocalDate date, LocalTime time, String info, String username) {
+        this.speciesId = species;
         this.individuals = individuals;
-        this.place = place;
+        this.placeId = place;
         this.date = date;
         this.time = time;
         this.info = info;
-        this.user = user;
+        this.userId = username;
     }
    
-    public void setId(Long id) {
+    public void setId(int id) {
         this.id = id;
     }
     
-    public void setSpecies(String species) {
-        this.species = species;
+    public void setSpeciesId(int species) {
+        this.speciesId = species;
     }
     
     public void setIndividuals(int individuals) {
         this.individuals = individuals;
     }
     
-    public void setPlace(String place) {
-        this.place = place;
+    public void setPlace(int place) {
+        this.placeId = place;
     }
 
     public void setDate(LocalDate date) {
@@ -69,25 +69,25 @@ public class Observation {
         this.info = info;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUser(String username) {
+        this.userId = username;
     }
 
     
-    public Long getId() {
+    public int getId() {
         return id;
     }
     
-    public String getSpecies() {
-        return species;
+    public int getSpeciesId() {
+        return speciesId;
     }
     
     public int getIndividuals() {
         return individuals;
     }
         
-    public String getPlace() {
-        return place;
+    public int getPlaceId() {
+        return placeId;
     }
     
     public LocalDate getDate() {
@@ -102,8 +102,8 @@ public class Observation {
         return info;
     }
     
-    public User getUser() {
-        return user;
+    public String getUserId() {
+        return userId;
     }
     
     
@@ -114,7 +114,7 @@ public class Observation {
         }
 
         Observation other = (Observation) object;
-        return id.equals(other.id);
+        return id == other.id;
     }
 
 

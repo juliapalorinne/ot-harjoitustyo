@@ -11,29 +11,28 @@ import static org.junit.Assert.*;
 
 public class UserServiceTest {
 
-    TestObservationDao obsDao;
-    TestUserDao userDao;
     UserService userService;
     ObservationService observationService;
     
     @Before
-    public void setUp() {
-        userDao = new TestUserDao();
-        obsDao = new TestObservationDao();
-        observationService = new ObservationService(obsDao);
-        userService = new UserService(userDao, observationService);     
+    public void setUp() throws Exception {
+        observationService = new ObservationService();
+        userService = new UserService(observationService);
+        observationService.setDatabase("jdbc:sqlite:testObservation.db");
+        userService.setDatabase("jdbc:sqlite:testUser.db");
+        
+        userService.createUser("test_user", "Test User", "erinomainensalalause");
     }
     
     @Test
-    public void nonExistingUserCannotLogIn() {
+    public void nonExistingUserCannotLogIn() throws Exception {
         boolean result = userService.login("nonexisting", "password");
         assertFalse(result);
-        
         assertEquals(null, userService.getLoggedUser());
     }    
     
     @Test
-    public void existingUserCanLogIn() {
+    public void existingUserCanLogIn() throws Exception {
         boolean result = userService.login("test_user", "erinomainensalalause");
         assertTrue(result);
         
@@ -42,7 +41,7 @@ public class UserServiceTest {
     }
     
     @Test
-    public void loggedInUserCanLogout() {
+    public void loggedInUserCanLogout() throws Exception {
         userService.login("test_user", "erinomainensalalause");
         userService.logout();
         

@@ -11,13 +11,11 @@ import static org.junit.Assert.*;
 
 
 public class UserTest {
-    TestUserDao userDao;
     User user;
     
         
     @Before
     public void setUp() {
-        this.userDao = new TestUserDao();
         this.user = new User("anna1", "Anna", "salasana1");
     }
     
