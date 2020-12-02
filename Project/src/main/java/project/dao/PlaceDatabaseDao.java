@@ -196,7 +196,7 @@ public class PlaceDatabaseDao implements PlaceDao {
         if (searchField.equals("city")) {
             stmt.append("city = ?");
         }
-        if(searchField.equals("spot")){
+        if (searchField.equals("spot")) {
             stmt.append("spot = ?");
         }
         if (searchField.equals("type")) {
@@ -209,15 +209,15 @@ public class PlaceDatabaseDao implements PlaceDao {
     private List<Place> createListFromResult(ResultSet result) throws Exception {
         List<Place> places = new ArrayList<>();
         while (result.next()) {
-                int id = result.getInt("id");
-                String country = result.getString("country");
-                String city = result.getString("city");
-                String spot = result.getString("spot");
-                String type = result.getString("type");
+            int id = result.getInt("id");
+            String country = result.getString("country");
+            String city = result.getString("city");
+            String spot = result.getString("spot");
+            String type = result.getString("type");
 
-                Place place = new Place(id, country, city, spot, type);
-                places.add(place);
-            }
+            Place place = new Place(id, country, city, spot, type);
+            places.add(place);
+        }
         return places;
     }
 

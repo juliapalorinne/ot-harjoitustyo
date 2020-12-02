@@ -198,7 +198,7 @@ public class ObservationDatabaseDao implements ObservationDao {
         if (searchField.equals("place")) {
             stmt.append("place = ?");
         }
-        if(searchField.equals("date")){
+        if (searchField.equals("date")) {
             stmt.append("date = ?");
         }
         if (searchField.equals("user")) {
@@ -211,18 +211,18 @@ public class ObservationDatabaseDao implements ObservationDao {
     private List<Observation> createListFromResult(ResultSet result) throws Exception {
         List<Observation> observations = new ArrayList<>();
         while (result.next()) {
-                int id = result.getInt("id");
-                int speciesId = result.getInt("species");
-                int individuals = result.getInt("individuals");
-                int placeId = result.getInt("place");
-                String date = result.getString("date");
-                String time = result.getString("time");
-                String info = result.getString("info");
-                String username = result.getString("user");
-                
-                Observation observation = new Observation(id, speciesId, individuals, placeId, LocalDate.parse(date), LocalTime.parse(time), info, username);
-                observations.add(observation);
-            }
+            int id = result.getInt("id");
+            int speciesId = result.getInt("species");
+            int individuals = result.getInt("individuals");
+            int placeId = result.getInt("place");
+            String date = result.getString("date");
+            String time = result.getString("time");
+            String info = result.getString("info");
+            String username = result.getString("user");
+
+            Observation observation = new Observation(id, speciesId, individuals, placeId, LocalDate.parse(date), LocalTime.parse(time), info, username);
+            observations.add(observation);
+        }
         return observations;
     }
 

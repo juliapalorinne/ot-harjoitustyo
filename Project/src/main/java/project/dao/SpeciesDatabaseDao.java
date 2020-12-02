@@ -196,7 +196,7 @@ public class SpeciesDatabaseDao implements SpeciesDao {
         if (searchField.equals("scientificName")) {
             stmt.append("scientificName = ?");
         }
-        if(searchField.equals("finnishName")){
+        if (searchField.equals("finnishName")) {
             stmt.append("finnishName = ?");
         }
         if (searchField.equals("abbreviation")) {
@@ -209,15 +209,15 @@ public class SpeciesDatabaseDao implements SpeciesDao {
     private List<Species> createListFromResult(ResultSet result) throws Exception {
         List<Species> speciesList = new ArrayList<>();
         while (result.next()) {
-                int id = result.getInt("id");
-                String englishName = result.getString("englishName");
-                String scientificName = result.getString("scientificName");
-                String finnishName = result.getString("finnishName");
-                String abbreviation = result.getString("abbreviation");
+            int id = result.getInt("id");
+            String englishName = result.getString("englishName");
+            String scientificName = result.getString("scientificName");
+            String finnishName = result.getString("finnishName");
+            String abbreviation = result.getString("abbreviation");
 
-                Species species = new Species(id, englishName, scientificName, finnishName, abbreviation);
-                speciesList.add(species);
-            }
+            Species species = new Species(id, englishName, scientificName, finnishName, abbreviation);
+            speciesList.add(species);
+        }
         return speciesList;
     }
 

@@ -195,14 +195,14 @@ public class UserDatabaseDao implements UserDao {
     private List<User> createListFromResult(ResultSet result) throws Exception {
         List<User> users = new ArrayList<>();
         while (result.next()) {
-                int id = result.getInt("id");
-                String username = result.getString("username");
-                String name = result.getString("name");
-                String password = result.getString("password");
+            int id = result.getInt("id");
+            String username = result.getString("username");
+            String name = result.getString("name");
+            String password = result.getString("password");
 
-                User user = new User(id, username, name, password);
-                users.add(user);
-            }
+            User user = new User(id, username, name, password);
+            users.add(user);
+        }
         return users;
     }
 
