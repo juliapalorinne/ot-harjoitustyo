@@ -19,6 +19,8 @@ Sovellus on tarkoitettu lintuhavaintojen tallentamiseen ja vanhojen havaintojen 
 
 ## Komentoriviltä suoritettavat komennot
 
+Ohjelmasta voi luoda jar-tiedoston komennolla "mvn package".
+
 Testit voi suorittaa komennolla "mvn test".
 
 Testikattavuusraportin saa näkyviin komennolla "mvn jacoco:report" ja testiraportti tallentuu seuraavaan tiedostoon:
