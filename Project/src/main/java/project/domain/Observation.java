@@ -12,7 +12,7 @@ public class Observation {
     private String species;
     private int individuals;
     private String place;
-    private Date date;
+    private LocalDate date;
     private LocalTime time;
     private String info;
     private User user;
@@ -20,7 +20,7 @@ public class Observation {
     public Observation() {
     }
 
-    public Observation(Long id, String species, int individuals, String place, Date date, LocalTime time, String info, User user) {
+    public Observation(Long id, String species, int individuals, String place, LocalDate date, LocalTime time, String info, User user) {
         this.id = id;
         this.species = species;
         this.individuals = individuals;
@@ -31,7 +31,7 @@ public class Observation {
         this.user = user;
     }
     
-    public Observation(String species, int individuals, String place, Date date, LocalTime time, String info, User user) {
+    public Observation(String species, int individuals, String place, LocalDate date, LocalTime time, String info, User user) {
         this.species = species;
         this.individuals = individuals;
         this.place = place;
@@ -57,7 +57,7 @@ public class Observation {
         this.place = place;
     }
 
-    public void setDate(Date date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 
@@ -90,7 +90,7 @@ public class Observation {
         return place;
     }
     
-    public Date getDate() {
+    public LocalDate getDate() {
         return date;
     }
     

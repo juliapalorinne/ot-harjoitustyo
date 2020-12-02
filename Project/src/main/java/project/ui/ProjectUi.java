@@ -2,28 +2,14 @@
 package project.ui;
 
 import java.io.FileInputStream;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.LocalTime;
-import java.util.Date;
-import java.util.List;
 import java.util.Properties;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.application.Application;
 import static javafx.application.Application.launch;
 import javafx.geometry.Insets;
-import javafx.scene.Group;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
@@ -32,11 +18,13 @@ import project.dao.FileUserDao;
 import project.domain.ObservationService;
 import project.domain.UserService;
 
+
 public class ProjectUi extends Application {
     private ObservationService observationService;
     private UserService userService;
     
     private InputWindow inputWindow;
+    private NewUser newUser;
     private ObservationTable observationTable;
     private NewObservation newObservation;
     
@@ -44,10 +32,6 @@ public class ProjectUi extends Application {
     private Scene newUserScene;
     private Scene loginScene;
     private Scene newObservationScene;
-    
-    
-    
-    private Label menuLabel = new Label();
     
     
     @Override
@@ -64,6 +48,7 @@ public class ProjectUi extends Application {
         inputWindow = new InputWindow();
         observationTable = new ObservationTable(observationService);
         newObservation = new NewObservation(observationService, inputWindow); 
+        newUser = new NewUser(inputWindow, userService);
     }
 
     
@@ -71,19 +56,16 @@ public class ProjectUi extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         
-        VBox loginPane = new VBox(10);
-        loginPane.setStyle("-fx-background-color: #90EE90;");
-        loginPane.setPadding(new Insets(10));
+        VBox loginPane = inputWindow.createNewWindow();
         TextField usernameInput = inputWindow.createInputField(loginPane, "Username");
         TextField passwordInput = inputWindow.createInputField(loginPane, "Password");
         
         Label loginMessage = new Label();
-        Button loginButton = new Button("Login");
-        Button createButton = new Button("Create new user");
+        Button loginButton = inputWindow.createButton("Login");
+        Button createButton = inputWindow.createButton("Create new user");
         loginButton.setOnAction(e->{
             String username = usernameInput.getText();
             String password = passwordInput.getText();
-            menuLabel.setText(username + " logged in...");
             if ( userService.login(username, password)){
                 loginMessage.setText("");
                 primaryStage.setScene(observationScene);  
@@ -103,53 +85,22 @@ public class ProjectUi extends Application {
         
         loginPane.getChildren().addAll(loginMessage, loginButton, createButton);       
         
-        loginScene = new Scene(loginPane, 300, 250);
+        loginScene = new Scene(loginPane, 400, 250);
         
         
         
         
         // new createNewUserScene
         
-        VBox newUserPane = new VBox(10);
-        newUserPane.setStyle("-fx-background-color: #FFB6C1;");
-        TextField newUsernameInput = inputWindow.createInputField(newUserPane, "Username");
-        TextField newNameInput = inputWindow.createInputField(newUserPane, "Name");
-        TextField newPasswordInput = inputWindow.createInputField(newUserPane, "Password");
-        
-        
-        Label userCreationMessage = new Label();
-        
-        Button createNewUserButton = new Button("create");
-        createNewUserButton.setPadding(new Insets(10));
-
-        createNewUserButton.setOnAction(e->{
-            String username = newUsernameInput.getText();
-            String name = newNameInput.getText();
-            String password = newPasswordInput.getText();
-   
-            if ( username.length()<2 || name.length()<2 ) {
-                userCreationMessage.setText("Username or name too short");
-                userCreationMessage.setTextFill(Color.RED);              
-            } else if ( userService.createUser(username, name, password) ){
-                userCreationMessage.setText("");                
-                loginMessage.setText("New user created");
-                loginMessage.setTextFill(Color.GREEN);
-                primaryStage.setScene(loginScene);      
-            } else {
-                userCreationMessage.setText("Username already in use");
-                userCreationMessage.setTextFill(Color.RED);        
-            }
- 
-        });  
-        
-        newUserPane.getChildren().addAll(userCreationMessage, createNewUserButton);
-        newUserScene = new Scene(newUserPane, 400, 300);
-        
+        newUserScene = newUser.newUserScene(primaryStage, loginScene);
+        newUser.returnButton().setOnAction(e-> {
+            primaryStage.setScene(loginScene);
+        });
         
         
         
         // main scene
-
+        
         observationScene = observationTable.observationScene();        
         observationTable.logoutButton().setOnAction(e->{
             userService.logout();
@@ -164,6 +115,10 @@ public class ProjectUi extends Application {
         // new createNewObservationScene
         
         newObservationScene = newObservation.createNewObservation(primaryStage, observationTable);
+        newObservation.returnButton().setOnAction(e-> {
+            primaryStage.setScene(observationScene);
+        });        
+        
         
         
         // seutp primary stage
@@ -174,7 +129,7 @@ public class ProjectUi extends Application {
         primaryStage.setOnCloseRequest(e->{
             System.out.println("closing");
             System.out.println(userService.getLoggedUser());
-            if (userService.getLoggedUser()!=null) {
+            if (userService.getLoggedUser() != null) {
                 e.consume();   
             }
             

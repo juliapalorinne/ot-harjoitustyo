@@ -2,118 +2,78 @@
 package project.domain;
 
 import project.dao.ObservationDao;
-import java.time.*;
-import java.util.Date;
-import java.util.List;
 
-
-public class Observation {
+public class Species {
     private Long id;
-    private String species;
-    private int individuals;
-    private String place;
-    private Date date;
-    private LocalTime time;
-    private String info;
-    private User user;
-    
-    public Observation() {
+    private String englishName;
+    private String scientificName;
+    private String finnishName;
+    private String abbreviation;
+
+
+    public Species(Long id, String englishName, String scientificName, String finnishName, String abbreviation) {
+        this.id = id;
+        this.englishName = englishName;
+        this.scientificName = scientificName;
+        this.finnishName = finnishName;
+        this.abbreviation = abbreviation;
     }
 
-    public Observation(Long id, String species, int individuals, String place, Date date, LocalTime time, String info, User user) {
-        this.id = id;
-        this.species = species;
-        this.individuals = individuals;
-        this.place = place;
-        this.date = date;
-        this.time = time;
-        this.info = info;
-        this.user = user;
-    }
+    public Species(String englishName, String scientificName, String finnishName, String abbreviation) {
+        this.englishName = englishName;
+        this.scientificName = scientificName;
+        this.finnishName = finnishName;
+        this.abbreviation = abbreviation;
+    }    
     
-    public Observation(String species, int individuals, String place, Date date, LocalTime time, String info, User user) {
-        this.species = species;
-        this.individuals = individuals;
-        this.place = place;
-        this.date = date;
-        this.time = time;
-        this.info = info;
-        this.user = user;
-    }
-   
     public void setId(Long id) {
         this.id = id;
     }
     
-    public void setSpecies(String species) {
-        this.species = species;
+    public void setEnglishName(String englishName) {
+        this.englishName = englishName;
     }
     
-    public void setIndividuals(int individuals) {
-        this.individuals = individuals;
+    public void setScientificName(String scientificName) {
+        this.scientificName = scientificName;
     }
     
-    public void setPlace(String place) {
-        this.place = place;
+    public void setFinnishName(String finnishName) {
+        this.finnishName = finnishName;
     }
 
-    public void setDate(Date date) {
-        this.date = date;
+    public void setAbbreviation(String abbreviation) {
+        this.abbreviation = abbreviation;
     }
-
-    public void setTime(LocalTime time) {
-        this.time = time;
-    }
-
-    public void setInfo(String info) {
-        this.info = info;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
     
     public Long getId() {
         return id;
     }
     
-    public String getSpecies() {
-        return species;
-    }
-    
-    public int getIndividuals() {
-        return individuals;
+    public String getEnglishName() {
+        return englishName;
     }
         
-    public String getPlace() {
-        return place;
+    public String getScientificName() {
+        return scientificName;
     }
     
-    public Date getDate() {
-        return date;
+    public String getFinnishName() {
+        return finnishName;
     }
     
-    public LocalTime getTime() {
-        return time;
-    }
-    
-    public String getInfo() {
-        return info;
-    }
-    
-    public User getUser() {
-        return user;
+    public String getAbbreviation() {
+        return abbreviation;
     }
     
     
     @Override
     public boolean equals(Object object) {
-        if (!(object instanceof Observation)) {
+        if (!(object instanceof Species)) {
             return false;
         }
 
-        Observation other = (Observation) object;
+        Species other = (Species) object;
         return id.equals(other.id);
     }
 

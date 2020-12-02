@@ -3,6 +3,7 @@ package project.domain;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -82,8 +83,7 @@ public class ObservationtTest {
     
     @Test
     public void dateSetterAndGetterWork() throws ParseException {
-        SimpleDateFormat dformatter = new SimpleDateFormat("dd/MM/yyyy");
-        Date date = dformatter.parse("22/09/2020");
+        LocalDate date = LocalDate.parse("2020-09-11");
         obs1.setDate(date);
         Assert.assertEquals(date, obs1.getDate());
     }

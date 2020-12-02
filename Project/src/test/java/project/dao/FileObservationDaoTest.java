@@ -39,10 +39,10 @@ public class FileObservationDaoTest {
     
     @Before
     public void setUp() throws IOException, Exception {
-        observationFile = testFolder.newFile("testfile_observations.txt");  
+        observationFile = testFolder.newFile("testfile_observations.txt");
         
         try (FileWriter file = new FileWriter(observationFile.getAbsolutePath())) {
-            file.write("10012394;common swift;48;Lohja, Mäntynummi;14/06/2020;12:00;they were flying;test_user\n");
+            file.write("10012394;common swift;48;Lohja, Mäntynummi;2020-10-22;12:00;they were flying;test_user\n");
         }
         this.userDao = new TestUserDao();
         observationDao = new FileObservationDao(observationFile.getAbsolutePath(), userDao);        

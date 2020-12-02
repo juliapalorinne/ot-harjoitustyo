@@ -24,7 +24,7 @@ import project.domain.ObservationService;
 
 public class ObservationTable {
     private ObservationService observationService;    
-    private TableView table = new TableView();
+    private TableView table;
     private Button addButton;
     private Button logoutButton;
     
@@ -41,6 +41,7 @@ public class ObservationTable {
     
     
     public VBox createTable() {
+        table = new TableView();
         Label label = new Label("Observations");
         label.setFont(new Font("Arial", 20));
  

@@ -29,8 +29,7 @@ public class FileObservationDao implements ObservationDao {
                 Long id = Long.parseLong(parts[0]);
                 int individuals = Integer.parseInt(parts[2]);
                 
-                SimpleDateFormat dformatter = new SimpleDateFormat("dd/MM/yyyy");
-                Date date = dformatter.parse(parts[4]);
+                LocalDate date = LocalDate.parse(parts[4]);
                 LocalTime time = LocalTime.parse(parts[5]);
                 
                 User user = users.getAll().stream().filter(u->u.getUsername().equals(parts[7])).findFirst().orElse(null);

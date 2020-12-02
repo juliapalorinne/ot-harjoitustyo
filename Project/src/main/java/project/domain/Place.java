@@ -2,118 +2,71 @@
 package project.domain;
 
 import project.dao.ObservationDao;
-import java.time.*;
-import java.util.Date;
-import java.util.List;
 
-
-public class Observation {
+public class Place {
     private Long id;
-    private String species;
-    private int individuals;
-    private String place;
-    private Date date;
-    private LocalTime time;
-    private String info;
-    private User user;
-    
-    public Observation() {
-    }
+    private String country;
+    private String city;
+    private String spot;
+    private String type;
 
-    public Observation(Long id, String species, int individuals, String place, Date date, LocalTime time, String info, User user) {
+
+    public Place(Long id, String country, String city, String spot, String type) {
         this.id = id;
-        this.species = species;
-        this.individuals = individuals;
-        this.place = place;
-        this.date = date;
-        this.time = time;
-        this.info = info;
-        this.user = user;
-    }
-    
-    public Observation(String species, int individuals, String place, Date date, LocalTime time, String info, User user) {
-        this.species = species;
-        this.individuals = individuals;
-        this.place = place;
-        this.date = date;
-        this.time = time;
-        this.info = info;
-        this.user = user;
+        this.country = country;
+        this.city = city;
+        this.spot = spot;
+        this.type = type;
     }
    
     public void setId(Long id) {
         this.id = id;
     }
     
-    public void setSpecies(String species) {
-        this.species = species;
+    public void setCountry(String country) {
+        this.country = country;
     }
     
-    public void setIndividuals(int individuals) {
-        this.individuals = individuals;
-    }
-    
-    public void setPlace(String place) {
-        this.place = place;
+    public void setCity(String city) {
+        this.city = city;
     }
 
-    public void setDate(Date date) {
-        this.date = date;
+    public void setSpot(String spot) {
+        this.spot = spot;
     }
 
-    public void setTime(LocalTime time) {
-        this.time = time;
+    public void setType(String type) {
+        this.type = type;
     }
-
-    public void setInfo(String info) {
-        this.info = info;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
     
     public Long getId() {
         return id;
     }
     
-    public String getSpecies() {
-        return species;
-    }
-    
-    public int getIndividuals() {
-        return individuals;
+    public String getCountry() {
+        return country;
     }
         
-    public String getPlace() {
-        return place;
+    public String getCity() {
+        return city;
     }
     
-    public Date getDate() {
-        return date;
+    public String getSpot() {
+        return spot;
     }
     
-    public LocalTime getTime() {
-        return time;
-    }
-    
-    public String getInfo() {
-        return info;
-    }
-    
-    public User getUser() {
-        return user;
+    public String getType() {
+        return type;
     }
     
     
     @Override
     public boolean equals(Object object) {
-        if (!(object instanceof Observation)) {
+        if (!(object instanceof Place)) {
             return false;
         }
 
-        Observation other = (Observation) object;
+        Place other = (Place) object;
         return id.equals(other.id);
     }
 

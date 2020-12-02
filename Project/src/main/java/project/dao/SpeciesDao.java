@@ -5,18 +5,23 @@ import java.time.LocalTime;
 import java.util.Date;
 import java.util.List;
 import project.domain.Observation;
+import project.domain.Species;
 
 
-public interface ObservationDao {
+public interface SpeciesDao {
 
-    public Observation create(Observation observation) throws Exception;
+    public Species create(Species species) throws Exception;
     
-    public Observation findById(Long id);
+    public Species findById(Long id);
+    
+    public Species findByEnglishName(String name);
+    
+    public Species findByScientificName(String name);
+    
+    public Species findByFinnishName(String name);
+    
+    public Species findByAbbreviation(String abbreviation);
 
-    public List<Observation> getAll();
-    
-    public List<Observation> findBySpecies(String species);
-    
-    public List<Observation> findByPlace(String place);
+    public List<Species> getAll();
     
 }

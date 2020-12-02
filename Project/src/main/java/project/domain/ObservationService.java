@@ -28,7 +28,7 @@ public class ObservationService {
         return true;
     }
     
-    public boolean createObservation(String species, int individuals, String place, Date date, LocalTime time, String info) {
+    public boolean createObservation(String species, int individuals, String place, LocalDate date, LocalTime time, String info) {
         Observation obs = new Observation(species, individuals, place, date, time, info, loggedIn);
         try {   
             obsDao.create(obs);

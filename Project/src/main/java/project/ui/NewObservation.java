@@ -3,6 +3,7 @@ package project.ui;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Date;
 import java.util.logging.Level;
@@ -10,6 +11,7 @@ import java.util.logging.Logger;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
@@ -20,39 +22,34 @@ import project.domain.ObservationService;
 public class NewObservation {
     private ObservationService observationService;
     private InputWindow inputWindow;
+    private Button returnButton;
     
     
     public NewObservation(ObservationService observationService, InputWindow inputWindow) {
         this.observationService = observationService;
         this.inputWindow = inputWindow;
+        returnButton = inputWindow.createButton("Return");
     } 
 
     
     public Scene createNewObservation(Stage stage, ObservationTable observationTable) {
-        VBox newObsPane = new VBox(10);
+        VBox newObsPane = inputWindow.createNewWindow();
         TextField newSpeciesInput = inputWindow.createInputField(newObsPane, "Species");
         TextField newIndividualInput = inputWindow.createInputField(newObsPane, "Individuals");
         TextField newPlaceInput = inputWindow.createInputField(newObsPane, "Place");
-        TextField newDateInput = inputWindow.createInputField(newObsPane, "Date (dd/mm/yyyy)");
+        DatePicker datePicker = inputWindow.createDatePicker(newObsPane, "Date");
         TextField newTimeInput = inputWindow.createInputField(newObsPane, "Time (hh:mm)");
-        TextField newInfoInput = inputWindow.createInputField(newObsPane, "Additional info");
+        TextField newInfoInput = inputWindow.createBigInputField(newObsPane, "Additional info");
 
         Label observationCreationMessage = new Label();
-        Button createNewObsButton = new Button("Add new observation");
+        Button createNewObsButton = inputWindow.createButton("Add new observation");
         createNewObsButton.setPadding(new Insets(10));
         
         
         createNewObsButton.setOnAction(e-> {
             String species = newSpeciesInput.getText();
             String place = newPlaceInput.getText();
-            String d = newDateInput.getText();
-            SimpleDateFormat dformatter = new SimpleDateFormat("dd/MM/yyyy");
-            Date date = null;
-            try {
-                date = dformatter.parse(d);
-            } catch (ParseException ex) {
-                Logger.getLogger(ProjectUi.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            LocalDate date = datePicker.getValue();
             LocalTime time = LocalTime.parse(newTimeInput.getText());
             String info = newInfoInput.getText();
             int individuals = Integer.parseInt(newIndividualInput.getText());
@@ -62,19 +59,24 @@ public class NewObservation {
                 observationCreationMessage.setText("Species or place too short");
                 observationCreationMessage.setTextFill(Color.RED);
             } else if (observationService.createObservation(species, individuals, place, date, time, info)) {
-                observationCreationMessage.setText("New observation created");
-                observationCreationMessage.setTextFill(Color.YELLOW);
+                newSpeciesInput.setText("");
+                newIndividualInput.setText("");
+                newPlaceInput.setText("");
+                newTimeInput.setText("");
+                newInfoInput.setText("");
                 stage.setScene(observationTable.observationScene());
-                newObsPane.getChildren().addAll(observationCreationMessage);
             }
  
         });  
         
         
-        newObsPane.getChildren().addAll(observationCreationMessage, createNewObsButton);
+        newObsPane.getChildren().addAll(observationCreationMessage, createNewObsButton, returnButton);
         Scene newObservationScene = new Scene(newObsPane, 600, 500);
         return newObservationScene;
-    }  
-
+    }
+    
+    public Button returnButton() {
+        return this.returnButton;
+    }
 
 }
