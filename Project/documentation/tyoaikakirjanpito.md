@@ -16,5 +16,7 @@ Päivämäärä | Tehtävä | Käytetty aika
 23.11.2020 | Dokumentointia paranneltu | 0,5 h
 24.11.2020 | Sovelluksen toiminnallisuuksia kehitetty | 2,5 h
 1.12.2020 | Sovelluksen ongelmia korjattu ja ulkoasua kehitetty | 4 h
+2.12.2020 | Sovelluksen tiedostot muutettu tietokannoiksi | 3 h
+2.12.2020 | Tästä aiheutuneiden ongelmien ja aiemmin tehtyjen testien korjaus | 2 h
  | | 
-24.11.2020 | **YHTEENSÄ**| **24 h**
+24.11.2020 | **YHTEENSÄ**| **29 h**
