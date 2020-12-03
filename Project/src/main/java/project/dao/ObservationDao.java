@@ -9,12 +9,12 @@ public interface ObservationDao {
     
     public void addObservation(Observation observation) throws Exception;
     
-    public void removeObservation(String id) throws Exception;
+    public void removeObservation(int id) throws Exception;
     
-    public void modifyObservation(String id, int species, int individuals, int place,
+    public void modifyObservation(int id, int species, int individuals, int place,
             String date, String time, String info, String username) throws Exception;
     
-    public Observation findObservationById(String id) throws Exception;
+    public Observation findObservationById(int id) throws Exception;
 
     public List<Observation> getAllObservations() throws Exception;
     

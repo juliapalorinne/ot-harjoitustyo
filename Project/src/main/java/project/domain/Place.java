@@ -11,6 +11,9 @@ public class Place {
     private String type;
 
 
+    public Place() {
+    }
+    
     public Place(int id, String country, String city, String spot, String type) {
         this.id = id;
         this.country = country;

@@ -12,6 +12,11 @@ public class PlaceService {
         placeDao = new PlaceDatabaseDao("jdbc:sqlite:place.db");
     }
     
+    
+    public void setDatabase(PlaceDao database) {
+        placeDao = database;
+    }
+    
     public boolean createPlace(String country, String city, String spot, String type) {
         Place place = new Place(country, city, spot, type);
         try {   
@@ -22,15 +27,15 @@ public class PlaceService {
         return true;
     }
     
-    public void removePlace(String id) throws Exception {
+    public void removePlace(int id) throws Exception {
         placeDao.removePlace(id);
     }
     
-    public void modifyPlace(String id, String country, String city, String spot, String type) throws Exception {
+    public void modifyPlace(int id, String country, String city, String spot, String type) throws Exception {
         placeDao.modifyPlace(id, country, city, spot, type);
     }
     
-    public Place getPlaceById(String id) throws Exception {
+    public Place getPlaceById(int id) throws Exception {
         Place place = placeDao.findPlaceById(id);
         return place;
     }
@@ -42,5 +47,9 @@ public class PlaceService {
     
     public List<Place> getAllPlaces() throws Exception {
         return placeDao.getAllPlaces();
+    }
+    
+    public List<Place> getPlaceBySearchTerm(String searchTerm, String searchField) throws Exception {
+         return placeDao.searchPlaces(searchTerm, searchField);
     }
 }

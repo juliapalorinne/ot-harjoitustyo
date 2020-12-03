@@ -15,8 +15,8 @@ public class UserService {
         this.observationService = observationService;
     }
     
-    public void setDatabase(String databaseAddress) {
-        userDao = new UserDatabaseDao(databaseAddress);
+    public void setDatabase(UserDatabaseDao database) {
+        userDao = database;
     }
 
     public boolean login(String username, String password) throws Exception {
@@ -58,15 +58,15 @@ public class UserService {
         return true;
     }
     
-    public void removeUser(String id) throws Exception {
+    public void removeUser(int id) throws Exception {
         userDao.removeUser(id);
     }
     
-    public void modifyUser(String id, String username, String name, String password) throws Exception {
+    public void modifyUser(int id, String username, String name, String password) throws Exception {
         userDao.modifyUser(id, username, name, password);
     }
     
-    public User getUserById(String id) throws Exception {
+    public User getUserById(int id) throws Exception {
         User user = userDao.findUserById(id);
         return user;
     }

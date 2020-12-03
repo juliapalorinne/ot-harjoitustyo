@@ -40,6 +40,7 @@ public class ObservationDatabaseDao implements ObservationDao {
         stmt.setString(7, observation.getUserId());
         stmt.execute();
 
+        stmt.close();
         conn.close();
     }
 
@@ -64,56 +65,56 @@ public class ObservationDatabaseDao implements ObservationDao {
     
     
     @Override
-    public void modifyObservation(String id, int species, int individuals, int place, String date, String time, String info, String username) throws Exception {
+    public void modifyObservation(int id, int species, int individuals, int place, String date, String time, String info, String username) throws Exception {
         Connection conn = DriverManager.getConnection(databaseAddress);
         
         try {
             if (species != 0) { 
                 PreparedStatement stmt = conn.prepareStatement("UPDATE Observation SET species = ? WHERE id = ?");
                 stmt.setInt(1, species);
-                stmt.setInt(2, Integer.parseInt(id));
+                stmt.setInt(2, id);
                 stmt.executeUpdate();
             }
 
             if (individuals != 0) { 
                 PreparedStatement stmt = conn.prepareStatement("UPDATE Observation SET individuals = ? WHERE id = ?");
                 stmt.setInt(1, individuals);
-                stmt.setInt(2, Integer.parseInt(id));
+                stmt.setInt(2, id);
                 stmt.executeUpdate();
             }
             
             if (place != 0) { 
                 PreparedStatement stmt = conn.prepareStatement("UPDATE Observation SET place = ? WHERE id = ?");
                 stmt.setInt(1, place);
-                stmt.setInt(2, Integer.parseInt(id));
+                stmt.setInt(2, id);
                 stmt.executeUpdate();
             }
             
             if (!date.isEmpty()) { 
                 PreparedStatement stmt = conn.prepareStatement("UPDATE Observation SET date = ? WHERE id = ?");
                 stmt.setString(1, date);
-                stmt.setInt(2, Integer.parseInt(id));
+                stmt.setInt(2, id);
                 stmt.executeUpdate();
             }
             
             if (!time.isEmpty()) { 
                 PreparedStatement stmt = conn.prepareStatement("UPDATE Observation SET time = ? WHERE id = ?");
                 stmt.setString(1, time);
-                stmt.setInt(2, Integer.parseInt(id));
+                stmt.setInt(2, id);
                 stmt.executeUpdate();
             }
             
             if (!info.isEmpty()) { 
                 PreparedStatement stmt = conn.prepareStatement("UPDATE Observation SET info = ? WHERE id = ?");
                 stmt.setString(1, info);
-                stmt.setInt(2, Integer.parseInt(id));
+                stmt.setInt(2, id);
                 stmt.executeUpdate();
             }
             
             if (!username.isEmpty()) { 
                 PreparedStatement stmt = conn.prepareStatement("UPDATE Observation SET user = ? WHERE id = ?");
                 stmt.setString(1, username);
-                stmt.setInt(2, Integer.parseInt(id));
+                stmt.setInt(2, id);
                 stmt.executeUpdate();
             }
         } catch (Exception e) {
@@ -136,23 +137,24 @@ public class ObservationDatabaseDao implements ObservationDao {
         } catch (Exception e) {
 
         }
+        conn.close();
         return observations;
     }
     
     
     @Override
-    public Observation findObservationById(String id) throws Exception {
+    public Observation findObservationById(int id) throws Exception {
         Connection conn = DriverManager.getConnection(databaseAddress);
         List<Observation> observations = new ArrayList<>();
         try {
             PreparedStatement stmt = conn.prepareStatement("SELECT * FROM Observation WHERE id = ?");
-            stmt.setInt(1, Integer.parseInt(id));
+            stmt.setInt(1, id);
             
             ResultSet result = stmt.executeQuery();
             observations = createListFromResult(result);
         } catch (Exception e) {
         }
-        
+        conn.close();
         if (observations.size() == 1) {
             return observations.get(0);
         }
@@ -161,11 +163,11 @@ public class ObservationDatabaseDao implements ObservationDao {
     
 
     @Override
-    public void removeObservation(String id) throws Exception {
+    public void removeObservation(int id) throws Exception {
 
         Connection conn = DriverManager.getConnection(databaseAddress);
         PreparedStatement stmt = conn.prepareStatement("DELETE FROM Observation WHERE id = ?");
-        stmt.setInt(1, Integer.parseInt(id));
+        stmt.setInt(1, id);
         stmt.executeUpdate();
         conn.close();
     }

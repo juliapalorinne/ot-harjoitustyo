@@ -10,11 +10,11 @@ public interface PlaceDao {
     
     public void addPlace(Place place) throws Exception;
     
-    public void modifyPlace(String id, String country, String city, String spot, String type) throws Exception;
+    public void modifyPlace(int id, String country, String city, String spot, String type) throws Exception;
     
-    public void removePlace(String id) throws Exception;
+    public void removePlace(int id) throws Exception;
     
-    public Place findPlaceById(String id) throws Exception;
+    public Place findPlaceById(int id) throws Exception;
     
     public Place findPlaceByName(String name, String searchField) throws Exception;
 

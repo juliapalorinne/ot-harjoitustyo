@@ -1,9 +1,7 @@
 
 package project.domain;
 
-import java.io.File;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -18,15 +16,9 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import project.dao.TestPlaceDatabaseDao;
-import project.dao.TestSpeciesDatabaseDao;
-import project.dao.TestUserDatabaseDao;
 
 
 public class ObservationTest {
-//    TestUserDatabaseDao userDao;
-//    TestPlaceDatabaseDao placeDao;
-//    TestSpeciesDatabaseDao speciesDao;
     
     List<Observation> observations;
     
@@ -127,46 +119,5 @@ public class ObservationTest {
         Assert.assertEquals(user.getUsername(), obs1.getUserId());
     }
     
-    
-    
-    
-    
-    
-    
-    
-    
-//     @Before
-//    public void setUp() throws Exception {
-//        this.userDao = new TestUserDatabaseDao("jdbc:sqlite:testUser.db");
-//        this.placeDao = new TestPlaceDatabaseDao("jdbc:sqlite:testPlace.db");
-//        this.speciesDao = new TestSpeciesDatabaseDao("jdbc:sqlite:testSpecies.db");
-//        observations = new ArrayList<>();
-//        
-//        Place place1 = new Place("Finland", "Helsinki", "Viikki", "Shore");
-//        Place place2 = new Place("Finland", "Helsinki", "Kalasatama", "City");
-//        placeDao.addPlace(place1);
-//        placeDao.addPlace(place2);
-//        
-//        Species species = new Species("crow", "Corvus corone cornix", "varis", "cornix");
-//        speciesDao.addSpecies(species);
-//        
-//        User user = new User("matti", "Matti", "salasana");
-//        userDao.addUser(user);
-//        Observation obs1 = new Observation(speciesDao.findSpeciesByName("crow", "englishName").getId(), 1, placeDao.findPlaceByName("Viikki", "spot").getId(), null, null, null, user.getUsername());
-//        Observation obs2 = new Observation(speciesDao.findSpeciesByName("crow", "englishName").getId(), 1, placeDao.findPlaceByName("Kalasatama", "spot").getId(), null, null, null, user.getUsername());
-//        observations.add(obs1);
-//        observations.add(obs2);
-//    }
-//    
-//    @After
-//    public void tearDown() {
-//        File file1 = new File("testPlace.db");
-//        file1.delete();
-//        File file2 = new File("testUser.db");
-//        file2.delete();
-//        File file3 = new File("testSpecies.db");
-//        file3.delete();
-//    }
-
 
 }

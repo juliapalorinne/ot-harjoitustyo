@@ -35,6 +35,7 @@ public class SpeciesDatabaseDao implements SpeciesDao {
         stmt.setString(4, species.getAbbreviation());
         stmt.execute();
 
+        stmt.close();
         conn.close();
     }
 
@@ -59,36 +60,24 @@ public class SpeciesDatabaseDao implements SpeciesDao {
     
     
     @Override
-    public void modifySpecies(String id, String englishName, String scientificName, String finnishName, String abbreviation) throws Exception {
+    public void modifySpecies(int id, String englishName, String scientificName, String finnishName, String abbreviation) throws Exception {
         Connection conn = DriverManager.getConnection(databaseAddress);
         
         try {
-            if (!englishName.isEmpty()) { 
-                PreparedStatement stmt = conn.prepareStatement("UPDATE Species SET englishName = ? WHERE id = ?");
-                stmt.setString(1, englishName);
-                stmt.setInt(2, Integer.parseInt(id));
-                stmt.executeUpdate();
+            if (!englishName.isEmpty()) {
+                createModifyStatement("englishName", englishName, id, conn);
             }
 
             if (!scientificName.isEmpty()) { 
-                PreparedStatement stmt = conn.prepareStatement("UPDATE Species SET scientificName = ? WHERE id = ?");
-                stmt.setString(1, scientificName);
-                stmt.setInt(2, Integer.parseInt(id));
-                stmt.executeUpdate();
+                createModifyStatement("scientificName", scientificName, id, conn);
             }
 
-            if (!finnishName.isEmpty()) { 
-                PreparedStatement stmt = conn.prepareStatement("UPDATE Species SET finnishName = ? WHERE id = ?");
-                stmt.setString(1, finnishName);
-                stmt.setInt(2, Integer.parseInt(id));
-                stmt.executeUpdate();
+            if (!finnishName.isEmpty()) {
+                createModifyStatement("finnishName", finnishName, id, conn);
             }
             
-            if (!abbreviation.isEmpty()) { 
-                PreparedStatement stmt = conn.prepareStatement("UPDATE Species SET abbreviation = ? WHERE id = ?");
-                stmt.setString(1, abbreviation);
-                stmt.setInt(2, Integer.parseInt(id));
-                stmt.executeUpdate();
+            if (!abbreviation.isEmpty()) {
+                createModifyStatement("abbreviation", abbreviation, id, conn);
             }
         } catch (Exception e) {
         }
@@ -110,22 +99,24 @@ public class SpeciesDatabaseDao implements SpeciesDao {
         } catch (Exception e) {
 
         }
+        conn.close();
         return speciesList;
     }
     
     
     @Override
-    public Species findSpeciesById(String id) throws Exception {
+    public Species findSpeciesById(int id) throws Exception {
         Connection conn = DriverManager.getConnection(databaseAddress);
         List<Species> speciesList = new ArrayList<>();
         try {
             PreparedStatement stmt = conn.prepareStatement("SELECT * FROM Species WHERE id = ?");
-            stmt.setInt(1, Integer.parseInt(id));
+            stmt.setInt(1, id);
             
             ResultSet result = stmt.executeQuery();
             speciesList = createListFromResult(result);
         } catch (Exception e) {
         }
+        conn.close();
         
         if (speciesList.size() == 1) {
             return speciesList.get(0);
@@ -147,6 +138,7 @@ public class SpeciesDatabaseDao implements SpeciesDao {
             speciesList = createListFromResult(result);
         } catch (Exception e) {
         }
+        conn.close();
         
         if (speciesList.size() == 1) {
             return speciesList.get(0);
@@ -158,11 +150,11 @@ public class SpeciesDatabaseDao implements SpeciesDao {
     
 
     @Override
-    public void removeSpecies(String id) throws Exception {
+    public void removeSpecies(int id) throws Exception {
 
         Connection conn = DriverManager.getConnection(databaseAddress);
         PreparedStatement stmt = conn.prepareStatement("DELETE FROM Species WHERE id = ?");
-        stmt.setInt(1, Integer.parseInt(id));
+        stmt.setInt(1, id);
         stmt.executeUpdate();
         conn.close();
     }
@@ -186,7 +178,16 @@ public class SpeciesDatabaseDao implements SpeciesDao {
 
     }
     
-        
+    private void createModifyStatement(String searchField, String searchTerm, int id, Connection conn) throws Exception {
+        StringBuilder stmt = new StringBuilder();
+        stmt.append("UPDATE Species SET ").append(searchField).append(" = ? WHERE id = ?");
+        String s = stmt.toString();
+        PreparedStatement p = conn.prepareStatement(s);
+        p.setString(1, searchTerm);
+        p.setInt(2, id);        
+        p.executeUpdate();
+    }
+    
     private String createStatementByField(String searchField) {
         StringBuilder stmt = new StringBuilder();
         stmt.append("SELECT * FROM Species WHERE ");

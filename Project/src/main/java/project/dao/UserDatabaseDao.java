@@ -34,6 +34,7 @@ public class UserDatabaseDao implements UserDao {
         stmt.setString(3, user.getPassword());
         stmt.execute();
 
+        stmt.close();
         conn.close();
     }
 
@@ -57,28 +58,28 @@ public class UserDatabaseDao implements UserDao {
     
     
     @Override
-    public void modifyUser(String id, String username, String name, String password) throws Exception {
+    public void modifyUser(int id, String username, String name, String password) throws Exception {
         Connection conn = DriverManager.getConnection(databaseAddress);
         
         try {
             if (!username.isEmpty()) { 
                 PreparedStatement stmt = conn.prepareStatement("UPDATE User SET username = ? WHERE id = ?");
                 stmt.setString(1, username);
-                stmt.setInt(2, Integer.parseInt(id));
+                stmt.setInt(2, id);
                 stmt.executeUpdate();
             }
 
             if (!name.isEmpty()) { 
                 PreparedStatement stmt = conn.prepareStatement("UPDATE User SET name = ? WHERE id = ?");
                 stmt.setString(1, name);
-                stmt.setInt(2, Integer.parseInt(id));
+                stmt.setInt(2, id);
                 stmt.executeUpdate();
             }
 
             if (!password.isEmpty()) { 
                 PreparedStatement stmt = conn.prepareStatement("UPDATE User SET password = ? WHERE id = ?");
                 stmt.setString(1, password);
-                stmt.setInt(2, Integer.parseInt(id));
+                stmt.setInt(2, id);
                 stmt.executeUpdate();
             }
         } catch (Exception e) {
@@ -101,22 +102,24 @@ public class UserDatabaseDao implements UserDao {
         } catch (Exception e) {
 
         }
+        conn.close();
         return users;
     }
     
     
     @Override
-    public User findUserById(String id) throws Exception {
+    public User findUserById(int id) throws Exception {
         Connection conn = DriverManager.getConnection(databaseAddress);
         List<User> users = new ArrayList<>();
         try {
             PreparedStatement stmt = conn.prepareStatement("SELECT * FROM User WHERE id = ?");
-            stmt.setInt(1, Integer.parseInt(id));
+            stmt.setInt(1, id);
             
             ResultSet result = stmt.executeQuery();
             users = createListFromResult(result);
         } catch (Exception e) {
         }
+        conn.close();
         
         if (users.size() == 1) {
             return users.get(0);
@@ -138,6 +141,7 @@ public class UserDatabaseDao implements UserDao {
             users = createListFromResult(result);
         } catch (Exception e) {
         }
+        conn.close();
         
         if (users.size() == 1) {
             return users.get(0);
@@ -149,11 +153,11 @@ public class UserDatabaseDao implements UserDao {
     
 
     @Override
-    public void removeUser(String id) throws Exception {
+    public void removeUser(int id) throws Exception {
 
         Connection conn = DriverManager.getConnection(databaseAddress);
         PreparedStatement stmt = conn.prepareStatement("DELETE FROM User WHERE id = ?");
-        stmt.setInt(1, Integer.parseInt(id));
+        stmt.setInt(1, id);
         stmt.executeUpdate();
         conn.close();
     }

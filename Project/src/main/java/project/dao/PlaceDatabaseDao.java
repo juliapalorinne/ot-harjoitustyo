@@ -34,7 +34,8 @@ public class PlaceDatabaseDao implements PlaceDao {
         stmt.setString(3, place.getSpot());
         stmt.setString(4, place.getType());
         stmt.execute();
-
+        
+        stmt.close();
         conn.close();
     }
 
@@ -59,36 +60,24 @@ public class PlaceDatabaseDao implements PlaceDao {
     
     
     @Override
-    public void modifyPlace(String id, String country, String city, String spot, String type) throws Exception {
+    public void modifyPlace(int id, String country, String city, String spot, String type) throws Exception {
         Connection conn = DriverManager.getConnection(databaseAddress);
         
         try {
-            if (!country.isEmpty()) { 
-                PreparedStatement stmt = conn.prepareStatement("UPDATE Place SET country = ? WHERE id = ?");
-                stmt.setString(1, country);
-                stmt.setInt(2, Integer.parseInt(id));
-                stmt.executeUpdate();
+            if (!country.isEmpty()) {
+                createModifyStatement("country", country, id, conn);
             }
 
             if (!city.isEmpty()) { 
-                PreparedStatement stmt = conn.prepareStatement("UPDATE Place SET city = ? WHERE id = ?");
-                stmt.setString(1, city);
-                stmt.setInt(2, Integer.parseInt(id));
-                stmt.executeUpdate();
+                createModifyStatement("city", city, id, conn);
             }
 
-            if (!spot.isEmpty()) { 
-                PreparedStatement stmt = conn.prepareStatement("UPDATE Place SET spot = ? WHERE id = ?");
-                stmt.setString(1, spot);
-                stmt.setInt(2, Integer.parseInt(id));
-                stmt.executeUpdate();
+            if (!spot.isEmpty()) {
+                createModifyStatement("spot", spot, id, conn);
             }
             
             if (!type.isEmpty()) { 
-                PreparedStatement stmt = conn.prepareStatement("UPDATE Place SET type = ? WHERE id = ?");
-                stmt.setString(1, type);
-                stmt.setInt(2, Integer.parseInt(id));
-                stmt.executeUpdate();
+                createModifyStatement("type", type, id, conn);
             }
         } catch (Exception e) {
         }
@@ -110,22 +99,24 @@ public class PlaceDatabaseDao implements PlaceDao {
         } catch (Exception e) {
 
         }
+        conn.close();
         return places;
     }
     
     
     @Override
-    public Place findPlaceById(String id) throws Exception {
+    public Place findPlaceById(int id) throws Exception {
         Connection conn = DriverManager.getConnection(databaseAddress);
         List<Place> places = new ArrayList<>();
         try {
             PreparedStatement stmt = conn.prepareStatement("SELECT * FROM Place WHERE id = ?");
-            stmt.setInt(1, Integer.parseInt(id));
+            stmt.setInt(1, id);
             
             ResultSet result = stmt.executeQuery();
             places = createListFromResult(result);
         } catch (Exception e) {
         }
+        conn.close();
         
         if (places.size() == 1) {
             return places.get(0);
@@ -147,6 +138,7 @@ public class PlaceDatabaseDao implements PlaceDao {
             places = createListFromResult(result);
         } catch (Exception e) {
         }
+        conn.close();
         
         if (places.size() == 1) {
             return places.get(0);
@@ -155,18 +147,15 @@ public class PlaceDatabaseDao implements PlaceDao {
     }
 
 
-    
-
     @Override
-    public void removePlace(String id) throws Exception {
+    public void removePlace(int id) throws Exception {
 
         Connection conn = DriverManager.getConnection(databaseAddress);
         PreparedStatement stmt = conn.prepareStatement("DELETE FROM Place WHERE id = ?");
-        stmt.setInt(1, Integer.parseInt(id));
+        stmt.setInt(1, id);
         stmt.executeUpdate();
         conn.close();
     }
-    
     
 
     
@@ -180,12 +169,22 @@ public class PlaceDatabaseDao implements PlaceDao {
         try {
             stmt.execute(
                     "CREATE TABLE Place (id INTEGER PRIMARY KEY, country, city, spot, type)");
+            System.out.println("Table Place created");
         } catch (Exception e) {
             
         }
 
     }
     
+    private void createModifyStatement(String searchField, String searchTerm, int id, Connection conn) throws Exception {
+        StringBuilder stmt = new StringBuilder();
+        stmt.append("UPDATE Place SET ").append(searchField).append(" = ? WHERE id = ?");
+        String s = stmt.toString();
+        PreparedStatement p = conn.prepareStatement(s);
+        p.setString(1, searchTerm);
+        p.setInt(2, id);        
+        p.executeUpdate();
+    }
         
     private String createStatementByField(String searchField) {
         StringBuilder stmt = new StringBuilder();

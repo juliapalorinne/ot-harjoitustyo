@@ -18,8 +18,8 @@ public class ObservationService {
         observationDao = new ObservationDatabaseDao("jdbc:sqlite:observation.db");
     }
     
-    public void setDatabase(String databaseAddress) {
-        observationDao = new ObservationDatabaseDao(databaseAddress);
+    public void setDatabase(ObservationDao database) {
+        observationDao = database;
     }
     
     public boolean createObservation() {
@@ -33,8 +33,8 @@ public class ObservationService {
         return true;
     }
     
-    public boolean createObservation(int species, int individuals, int place, LocalDate date, LocalTime time, String info) {
-        Observation observation = new Observation(species, individuals, place, date, time, info, loggedIn.getUsername());
+    public boolean createObservation(Species species, int individuals, Place place, LocalDate date, LocalTime time, String info) {
+        Observation observation = new Observation(species.getId(), individuals, place.getId(), date, time, info, loggedIn.getUsername());
         try {   
             observationDao.addObservation(observation);
         } catch (Exception ex) {
@@ -52,6 +52,31 @@ public class ObservationService {
             .stream()
             .filter(o-> o.getUserId().equals(loggedIn.getUsername()))
             .collect(Collectors.toList());
+    }
+    
+    
+    public List<Observation> getObservationsBySearchTerm(String searchTerm, String searchField) throws Exception {
+        if (loggedIn == null) {
+            return new ArrayList<>();
+        }
+          
+        return observationDao.searchObservations(searchTerm, searchField)
+            .stream()
+            .filter(o-> o.getUserId().equals(loggedIn.getUsername()))
+            .collect(Collectors.toList());
+    }
+    
+    public Observation findObservationById(int id) throws Exception {
+        return observationDao.findObservationById(id);
+    }
+    
+    
+    public void removeObservation(int id) throws Exception {
+        observationDao.removeObservation(id);
+    }
+    
+    public void modifyObservation(int id, Species species, int individuals, Place place, String date, String time, String info) throws Exception {
+        observationDao.modifyObservation(id, species.getId(), individuals, place.getId(), date, time, info, loggedIn.getUsername());
     }
     
 

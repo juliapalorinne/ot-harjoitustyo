@@ -74,7 +74,7 @@ public class NewObservation {
             int individuals = Integer.parseInt(newIndividualInput.getText());
             
             
-            if (observationService.createObservation(species.getId(), individuals, place.getId(), date, time, info)) {
+            if (observationService.createObservation(species, individuals, place, date, time, info)) {
                 newIndividualInput.setText("");
                 newTimeInput.setText("");
                 newInfoInput.setText("");

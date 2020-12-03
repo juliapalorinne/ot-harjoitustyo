@@ -10,7 +10,9 @@ public class Species {
     private String finnishName;
     private String abbreviation;
 
-
+    public Species() {
+    }
+    
     public Species(int id, String englishName, String scientificName, String finnishName, String abbreviation) {
         this.id = id;
         this.englishName = englishName;

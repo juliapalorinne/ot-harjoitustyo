@@ -12,6 +12,10 @@ public class SpeciesService {
         speciesDao = new SpeciesDatabaseDao("jdbc:sqlite:species.db");
     }
     
+    public void setDatabase(SpeciesDao database) {
+        speciesDao = database;
+    }
+    
     public boolean createSpecies(String englishName, String scientificName, String finnishName, String abbreviation) {
         Species species = new Species(englishName, scientificName, finnishName, abbreviation);
         try {   
@@ -22,15 +26,15 @@ public class SpeciesService {
         return true;
     }
     
-    public void removeSpecies(String id) throws Exception {
+    public void removeSpecies(int id) throws Exception {
         speciesDao.removeSpecies(id);
     }
     
-    public void modifySpecies(String id, String englishName, String scientificName, String finnishName, String abbreviation) throws Exception {
+    public void modifySpecies(int id, String englishName, String scientificName, String finnishName, String abbreviation) throws Exception {
         speciesDao.modifySpecies(id, englishName, scientificName, finnishName, abbreviation);
     }
     
-    public Species getSpeciesById(String id) throws Exception {
+    public Species getSpeciesById(int id) throws Exception {
         Species species = speciesDao.findSpeciesById(id);
         return species;
     }
@@ -42,5 +46,9 @@ public class SpeciesService {
     
     public List<Species> getAllSpecies() throws Exception {
         return speciesDao.getAllSpecies();
+    }
+    
+    public List<Species> getSpeciesBySearchTerm(String searchTerm, String searchField) throws Exception {
+         return speciesDao.searchSpecies(searchTerm, searchField);
     }
 }
