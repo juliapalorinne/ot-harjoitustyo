@@ -41,8 +41,8 @@ public class NewObservation {
     private Button addNewPlaceButton;
     
     
-    public NewObservation(ObservationService observationService, PlaceService placeService,
-            SpeciesService speciesService, InputWindow inputWindow) {
+    public NewObservation(ObservationService observationService, SpeciesService speciesService, 
+            PlaceService placeService, InputWindow inputWindow) {
         this.observationService = observationService;
         this.speciesService = speciesService;
         this.placeService = placeService;

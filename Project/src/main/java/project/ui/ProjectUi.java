@@ -48,8 +48,8 @@ public class ProjectUi extends Application {
         speciesService = new SpeciesService();
         placeService = new PlaceService();
         inputWindow = new InputWindow();
-        observationTable = new ObservationTable(observationService);
-        newObservation = new NewObservation(observationService, placeService, speciesService, inputWindow); 
+        observationTable = new ObservationTable(observationService, speciesService, placeService);
+        newObservation = new NewObservation(observationService, speciesService, placeService, inputWindow); 
         newUser = new NewUser(inputWindow, userService);
         newSpecies = new NewSpecies(inputWindow, speciesService);
         newPlace = new NewPlace(inputWindow, placeService);
