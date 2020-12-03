@@ -18,7 +18,7 @@ Päivämäärä | Tehtävä | Käytetty aika
 1.12.2020 | Sovelluksen ongelmia korjattu ja ulkoasua kehitetty | 4 h
 2.12.2020 | Sovelluksen tiedostot muutettu tietokannoiksi | 2 h
 2.12.2020 | Puuttuvat tietokannat lajille ja paikalle luotu | 1 h
-2.12.2020 | Tästä aiheutuneiden ongelmien ja aiemmin tehtyjen testien korjaus | 2 h
+2.12.2020 | Tietorakenteiden muokkauksesta aiheutuneiden ongelmien ja aiemmin tehtyjen testien korjaus | 2 h
 3.12.2020 | Jatkoa edelliseen... | 5 h
  | | 
 24.11.2020 | **YHTEENSÄ**| **34 h**
