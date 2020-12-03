@@ -27,7 +27,7 @@ Sovelluksessa on aluksi vain yksi käyttäjärooli, **normaali käyttäjä**. So
 - Käyttäjä voi tarkastella ja muokata kirjaamiaan havaintoja.
 - Käyttäjä määrittelee havainnot salaisiksi tai julkisiksi. 
 - Käyttäjä voi tarkastella toisten käyttäjien kirjaamia havaintoja.
-- Käyttäjä voi etsiä **lintulajeja** tai **havaintopaikkoja** nimen perusteella ja lisätä uusia, jos niitä ei vielä löydy tietokannasta.
+- Käyttäjä voi etsiä **lintulajeja** tai **havaintopaikkoja** nimen perusteella ja lisätä uusia, jos niitä ei vielä löydy tietokannasta. (Melkein tehty!)
 - Käyttäjä näkee tilastoja kirjaamistaan havainnoista, esim.
     - kuluvana vuonna havaittujen lajien määrä
     - tietyssä paikassa havaittujen lajien määrä
