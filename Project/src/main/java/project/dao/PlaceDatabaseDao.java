@@ -169,7 +169,7 @@ public class PlaceDatabaseDao implements PlaceDao {
         try {
             stmt.execute(
                     "CREATE TABLE Place (id INTEGER PRIMARY KEY, country, city, spot, type)");
-            System.out.println("Table Place created");
+            
         } catch (Exception e) {
             
         }

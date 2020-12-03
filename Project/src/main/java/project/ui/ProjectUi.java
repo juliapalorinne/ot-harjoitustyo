@@ -54,7 +54,7 @@ public class ProjectUi extends Application {
         newSpecies = new NewSpecies(inputWindow, speciesService);
         newPlace = new NewPlace(inputWindow, placeService);
         
-        addSpeciesToDatabase();
+//        addSpeciesListToDatabase();
     }
 
     
@@ -184,7 +184,7 @@ public class ProjectUi extends Application {
     }
     
     
-    private void addSpeciesToDatabase() {
+    private void addSpeciesListToDatabase() {
         speciesService.createSpecies("Bar-headed goose", "Anser indicus", "tiibetinhanhi", "ansind");
         speciesService.createSpecies("Tundra bean-goose", "Anser serrirostris", "tundrahanhi", "ansser");
         speciesService.createSpecies("Mute swan", "Cygnus olor", "kyhmyjoutsen", "cygolo");

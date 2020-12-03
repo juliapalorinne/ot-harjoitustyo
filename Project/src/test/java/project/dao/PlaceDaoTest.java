@@ -17,7 +17,6 @@ import org.junit.rules.TemporaryFolder;
 
 public class PlaceDaoTest { 
     
-    
     PlaceDatabaseDao placeDao;
     File testFolder;
         
@@ -46,6 +45,12 @@ public class PlaceDaoTest {
         Place p = placeDao.findPlaceById(1);
         assertEquals("Helsinki", p.getCity());
         assertEquals("Fastholma", p.getSpot());
+    }
+    
+    @Test
+    public void nonExistingPlaceCanNotBeFoundById() throws Exception {
+        Place p = placeDao.findPlaceById(5);
+        assertEquals(null, p);
     }
     
     @Test

@@ -130,7 +130,11 @@ public class ObservationDatabaseDao implements ObservationDao {
         try {
             String stmt = createStatementByField(searchField);
             PreparedStatement p = conn.prepareStatement(stmt);
-            p.setString(1, searchTerm);
+            if (searchField.equals("species") || searchField.equals("place")) {
+                p.setInt(1, Integer.parseInt(searchTerm));
+            } else {
+                p.setString(1, searchTerm);
+            }
 
             ResultSet result = p.executeQuery();
             observations = createListFromResult(result);
