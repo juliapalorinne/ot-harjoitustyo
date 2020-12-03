@@ -1,9 +1,12 @@
 
 package project.ui;
 
+import project.domain.DisplayableObservation;
 import java.time.LocalTime;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
@@ -19,31 +22,36 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
+import project.domain.DisplayableObservationService;
 import project.domain.Observation;
 import project.domain.ObservationService;
 import project.domain.PlaceService;
 import project.domain.SpeciesService;
 
 public class ObservationTable {
-    private ObservationService observationService;   
-    private SpeciesService speciesService;
-    private PlaceService placeService;
+    private DisplayableObservationService displayObsService;
     private TableView table;
     private Button addButton;
+    private Button searchButton;
     private Button logoutButton;
     
-    private ObservableList<Observation> observations;
+    private ObservableList<DisplayableObservation> observations;
     
     
     public ObservationTable(ObservationService observationService, SpeciesService speciesService, PlaceService placeService) {
-        this.observationService = observationService;
-        this.speciesService = speciesService;
-        this.placeService = placeService;
+        this.displayObsService = new DisplayableObservationService(observationService, speciesService, placeService);
         this.observations = FXCollections.observableArrayList();
         addButton = new Button("Add new observation");
+        searchButton = new Button("Search observations");
         logoutButton = new Button("Logout");
     }  
     
+    
+    public Scene observationScene() throws Exception {
+        redrawObservationList();
+        Scene observationScene = new Scene(createTable(), 800, 600);
+        return observationScene;
+    }
     
     
     public VBox createTable() throws Exception {
@@ -52,25 +60,32 @@ public class ObservationTable {
         label.setFont(new Font("Arial", 20));
  
         table.setEditable(true);
+        table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
         redrawObservationList();
  
-        TableColumn<Observation, String> speciesCol = new TableColumn("Species");
+        TableColumn<DisplayableObservation, String> speciesCol = new TableColumn("Species");
         speciesCol.setCellValueFactory(new PropertyValueFactory<>("species"));
+        speciesCol.setMaxWidth( 1f * Integer.MAX_VALUE * 30 );
         
-        TableColumn<Observation, Integer> individualCol = new TableColumn("Individuals");
+        TableColumn<DisplayableObservation, Integer> individualCol = new TableColumn("Individuals");
         individualCol.setCellValueFactory(new PropertyValueFactory<>("individuals"));
+        individualCol.setMaxWidth( 1f * Integer.MAX_VALUE * 5 );
         
-        TableColumn<Observation, String> placeCol = new TableColumn("Place");
+        TableColumn<DisplayableObservation, String> placeCol = new TableColumn("Place");
         placeCol.setCellValueFactory(new PropertyValueFactory<>("place"));
+        placeCol.setMaxWidth( 1f * Integer.MAX_VALUE * 35 );
         
-        TableColumn<Observation, Date> dateCol = new TableColumn("Date");
+        TableColumn<DisplayableObservation, Date> dateCol = new TableColumn("Date");
         dateCol.setCellValueFactory(new PropertyValueFactory<>("date"));
+        dateCol.setMaxWidth( 1f * Integer.MAX_VALUE * 10 );
         
-        TableColumn<Observation, LocalTime> timeCol = new TableColumn("Time");
+        TableColumn<DisplayableObservation, LocalTime> timeCol = new TableColumn("Time");
         timeCol.setCellValueFactory(new PropertyValueFactory<>("time"));
+        timeCol.setMaxWidth( 1f * Integer.MAX_VALUE * 5 );
         
-        TableColumn<Observation, String> infoCol = new TableColumn("Info");
+        TableColumn<DisplayableObservation, String> infoCol = new TableColumn("Info");
         infoCol.setCellValueFactory(new PropertyValueFactory<>("info"));
+        infoCol.setMaxWidth( 1f * Integer.MAX_VALUE * 15 );
         
         table.setItems(observations);
         table.getColumns().addAll(speciesCol, individualCol, placeCol, 
@@ -79,21 +94,20 @@ public class ObservationTable {
         VBox vbox = new VBox();
         vbox.setStyle("-fx-background-color: #FFB6C1;");
         vbox.setSpacing(5);
-        vbox.setPadding(new Insets(10, 0, 0, 10));
-        vbox.getChildren().addAll(menu(), label, table, createObservation());
-        
+        vbox.setPadding(new Insets(10, 10, 10, 10));
+        vbox.getChildren().addAll(menu(), label, table, searchObservations(), createObservation());
+        vbox.setVgrow(table, Priority.ALWAYS);
         return vbox;
     }  
     
-
-    
     public void redrawObservationList() throws Exception {
-        List<Observation> observationlist = observationService.getAll();
-        observationlist.forEach(obs-> {
-            if (!observations.contains(obs)) {
-                observations.add(obs);
+        displayObsService.redrawObservationList();
+        List<DisplayableObservation> obs = displayObsService.getAll();
+        for (DisplayableObservation o : obs) {
+            if (!observations.contains(o)) {
+                observations.add(o);
             }
-        });     
+        }
     }
     
     
@@ -118,13 +132,22 @@ public class ObservationTable {
         return this.addButton;
     }
     
+    public Button searchButton() {
+        return this.searchButton;
+    }
+    
     public Button logoutButton() {
         return this.logoutButton;
     }    
     
-    public Scene observationScene() throws Exception {
-        Scene observationScene = new Scene(new Group());
-        ((Group) observationScene.getRoot()).getChildren().addAll(createTable());
-        return observationScene;
+    
+    public HBox searchObservations() {
+        HBox searchForm = new HBox(10);
+        Region spacer = new Region();
+        HBox.setHgrow(spacer, Priority.ALWAYS);
+        searchForm .getChildren().addAll(spacer, searchButton());
+        return searchForm;
     }
+    
+    
 }

@@ -55,9 +55,15 @@ public class NewObservation {
     
     public Scene createNewObservation(Stage stage, ObservationTable observationTable) throws Exception {
         VBox newObsPane = inputWindow.createNewWindow();
-        Species species = listSpecies(newObsPane).getSelectionModel().getSelectedItem();
+//        Species species = listSpecies(newObsPane).getSelectionModel().getSelectedItem();
+        
+        ListView<Species> speciesList = listSpecies(newObsPane);
+        
         TextField newIndividualInput = inputWindow.createInputField(newObsPane, "Individuals");
-        Place place = listPlaces(newObsPane).getSelectionModel().getSelectedItem();
+//        Place place = listPlaces(newObsPane).getSelectionModel().getSelectedItem();
+
+        ListView<Place> placeList = listPlaces(newObsPane);
+        
         DatePicker datePicker = inputWindow.createDatePicker(newObsPane, "Date");
         TextField newTimeInput = inputWindow.createInputField(newObsPane, "Time (hh:mm)");
         TextField newInfoInput = inputWindow.createBigInputField(newObsPane, "Additional info");
@@ -73,6 +79,8 @@ public class NewObservation {
             String info = newInfoInput.getText();
             int individuals = Integer.parseInt(newIndividualInput.getText());
             
+            Species species = speciesList.getSelectionModel().getSelectedItem();
+            Place place = placeList.getSelectionModel().getSelectedItem();
             
             if (observationService.createObservation(species, individuals, place, date, time, info)) {
                 newIndividualInput.setText("");
