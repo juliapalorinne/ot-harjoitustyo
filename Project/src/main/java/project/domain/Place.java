@@ -79,6 +79,10 @@ public class Place {
         Place other = (Place) object;
         return id == other.id;
     }
+    
+    public String toString() {
+        return this.country + ", " + this.city + ", " + this.spot + " (" + this.type + ")";
+    }
 
 
 

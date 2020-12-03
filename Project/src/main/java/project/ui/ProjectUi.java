@@ -54,7 +54,9 @@ public class ProjectUi extends Application {
         newSpecies = new NewSpecies(inputWindow, speciesService);
         newPlace = new NewPlace(inputWindow, placeService);
         
-//        addSpeciesListToDatabase();
+        
+//        addSpeciesListToDatabase();  // Tästä voi lisätä aluksi muutamankymmentä lintua tietokantaan.
+//        addPlaceListToDatabase();  // Ja tästä vastaavasti joitakin paikkoja.
     }
 
     
@@ -240,6 +242,19 @@ public class ProjectUi extends Application {
         speciesService.createSpecies("", "", "", "");
         
         
+        
+    }
+    
+    private void addPlaceListToDatabase() {
+        placeService.createPlace("Finland", "Espoo", "Laajalahti, Maari", "birding tower");
+        placeService.createPlace("Finland", "Espoo", "Nuuksio", "forest");
+        placeService.createPlace("Finland", "Hanko", "Halias", "bird station");
+        placeService.createPlace("Finland", "Hanko", "Tvärminne", "biological station");
+        placeService.createPlace("Finland", "Helsinki", "Fastholma", "birding tower");
+        placeService.createPlace("Finland", "Helsinki", "Lammassaari", "birding tower");
+        placeService.createPlace("Finland", "Kirkkonummi", "Porkkala", "seaside");
+        placeService.createPlace("Finland", "Kuopio", "Kallavesi", "lake");
+        placeService.createPlace("Finland", "Parainen", "Jurmo", "bird station");
         
     }
 }

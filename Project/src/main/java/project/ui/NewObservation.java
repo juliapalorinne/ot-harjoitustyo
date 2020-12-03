@@ -89,7 +89,7 @@ public class NewObservation {
         
         
         newObsPane.getChildren().addAll(observationCreationMessage, createNewObsButton, returnButton);
-        Scene newObservationScene = new Scene(newObsPane, 600, 500);
+        Scene newObservationScene = new Scene(newObsPane, 750, 650);
         return newObservationScene;
     }
     
@@ -115,6 +115,7 @@ public class NewObservation {
         
         ListView<Species> listView = new ListView<>();
         listView.setItems(observableSpeciesList);
+        listView.setPrefWidth(400);
         
         HBox speciesPane = new HBox(10);
         Label speciesLabel = new Label("Species");
@@ -134,6 +135,7 @@ public class NewObservation {
         
         ListView<Place> listView = new ListView<>();
         listView.setItems(observablePlaceList);
+        listView.setPrefWidth(400);
         
         HBox placePane = new HBox(10);
         Label placeLabel = new Label("Place");

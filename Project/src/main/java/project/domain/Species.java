@@ -79,6 +79,10 @@ public class Species {
         return id == other.id;
     }
 
+    
+    public String toString() {
+        return this.englishName + " (" + this.finnishName + ", " + this.scientificName + ")";
+    }
 
 
 }
