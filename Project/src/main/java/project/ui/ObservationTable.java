@@ -48,7 +48,6 @@ public class ObservationTable {
     
     
     public Scene observationScene() throws Exception {
-        redrawObservationList();
         Scene observationScene = new Scene(createTable(), 800, 600);
         return observationScene;
     }
@@ -59,9 +58,10 @@ public class ObservationTable {
         Label label = new Label("Observations");
         label.setFont(new Font("Arial", 20));
  
+        redrawObservationList();
         table.setEditable(true);
         table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
-        redrawObservationList();
+        
  
         TableColumn<DisplayableObservation, String> speciesCol = new TableColumn("Species");
         speciesCol.setCellValueFactory(new PropertyValueFactory<>("species"));

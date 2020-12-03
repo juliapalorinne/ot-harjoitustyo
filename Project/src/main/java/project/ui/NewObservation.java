@@ -1,11 +1,8 @@
 
 package project.ui;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -19,12 +16,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-import project.domain.Observation;
 import project.domain.ObservationService;
 import project.domain.Place;
 import project.domain.PlaceService;
@@ -55,12 +48,10 @@ public class NewObservation {
     
     public Scene createNewObservation(Stage stage, ObservationTable observationTable) throws Exception {
         VBox newObsPane = inputWindow.createNewWindow();
-//        Species species = listSpecies(newObsPane).getSelectionModel().getSelectedItem();
         
         ListView<Species> speciesList = listSpecies(newObsPane);
         
         TextField newIndividualInput = inputWindow.createInputField(newObsPane, "Individuals");
-//        Place place = listPlaces(newObsPane).getSelectionModel().getSelectedItem();
 
         ListView<Place> placeList = listPlaces(newObsPane);
         

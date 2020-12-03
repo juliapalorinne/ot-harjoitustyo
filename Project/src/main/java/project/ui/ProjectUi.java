@@ -6,7 +6,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Application;
 import static javafx.application.Application.launch;
-import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -37,8 +36,6 @@ public class ProjectUi extends Application {
     private Scene newUserScene;
     private Scene loginScene;
     private Scene newObservationScene;
-    private Scene newPlaceScene;
-    private Scene newSpeciesScene;
     
     
     @Override
@@ -77,10 +74,9 @@ public class ProjectUi extends Application {
             try {
                 if (userService.login(username, password)){
                     loginMessage.setText("");
-                    observationService.setLoggedUser(userService.getLoggedUser());
-                    primaryStage.setScene(observationScene);
                     usernameInput.setText("");
                     passwordInput.setText("");
+                    getMainView(primaryStage);
                 } else {
                     loginMessage.setText("user does not exist");
                     loginMessage.setTextFill(Color.RED);      
@@ -99,9 +95,7 @@ public class ProjectUi extends Application {
         loginPane.getChildren().addAll(loginMessage, loginButton, createButton);       
         
         loginScene = new Scene(loginPane, 400, 250);
-        
-        
-        
+ 
         
         // new createNewUserScene
         
@@ -109,53 +103,7 @@ public class ProjectUi extends Application {
         newUser.returnButton().setOnAction(e-> {
             primaryStage.setScene(loginScene);
         });
-        
-        
-        
-        // main scene
-        
-        observationScene = observationTable.observationScene();        
-        observationTable.logoutButton().setOnAction(e->{
-            userService.logout();
-            primaryStage.setScene(loginScene);
-        });        
-        observationTable.addButton().setOnAction(e->{
-            primaryStage.setScene(newObservationScene);   
-        });  
 
-        
-        
-        // new createNewObservationScene
-        
-        newObservationScene = newObservation.createNewObservation(primaryStage, observationTable);
-        newObservation.returnButton().setOnAction(e-> {
-            primaryStage.setScene(observationScene);
-        });
-        newObservation.addNewSpeciesButton().setOnAction(e-> {
-            primaryStage.setScene(newSpeciesScene);
-        });        
-        newObservation.addNewPlaceButton().setOnAction(e-> {
-            primaryStage.setScene(newPlaceScene);
-        });        
-        
-        
-        
-        // new addNewSpeciesScene
-        
-        newSpeciesScene = newSpecies.newSpeciesScene(primaryStage, newObservationScene);
-        newSpecies.returnButton().setOnAction(e-> {
-            primaryStage.setScene(newObservationScene);
-        });
-        
-        
-        // new addNewPlaceScene
-        
-        newPlaceScene = newPlace.newPlaceScene(primaryStage, newObservationScene);
-        newPlace.returnButton().setOnAction(e-> {
-            primaryStage.setScene(newObservationScene);
-        });
-        
-        
         
         // seutp primary stage
         
@@ -172,7 +120,82 @@ public class ProjectUi extends Application {
         });
     }
     
+    public void getMainView(Stage stage) throws Exception {
+        observationScene = observationTable.observationScene();        
+        stage.setScene(observationScene);
+        
+        observationTable.logoutButton().setOnAction(e->{
+            userService.logout();
+            try {
+                start(stage);
+            } catch (Exception ex) {
+                Logger.getLogger(ProjectUi.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        });        
+        observationTable.addButton().setOnAction(e->{
+            try {
+                getNewObservationView(stage);
+            } catch (Exception ex) {
+                Logger.getLogger(ProjectUi.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        });  
+    }
     
+    public void getNewObservationView(Stage stage) throws Exception {
+        newObservationScene = newObservation.createNewObservation(stage, observationTable);
+        stage.setScene(newObservationScene);
+        
+        newObservation.returnButton().setOnAction(e-> {
+            try {
+                getMainView(stage);
+            } catch (Exception ex) {
+                Logger.getLogger(ProjectUi.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        });
+        newObservation.addNewSpeciesButton().setOnAction(e-> {
+            try {
+                getNewSpeciesView(stage);
+            } catch (Exception ex) {
+                Logger.getLogger(ProjectUi.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        });        
+        newObservation.addNewPlaceButton().setOnAction(e-> {
+            try {
+                getNewPlaceView(stage);
+            } catch (Exception ex) {
+                Logger.getLogger(ProjectUi.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        });        
+        
+    }
+    
+    public void getNewSpeciesView(Stage stage) throws Exception {
+        Scene newSpeciesScene = newSpecies.newSpeciesScene(stage, newObservationScene);
+        stage.setScene(newSpeciesScene);
+
+        newSpecies.returnButton().setOnAction(e-> {
+            try {
+                getNewObservationView(stage);
+            } catch (Exception ex) {
+                Logger.getLogger(ProjectUi.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        });
+    }
+    
+    
+    public void getNewPlaceView(Stage stage) throws Exception {
+        Scene newPlaceScene = newPlace.newPlaceScene(stage, newObservationScene);
+        stage.setScene(newPlaceScene);
+
+        newPlaceScene = newPlace.newPlaceScene(stage, newObservationScene);
+        newPlace.returnButton().setOnAction(e-> {
+            try {
+                getNewObservationView(stage);
+            } catch (Exception ex) {
+                Logger.getLogger(ProjectUi.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        });
+    }
 
     @Override
     public void stop() {
