@@ -20,5 +20,7 @@ Päivämäärä | Tehtävä | Käytetty aika
 2.12.2020 | Puuttuvat tietokannat lajille ja paikalle luotu | 1 h
 2.12.2020 | Tietorakenteiden muokkauksesta aiheutuneiden ongelmien ja aiemmin tehtyjen testien korjaus | 2 h
 3.12.2020 | Jatkoa edelliseen... | 5 h
+5.12.2020 | Hakuominaisuuden luominen aloitettu | 2 h
+6.12.2020 | Lisää tiestejä | 2 h
  | | 
-24.11.2020 | **YHTEENSÄ**| **34 h**
+24.11.2020 | **YHTEENSÄ**| **38 h**
