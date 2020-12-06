@@ -3,6 +3,7 @@ package project.dao;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 import project.domain.*;
 import junit.framework.Assert;
 import org.junit.After;
@@ -29,6 +30,7 @@ public class PlaceDaoTest {
         
         Place p1 = new Place("Finland", "Helsinki", "Fastholma", "birding tower");
         Place p2 = new Place("Finland", "Helsinki", "Lammassaari", "birding tower");
+        Place p3 = new Place("Finland", "Espoo", "Maari", "birding tower");
         placeDao.addPlace(p1);
         placeDao.addPlace(p2);
     }
@@ -63,6 +65,12 @@ public class PlaceDaoTest {
     public void placesCanBeModified() throws Exception {
         placeDao.modifyPlace(2, "", "", "", "pitkospuut");
         assertEquals("pitkospuut", placeDao.findPlaceById(2).getType());
+    }
+    
+    @Test
+    public void placesCanBeSearchedByField() throws Exception {
+        List<Place> places = placeDao.searchPlaces("Helsinki", "city");
+        assertEquals(2, places.size());
     }
     
     

@@ -63,6 +63,11 @@ public class DisplayableObservationService {
     }
     
     public DisplayableObservation getOne(int id) throws Exception {
+        for (DisplayableObservation d : obsList) {
+            if (d.getId() == id) {
+                return d;
+            }
+        }
         return new DisplayableObservation();
     }
     

@@ -3,6 +3,7 @@ package project.dao;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 import project.domain.*;
 import junit.framework.Assert;
 import org.junit.After;
@@ -64,11 +65,16 @@ public class SpeciesDaoTest {
     }
     
     @Test
-    public void placesCanBeModified() throws Exception {
+    public void speciesCanBeModified() throws Exception {
         speciesDao.modifySpecies(2, "", "", "", "ggru");
         assertEquals("ggru", speciesDao.findSpeciesById(2).getAbbreviation());
     }
     
+    @Test
+    public void speciesCanBeSearchedByField() throws Exception {
+        List<Species> species = speciesDao.searchSpecies("Eurasian", "englishName");
+        assertEquals(4, species.size());
+    }
     
    
  }

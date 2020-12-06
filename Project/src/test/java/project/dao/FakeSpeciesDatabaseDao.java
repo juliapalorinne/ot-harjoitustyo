@@ -1,6 +1,5 @@
 package project.dao;
 
-import project.dao.*;
 import java.util.ArrayList;
 import java.util.List;
 import project.domain.Species;
@@ -96,7 +95,11 @@ public class FakeSpeciesDatabaseDao implements SpeciesDao {
 
     @Override
     public void removeSpecies(int id) throws Exception {
-        speciesList.remove(id);
+        for (Species s : speciesList) {
+            if (s.getId() == id) {
+                speciesList.remove(s);
+            }
+        }
     }
     
     

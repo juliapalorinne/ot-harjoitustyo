@@ -92,7 +92,8 @@ public class SpeciesDatabaseDao implements SpeciesDao {
         try {
             String stmt = createStatementByField(searchField);
             PreparedStatement p = conn.prepareStatement(stmt);
-            p.setString(1, searchTerm);
+            String s = "%" + searchTerm + "%";
+            p.setString(1, s);
 
             ResultSet result = p.executeQuery();
             speciesList = createListFromResult(result);
@@ -192,16 +193,16 @@ public class SpeciesDatabaseDao implements SpeciesDao {
         StringBuilder stmt = new StringBuilder();
         stmt.append("SELECT * FROM Species WHERE ");
         if (searchField.equals("englishName")) {
-            stmt.append("englishName = ?");
+            stmt.append("englishName LIKE ?");
         }
         if (searchField.equals("scientificName")) {
-            stmt.append("scientificName = ?");
+            stmt.append("scientificName LIKE ?");
         }
         if (searchField.equals("finnishName")) {
-            stmt.append("finnishName = ?");
+            stmt.append("finnishName LIKE ?");
         }
         if (searchField.equals("abbreviation")) {
-            stmt.append("abbreviation = ?");
+            stmt.append("abbreviation LIKE ?");
         }
         return stmt.toString();
     }

@@ -31,6 +31,7 @@ public class ProjectUi extends Application {
     private NewObservation newObservation;
     private NewPlace newPlace;
     private NewSpecies newSpecies;
+    private SearchWindow searchWindow;
     
     private Scene observationScene;
     private Scene newUserScene;
@@ -50,6 +51,7 @@ public class ProjectUi extends Application {
         newUser = new NewUser(inputWindow, userService);
         newSpecies = new NewSpecies(inputWindow, speciesService);
         newPlace = new NewPlace(inputWindow, placeService);
+        searchWindow = new SearchWindow(inputWindow, observationService, speciesService, placeService);
         
         
 //        addSpeciesListToDatabase();  // Tästä voi lisätä aluksi muutamankymmentä lintua tietokantaan.
@@ -138,6 +140,13 @@ public class ProjectUi extends Application {
             } catch (Exception ex) {
                 Logger.getLogger(ProjectUi.class.getName()).log(Level.SEVERE, null, ex);
             }
+        });
+        observationTable.searchButton().setOnAction(e->{
+            try {
+                getSearchView(stage);
+            } catch (Exception ex) {
+                Logger.getLogger(ProjectUi.class.getName()).log(Level.SEVERE, null, ex);
+            }
         });  
     }
     
@@ -187,10 +196,23 @@ public class ProjectUi extends Application {
         Scene newPlaceScene = newPlace.newPlaceScene(stage, newObservationScene);
         stage.setScene(newPlaceScene);
 
-        newPlaceScene = newPlace.newPlaceScene(stage, newObservationScene);
         newPlace.returnButton().setOnAction(e-> {
             try {
                 getNewObservationView(stage);
+            } catch (Exception ex) {
+                Logger.getLogger(ProjectUi.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        });
+    }
+    
+    
+    public void getSearchView(Stage stage) throws Exception {
+        Scene searchScene = searchWindow.searchScene(stage);
+        stage.setScene(searchScene);
+
+        searchWindow.returnButton().setOnAction(e-> {
+            try {
+                getMainView(stage);
             } catch (Exception ex) {
                 Logger.getLogger(ProjectUi.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -208,6 +230,8 @@ public class ProjectUi extends Application {
     public static void main(String[] args) {
         launch(args);
     }
+    
+    
     
     
     private void addSpeciesListToDatabase() {
