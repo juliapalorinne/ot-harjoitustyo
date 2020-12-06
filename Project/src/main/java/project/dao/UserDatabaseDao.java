@@ -63,24 +63,13 @@ public class UserDatabaseDao implements UserDao {
         
         try {
             if (!username.isEmpty()) { 
-                PreparedStatement stmt = conn.prepareStatement("UPDATE User SET username = ? WHERE id = ?");
-                stmt.setString(1, username);
-                stmt.setInt(2, id);
-                stmt.executeUpdate();
+                createModifyStatement("username", username, id, conn);
             }
-
             if (!name.isEmpty()) { 
-                PreparedStatement stmt = conn.prepareStatement("UPDATE User SET name = ? WHERE id = ?");
-                stmt.setString(1, name);
-                stmt.setInt(2, id);
-                stmt.executeUpdate();
+                createModifyStatement("name", name, id, conn);
             }
-
             if (!password.isEmpty()) { 
-                PreparedStatement stmt = conn.prepareStatement("UPDATE User SET password = ? WHERE id = ?");
-                stmt.setString(1, password);
-                stmt.setInt(2, id);
-                stmt.executeUpdate();
+                createModifyStatement("password", password, id, conn);
             }
         } catch (Exception e) {
         }
@@ -195,6 +184,15 @@ public class UserDatabaseDao implements UserDao {
         return stmt.toString();
     }
     
+    private void createModifyStatement(String field, String newInfo, int id, Connection conn) throws Exception {
+        StringBuilder stmt = new StringBuilder();
+        stmt.append("UPDATE User SET ").append(field).append(" = ? WHERE id = ?");
+        String s = stmt.toString();
+        PreparedStatement p = conn.prepareStatement(s);
+        p.setString(1, newInfo);
+        p.setInt(2, id);        
+        p.executeUpdate();
+    }
     
     private List<User> createListFromResult(ResultSet result) throws Exception {
         List<User> users = new ArrayList<>();

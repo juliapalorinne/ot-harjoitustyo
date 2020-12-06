@@ -50,6 +50,6 @@ public class PlaceService {
     }
     
     public List<Place> getPlaceBySearchTerm(String searchTerm, String searchField) throws Exception {
-         return placeDao.searchPlaces(searchTerm, searchField);
+        return placeDao.searchPlaces(searchTerm, searchField);
     }
 }

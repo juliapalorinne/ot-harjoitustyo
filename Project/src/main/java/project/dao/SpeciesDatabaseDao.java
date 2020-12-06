@@ -67,15 +67,12 @@ public class SpeciesDatabaseDao implements SpeciesDao {
             if (!englishName.isEmpty()) {
                 createModifyStatement("englishName", englishName, id, conn);
             }
-
             if (!scientificName.isEmpty()) { 
                 createModifyStatement("scientificName", scientificName, id, conn);
             }
-
             if (!finnishName.isEmpty()) {
                 createModifyStatement("finnishName", finnishName, id, conn);
             }
-            
             if (!abbreviation.isEmpty()) {
                 createModifyStatement("abbreviation", abbreviation, id, conn);
             }
@@ -179,12 +176,12 @@ public class SpeciesDatabaseDao implements SpeciesDao {
 
     }
     
-    private void createModifyStatement(String searchField, String searchTerm, int id, Connection conn) throws Exception {
+    private void createModifyStatement(String field, String newInfo, int id, Connection conn) throws Exception {
         StringBuilder stmt = new StringBuilder();
-        stmt.append("UPDATE Species SET ").append(searchField).append(" = ? WHERE id = ?");
+        stmt.append("UPDATE Species SET ").append(field).append(" = ? WHERE id = ?");
         String s = stmt.toString();
         PreparedStatement p = conn.prepareStatement(s);
-        p.setString(1, searchTerm);
+        p.setString(1, newInfo);
         p.setInt(2, id);        
         p.executeUpdate();
     }

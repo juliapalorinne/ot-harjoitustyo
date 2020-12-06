@@ -49,6 +49,6 @@ public class SpeciesService {
     }
     
     public List<Species> getSpeciesBySearchTerm(String searchTerm, String searchField) throws Exception {
-         return speciesDao.searchSpecies(searchTerm, searchField);
+        return speciesDao.searchSpecies(searchTerm, searchField);
     }
 }

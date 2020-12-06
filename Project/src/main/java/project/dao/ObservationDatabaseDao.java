@@ -70,52 +70,25 @@ public class ObservationDatabaseDao implements ObservationDao {
         
         try {
             if (species != 0) { 
-                PreparedStatement stmt = conn.prepareStatement("UPDATE Observation SET species = ? WHERE id = ?");
-                stmt.setInt(1, species);
-                stmt.setInt(2, id);
-                stmt.executeUpdate();
+                createModifyStatement("species", Integer.toString(species), id, conn);
             }
-
             if (individuals != 0) { 
-                PreparedStatement stmt = conn.prepareStatement("UPDATE Observation SET individuals = ? WHERE id = ?");
-                stmt.setInt(1, individuals);
-                stmt.setInt(2, id);
-                stmt.executeUpdate();
+                createModifyStatement("individuals", Integer.toString(individuals), id, conn);
             }
-            
             if (place != 0) { 
-                PreparedStatement stmt = conn.prepareStatement("UPDATE Observation SET place = ? WHERE id = ?");
-                stmt.setInt(1, place);
-                stmt.setInt(2, id);
-                stmt.executeUpdate();
+                createModifyStatement("place", Integer.toString(place), id, conn);
             }
-            
             if (!date.isEmpty()) { 
-                PreparedStatement stmt = conn.prepareStatement("UPDATE Observation SET date = ? WHERE id = ?");
-                stmt.setString(1, date);
-                stmt.setInt(2, id);
-                stmt.executeUpdate();
+                createModifyStatement("date", date, id, conn);
             }
-            
             if (!time.isEmpty()) { 
-                PreparedStatement stmt = conn.prepareStatement("UPDATE Observation SET time = ? WHERE id = ?");
-                stmt.setString(1, time);
-                stmt.setInt(2, id);
-                stmt.executeUpdate();
+                createModifyStatement("time", time, id, conn);
             }
-            
             if (!info.isEmpty()) { 
-                PreparedStatement stmt = conn.prepareStatement("UPDATE Observation SET info = ? WHERE id = ?");
-                stmt.setString(1, info);
-                stmt.setInt(2, id);
-                stmt.executeUpdate();
+                createModifyStatement("info", info, id, conn);
             }
-            
             if (!username.isEmpty()) { 
-                PreparedStatement stmt = conn.prepareStatement("UPDATE Observation SET user = ? WHERE id = ?");
-                stmt.setString(1, username);
-                stmt.setInt(2, id);
-                stmt.executeUpdate();
+                createModifyStatement("user", username, id, conn);
             }
         } catch (Exception e) {
         }
@@ -213,6 +186,15 @@ public class ObservationDatabaseDao implements ObservationDao {
         return stmt.toString();
     }
     
+    private void createModifyStatement(String field, String newInfo, int id, Connection conn) throws Exception {
+        StringBuilder stmt = new StringBuilder();
+        stmt.append("UPDATE Observation SET ").append(field).append(" = ? WHERE id = ?");
+        String s = stmt.toString();
+        PreparedStatement p = conn.prepareStatement(s);
+        p.setString(1, newInfo);
+        p.setInt(2, id);        
+        p.executeUpdate();
+    }
     
     private List<Observation> createListFromResult(ResultSet result) throws Exception {
         List<Observation> observations = new ArrayList<>();
