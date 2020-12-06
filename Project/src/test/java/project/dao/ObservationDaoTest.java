@@ -114,5 +114,30 @@ public class ObservationDaoTest {
         assertEquals(3, obs.size());
     }
     
+    @Test
+    public void observationsCanBeSearchedByUser() throws Exception {
+        List<Observation> obs = observationDao.searchObservations("tanja.t", "user");
+        assertEquals(2, obs.size());
+    }
+    
+    @Test
+    public void observationsCanBeModified() throws Exception {
+        LocalDate date = LocalDate.parse("2020-05-21");
+        LocalTime time = LocalTime.parse("08:00");
+        
+        observationDao.modifyObservation(1, 12, 1, 1, date.toString(), time.toString(), "", "");
+        observationDao.modifyObservation(5, 2, 2, 2, "", "", "m", "keijo_k");
+        
+        Observation o1 = observationDao.findObservationById(1);
+        Observation o2 = observationDao.findObservationById(5);
+        assertEquals(date, o1.getDate());
+        assertEquals(time, o1.getTime());
+        assertEquals(2, o2.getIndividuals());
+        assertEquals("m", o2.getInfo());
+        
+        List<Observation> obs = observationDao.searchObservations("keijo_k", "user");
+        assertEquals(4, obs.size());
+    }
+    
    
  }

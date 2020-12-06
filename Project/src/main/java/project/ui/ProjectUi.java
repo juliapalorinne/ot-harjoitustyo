@@ -257,6 +257,7 @@ public class ProjectUi extends Application {
         speciesService.createSpecies("Black-headed gull", "Chroicocephalus ridibundus", "naurulokki", "larrid");
         speciesService.createSpecies("Arctic tern", "Sterna paradisaea", "lapintiira", "steaea");
         speciesService.createSpecies("Arctic loon", "Gavia arctica", "kuikka", "gavarc");
+        speciesService.createSpecies("Common loon", "Gavia immer", "amerikanjääkuikka", "gavimm");
         speciesService.createSpecies("Gray heron", "Ardea cinerea", "harmaahaikara", "ardcin");
         speciesService.createSpecies("Golden eagle", "Aquila chrysaetos", "maakotka", "aquchr");
         speciesService.createSpecies("White-tailed eagle", "Haliaeetus albicilla", "merikotka", "halalb");

@@ -15,7 +15,7 @@ public class UserService {
         this.observationService = observationService;
     }
     
-    public void setDatabase(UserDatabaseDao database) {
+    public void setDatabase(UserDao database) {
         userDao = database;
     }
 
@@ -71,7 +71,7 @@ public class UserService {
         return user;
     }
     
-    public User getPlaceByName(String name, String searchField) throws Exception {
+    public User getUserByName(String name, String searchField) throws Exception {
         User user = userDao.findUserByName(name, searchField);
         return user;
     }

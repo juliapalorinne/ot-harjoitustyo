@@ -9,17 +9,19 @@ import project.domain.User;
 public class FakeUserDatabaseDao implements UserDao {
 
     private List<User> users;
+    private int nextId;
     
     public FakeUserDatabaseDao() {
         this.users = new ArrayList<>();
+        nextId = 1;
     }
     
     
     @Override
     public void addUser(User user) throws Exception {
-        int id = users.size() + 1;
-        user.setId(id);
+        user.setId(nextId);
         users.add(user);
+        nextId++;
     }
 
     

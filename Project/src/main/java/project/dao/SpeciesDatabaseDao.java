@@ -90,7 +90,7 @@ public class SpeciesDatabaseDao implements SpeciesDao {
         Connection conn = DriverManager.getConnection(databaseAddress);
         List<Species> speciesList = new ArrayList<>();
         try {
-            String stmt = createStatementByField(searchField);
+            String stmt = createSearchAllStatementByField(searchField);
             PreparedStatement p = conn.prepareStatement(stmt);
             String s = "%" + searchTerm + "%";
             p.setString(1, s);
@@ -131,7 +131,7 @@ public class SpeciesDatabaseDao implements SpeciesDao {
         Connection conn = DriverManager.getConnection(databaseAddress);
         List<Species> speciesList = new ArrayList<>();
         try {
-            String stmt = createStatementByField(searchField);
+            String stmt = createSearchOneStatementByField(searchField);
             PreparedStatement p = conn.prepareStatement(stmt);
             p.setString(1, name);
             
@@ -189,7 +189,7 @@ public class SpeciesDatabaseDao implements SpeciesDao {
         p.executeUpdate();
     }
     
-    private String createStatementByField(String searchField) {
+    private String createSearchAllStatementByField(String searchField) {
         StringBuilder stmt = new StringBuilder();
         stmt.append("SELECT * FROM Species WHERE ");
         if (searchField.equals("englishName")) {
@@ -207,6 +207,23 @@ public class SpeciesDatabaseDao implements SpeciesDao {
         return stmt.toString();
     }
     
+    private String createSearchOneStatementByField(String searchField) {
+        StringBuilder stmt = new StringBuilder();
+        stmt.append("SELECT * FROM Species WHERE ");
+        if (searchField.equals("englishName")) {
+            stmt.append("englishName = ?");
+        }
+        if (searchField.equals("scientificName")) {
+            stmt.append("scientificName = ?");
+        }
+        if (searchField.equals("finnishName")) {
+            stmt.append("finnishName = ?");
+        }
+        if (searchField.equals("abbreviation")) {
+            stmt.append("abbreviation = ?");
+        }
+        return stmt.toString();
+    }
     
     private List<Species> createListFromResult(ResultSet result) throws Exception {
         List<Species> speciesList = new ArrayList<>();

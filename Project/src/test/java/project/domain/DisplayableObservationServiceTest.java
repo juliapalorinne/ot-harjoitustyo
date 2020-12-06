@@ -66,12 +66,16 @@ public class DisplayableObservationServiceTest {
     @Test
     public void observationsHaveCorrectInformation() throws Exception {
         DisplayableObservation o = dObservationService.getOne(1);
-        System.out.println(o.getPlace());
         assertEquals(placeService.getPlaceById(1).toString(), o.getPlace());
         assertEquals(speciesService.getSpeciesById(1).toString(), o.getSpecies());
     }
     
-    
+    @Test
+    public void getOneReturnsEmptyObservationsIfWrongId() throws Exception {
+        DisplayableObservation o = dObservationService.getOne(7);
+        assertEquals(null, o.getPlace());
+        assertEquals(null, o.getDate());
+    }
     
 
     

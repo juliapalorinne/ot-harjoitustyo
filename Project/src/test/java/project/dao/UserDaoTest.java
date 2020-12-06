@@ -53,15 +53,20 @@ public class UserDaoTest {
     }
     
     @Test
-    public void placesCanBeRemovedFromDatabase() throws Exception {
+    public void usersCanBeRemovedFromDatabase() throws Exception {
         userDao.removeUser(2);
         assertEquals(1, userDao.getAllUsers().size());
     }
     
     @Test
-    public void placesCanBeModified() throws Exception {
+    public void usersCanBeModified() throws Exception {
         userDao.modifyUser(2, "", "", "parempisalasana");
+        userDao.modifyUser(1, "melissa_m", "Melissa Meikäläinen", "");
+        
+        assertEquals("matti_m", userDao.findUserById(2).getUsername());
         assertEquals("parempisalasana", userDao.findUserById(2).getPassword());
+        assertEquals("melissa_m", userDao.findUserById(1).getUsername());
+        assertEquals("salalause1", userDao.findUserById(1).getPassword());
     }
     
     

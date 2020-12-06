@@ -31,8 +31,8 @@ public class SpeciesDaoTest {
         speciesDao.addSpecies(new Species("Eurasian wigeon", "Mareca penelope", "haapana", "marpen"));
         speciesDao.addSpecies(new Species("Common crane", "Grus grus", "kurki", "grugru"));
         speciesDao.addSpecies(new Species("Arctic loon", "Gavia arctica", "kuikka", "gavarc"));
+        speciesDao.addSpecies(new Species("Common loon", "Gavia immer", "amerikanjääkuikka", "gavimm"));
         speciesDao.addSpecies(new Species("Eurasian nuthatch", "Sitta europaea", "pähkinänakkeli", "siteur"));
-        speciesDao.addSpecies(new Species("Bluethroat", "Luscinia svecica", "sinirinta", "lussve"));
         speciesDao.addSpecies(new Species("Eurasian treecreeper", "Certhia familiaris", "puukiipijä", "cerfam"));
         speciesDao.addSpecies(new Species("Eurasian wren", "Troglodytes troglodytes", "peukaloinen", "trotro"));
     }
@@ -67,13 +67,48 @@ public class SpeciesDaoTest {
     @Test
     public void speciesCanBeModified() throws Exception {
         speciesDao.modifySpecies(2, "", "", "", "ggru");
+        speciesDao.modifySpecies(1, "Mute swan", "Cygnus olor", "kyhmyjoutsen", "");
+        
         assertEquals("ggru", speciesDao.findSpeciesById(2).getAbbreviation());
+        assertEquals("kurki", speciesDao.findSpeciesById(2).getFinnishName());
+        assertEquals("kyhmyjoutsen", speciesDao.findSpeciesById(1).getFinnishName());
+        assertEquals("marpen", speciesDao.findSpeciesById(1).getAbbreviation());
     }
     
     @Test
-    public void speciesCanBeSearchedByField() throws Exception {
+    public void speciesCanBeSearchedByEnglishName() throws Exception {
         List<Species> species = speciesDao.searchSpecies("Eurasian", "englishName");
         assertEquals(4, species.size());
+    }
+    
+    @Test
+    public void speciesCanBeSearchedByScientificName() throws Exception {
+        List<Species> species = speciesDao.searchSpecies("Gavia", "scientificName");
+        assertEquals(2, species.size());
+    }
+    
+    @Test
+    public void speciesCanBeSearchedByFinnishName() throws Exception {
+        List<Species> species = speciesDao.searchSpecies("kuikka", "finnishName");
+        assertEquals(2, species.size());
+    }
+    
+    @Test
+    public void speciesCanBeFoundByEnglishName() throws Exception {
+        Species species = speciesDao.findSpeciesByName("Eurasian treecreeper", "englishName");
+        assertEquals("puukiipijä", species.getFinnishName());
+    }
+    
+    @Test
+    public void speciesCanBeFoundByScientificName() throws Exception {
+        Species species = speciesDao.findSpeciesByName("Gavia immer", "scientificName");
+        assertEquals("amerikanjääkuikka", species.getFinnishName());
+    }
+    
+    @Test
+    public void speciesCanBeFoundByFinnishName() throws Exception {
+        Species species = speciesDao.findSpeciesByName("kuikka", "finnishName");
+        assertEquals("Gavia arctica", species.getScientificName());
     }
     
    
