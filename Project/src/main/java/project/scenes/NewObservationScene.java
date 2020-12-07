@@ -1,5 +1,5 @@
 
-package project.ui;
+package project.scenes;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -23,8 +23,9 @@ import project.domain.Place;
 import project.domain.PlaceService;
 import project.domain.Species;
 import project.domain.SpeciesService;
+import project.ui.InputWindow;
 
-public class NewObservation {
+public class NewObservationScene {
     private ObservationService observationService;
     private SpeciesService speciesService;
     private PlaceService placeService;
@@ -34,7 +35,7 @@ public class NewObservation {
     private Button addNewPlaceButton;
     
     
-    public NewObservation(ObservationService observationService, SpeciesService speciesService, 
+    public NewObservationScene(ObservationService observationService, SpeciesService speciesService, 
             PlaceService placeService, InputWindow inputWindow) {
         this.observationService = observationService;
         this.speciesService = speciesService;
@@ -46,7 +47,7 @@ public class NewObservation {
     } 
 
     
-    public Scene createNewObservation(Stage stage, ObservationTable observationTable) throws Exception {
+    public Scene createNewObservation(Stage stage, ObservationTableScene observationTable) throws Exception {
         VBox newObsPane = inputWindow.createNewWindow();
         
         ListView<Species> speciesList = listSpecies(newObsPane);
@@ -80,7 +81,7 @@ public class NewObservation {
                 try {
                     stage.setScene(observationTable.observationScene());
                 } catch (Exception ex) {
-                    Logger.getLogger(NewObservation.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(NewObservationScene.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
  

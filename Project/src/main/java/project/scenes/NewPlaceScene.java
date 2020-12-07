@@ -1,5 +1,5 @@
 
-package project.ui;
+package project.scenes;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -13,13 +13,14 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import project.domain.PlaceService;
+import project.ui.InputWindow;
 
-public class NewPlace {
+public class NewPlaceScene {
     private InputWindow inputWindow;
     private PlaceService placeService;
     private Button returnButton;
     
-    public NewPlace(InputWindow inputWindow, PlaceService placeService) {
+    public NewPlaceScene(InputWindow inputWindow, PlaceService placeService) {
         this.inputWindow = inputWindow;
         this.placeService = placeService;
         returnButton = inputWindow.createButton("Return");
@@ -55,7 +56,7 @@ public class NewPlace {
                     placeCreationMessage.setTextFill(Color.BLUE);        
                 }
             } catch (Exception ex) {
-                Logger.getLogger(NewPlace.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(NewPlaceScene.class.getName()).log(Level.SEVERE, null, ex);
             }
  
         });  

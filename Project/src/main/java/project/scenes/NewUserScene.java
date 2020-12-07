@@ -1,5 +1,5 @@
 
-package project.ui;
+package project.scenes;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -15,13 +15,14 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import project.domain.UserService;
+import project.ui.InputWindow;
 
-public class NewUser {
+public class NewUserScene {
     private InputWindow inputWindow;
     private UserService userService;
     private Button returnButton;
     
-    public NewUser(InputWindow inputWindow, UserService userService) {
+    public NewUserScene(InputWindow inputWindow, UserService userService) {
         this.inputWindow = inputWindow;
         this.userService = userService;
         returnButton = inputWindow.createButton("Return");
@@ -60,7 +61,7 @@ stage.setScene(loginScene);
                     userCreationMessage.setTextFill(Color.RED);        
                 }
             } catch (Exception ex) {
-                Logger.getLogger(NewUser.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(NewUserScene.class.getName()).log(Level.SEVERE, null, ex);
             }
  
         });  

@@ -1,5 +1,5 @@
 
-package project.ui;
+package project.scenes;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -13,13 +13,14 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import project.domain.SpeciesService;
+import project.ui.InputWindow;
 
-public class NewSpecies {
+public class NewSpeciesScene {
     private InputWindow inputWindow;
     private SpeciesService speciesService;
     private Button returnButton;
     
-    public NewSpecies(InputWindow inputWindow, SpeciesService speciesService) {
+    public NewSpeciesScene(InputWindow inputWindow, SpeciesService speciesService) {
         this.inputWindow = inputWindow;
         this.speciesService = speciesService;
         returnButton = inputWindow.createButton("Return");
@@ -55,7 +56,7 @@ public class NewSpecies {
                     speciesCreationMessage.setTextFill(Color.BLUE);        
                 }
             } catch (Exception ex) {
-                Logger.getLogger(NewSpecies.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(NewSpeciesScene.class.getName()).log(Level.SEVERE, null, ex);
             }
  
         });  

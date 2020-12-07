@@ -8,9 +8,9 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
-import project.dao.ObservationDao;
-import project.dao.ObservationDatabaseDao;
-import project.dao.UserDao;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.cell.PropertyValueFactory;
+
 
 public class DisplayableObservationService {
     private List<DisplayableObservation> obsList;
@@ -71,4 +71,67 @@ public class DisplayableObservationService {
         return new DisplayableObservation();
     }
     
+    
+    public List<DisplayableObservation> filterByPlace(String searchTerm) throws Exception {
+        String s = searchTerm.toLowerCase();
+        List<DisplayableObservation> obs = getAll();
+        List<DisplayableObservation> result = new ArrayList<>();
+        
+        obs.stream()
+                .filter(o -> o.getPlace().toLowerCase().contains(s))
+                .forEach(o -> result.add(o));
+        
+        return result;
+    }
+    
+    public List<DisplayableObservation> filterBySpecies(String searchTerm) throws Exception {
+        String s = searchTerm.toLowerCase();
+        List<DisplayableObservation> obs = getAll();
+        List<DisplayableObservation> result = new ArrayList<>();
+        
+        for (DisplayableObservation d : obs) {
+            if (d.getSpecies().toLowerCase().contains(s)) {
+                System.out.println(d.getSpecies() + "added!");
+                result.add(d);
+            }
+        }
+        
+        return result;
+    }
+    
+    public ArrayList<TableColumn> getColumns() {
+        TableColumn<DisplayableObservation, String> speciesCol = new TableColumn("Species");
+        speciesCol.setCellValueFactory(new PropertyValueFactory<>("species"));
+        speciesCol.setMaxWidth( 1f * Integer.MAX_VALUE * 30 );
+        
+        TableColumn<DisplayableObservation, Integer> individualCol = new TableColumn("Individuals");
+        individualCol.setCellValueFactory(new PropertyValueFactory<>("individuals"));
+        individualCol.setMaxWidth( 1f * Integer.MAX_VALUE * 5 );
+        
+        TableColumn<DisplayableObservation, String> placeCol = new TableColumn("Place");
+        placeCol.setCellValueFactory(new PropertyValueFactory<>("place"));
+        placeCol.setMaxWidth( 1f * Integer.MAX_VALUE * 35 );
+        
+        TableColumn<DisplayableObservation, Date> dateCol = new TableColumn("Date");
+        dateCol.setCellValueFactory(new PropertyValueFactory<>("date"));
+        dateCol.setMaxWidth( 1f * Integer.MAX_VALUE * 10 );
+        
+        TableColumn<DisplayableObservation, LocalTime> timeCol = new TableColumn("Time");
+        timeCol.setCellValueFactory(new PropertyValueFactory<>("time"));
+        timeCol.setMaxWidth( 1f * Integer.MAX_VALUE * 5 );
+        
+        TableColumn<DisplayableObservation, String> infoCol = new TableColumn("Info");
+        infoCol.setCellValueFactory(new PropertyValueFactory<>("info"));
+        infoCol.setMaxWidth( 1f * Integer.MAX_VALUE * 15 );
+        
+        ArrayList<TableColumn> list = new ArrayList<>();
+        list.add(speciesCol);
+        list.add(individualCol);
+        list.add(placeCol);
+        list.add(dateCol);
+        list.add(timeCol);
+        list.add(infoCol);
+        
+        return list;
+    }
 }

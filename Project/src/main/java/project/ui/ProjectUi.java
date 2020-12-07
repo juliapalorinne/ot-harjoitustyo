@@ -2,6 +2,12 @@
 package project.ui;
 
 
+import project.scenes.SearchObservationScene;
+import project.scenes.NewSpeciesScene;
+import project.scenes.ObservationTableScene;
+import project.scenes.NewUserScene;
+import project.scenes.NewPlaceScene;
+import project.scenes.NewObservationScene;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Application;
@@ -17,6 +23,7 @@ import project.domain.ObservationService;
 import project.domain.PlaceService;
 import project.domain.SpeciesService;
 import project.domain.UserService;
+import project.scenes.SearchScene;
 
 
 public class ProjectUi extends Application {
@@ -26,12 +33,12 @@ public class ProjectUi extends Application {
     private SpeciesService speciesService;
     
     private InputWindow inputWindow;
-    private NewUser newUser;
-    private ObservationTable observationTable;
-    private NewObservation newObservation;
-    private NewPlace newPlace;
-    private NewSpecies newSpecies;
-    private SearchWindow searchWindow;
+    private NewUserScene newUser;
+    private ObservationTableScene observationTable;
+    private NewObservationScene newObservation;
+    private NewPlaceScene newPlace;
+    private NewSpeciesScene newSpecies;
+    private SearchScene searchWindow;
     
     private Scene observationScene;
     private Scene newUserScene;
@@ -46,12 +53,12 @@ public class ProjectUi extends Application {
         speciesService = new SpeciesService();
         placeService = new PlaceService();
         inputWindow = new InputWindow();
-        observationTable = new ObservationTable(observationService, speciesService, placeService);
-        newObservation = new NewObservation(observationService, speciesService, placeService, inputWindow); 
-        newUser = new NewUser(inputWindow, userService);
-        newSpecies = new NewSpecies(inputWindow, speciesService);
-        newPlace = new NewPlace(inputWindow, placeService);
-        searchWindow = new SearchWindow(inputWindow, observationService, speciesService, placeService);
+        observationTable = new ObservationTableScene(observationService, speciesService, placeService);
+        newObservation = new NewObservationScene(observationService, speciesService, placeService, inputWindow); 
+        newUser = new NewUserScene(inputWindow, userService);
+        newSpecies = new NewSpeciesScene(inputWindow, speciesService);
+        newPlace = new NewPlaceScene(inputWindow, placeService);
+        searchWindow = new SearchScene(inputWindow, observationService, speciesService, placeService);
         
         
 //        addSpeciesListToDatabase();  // Tästä voi lisätä aluksi muutamankymmentä lintua tietokantaan.

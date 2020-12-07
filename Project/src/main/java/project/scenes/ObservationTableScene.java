@@ -1,8 +1,9 @@
 
-package project.ui;
+package project.scenes;
 
 import project.domain.DisplayableObservation;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
@@ -28,7 +29,7 @@ import project.domain.ObservationService;
 import project.domain.PlaceService;
 import project.domain.SpeciesService;
 
-public class ObservationTable {
+public class ObservationTableScene {
     private DisplayableObservationService displayObsService;
     private TableView table;
     private Button addButton;
@@ -38,7 +39,7 @@ public class ObservationTable {
     private ObservableList<DisplayableObservation> observations;
     
     
-    public ObservationTable(ObservationService observationService, SpeciesService speciesService, PlaceService placeService) {
+    public ObservationTableScene(ObservationService observationService, SpeciesService speciesService, PlaceService placeService) {
         this.displayObsService = new DisplayableObservationService(observationService, speciesService, placeService);
         this.observations = FXCollections.observableArrayList();
         addButton = new Button("Add new observation");
@@ -53,44 +54,22 @@ public class ObservationTable {
     }
     
     
-    public VBox createTable() throws Exception {
-        table = new TableView();
-        Label label = new Label("Observations");
-        label.setFont(new Font("Arial", 20));
- 
-        redrawObservationList();
+    private VBox createTable() throws Exception {
+        TableView table = new TableView();
         table.setEditable(true);
         table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
         
- 
-        TableColumn<DisplayableObservation, String> speciesCol = new TableColumn("Species");
-        speciesCol.setCellValueFactory(new PropertyValueFactory<>("species"));
-        speciesCol.setMaxWidth( 1f * Integer.MAX_VALUE * 30 );
-        
-        TableColumn<DisplayableObservation, Integer> individualCol = new TableColumn("Individuals");
-        individualCol.setCellValueFactory(new PropertyValueFactory<>("individuals"));
-        individualCol.setMaxWidth( 1f * Integer.MAX_VALUE * 5 );
-        
-        TableColumn<DisplayableObservation, String> placeCol = new TableColumn("Place");
-        placeCol.setCellValueFactory(new PropertyValueFactory<>("place"));
-        placeCol.setMaxWidth( 1f * Integer.MAX_VALUE * 35 );
-        
-        TableColumn<DisplayableObservation, Date> dateCol = new TableColumn("Date");
-        dateCol.setCellValueFactory(new PropertyValueFactory<>("date"));
-        dateCol.setMaxWidth( 1f * Integer.MAX_VALUE * 10 );
-        
-        TableColumn<DisplayableObservation, LocalTime> timeCol = new TableColumn("Time");
-        timeCol.setCellValueFactory(new PropertyValueFactory<>("time"));
-        timeCol.setMaxWidth( 1f * Integer.MAX_VALUE * 5 );
-        
-        TableColumn<DisplayableObservation, String> infoCol = new TableColumn("Info");
-        infoCol.setCellValueFactory(new PropertyValueFactory<>("info"));
-        infoCol.setMaxWidth( 1f * Integer.MAX_VALUE * 15 );
+        redrawObservationList();
         
         table.setItems(observations);
-        table.getColumns().addAll(speciesCol, individualCol, placeCol, 
-                dateCol, timeCol, infoCol);
- 
+        
+        ArrayList<TableColumn> columns = displayObsService.getColumns();
+        table.getColumns().addAll(columns);
+        
+        
+        Label label = new Label("Observations");
+        label.setFont(new Font("Arial", 20));
+
         VBox vbox = new VBox();
         vbox.setStyle("-fx-background-color: #FFB6C1;");
         vbox.setSpacing(5);
@@ -100,7 +79,7 @@ public class ObservationTable {
         return vbox;
     }  
     
-    public void redrawObservationList() throws Exception {
+    private void redrawObservationList() throws Exception {
         displayObsService.redrawObservationList();
         List<DisplayableObservation> obs = displayObsService.getAll();
         for (DisplayableObservation o : obs) {
@@ -111,7 +90,7 @@ public class ObservationTable {
     }
     
     
-    public HBox createObservation() {
+    private HBox createObservation() {
         HBox createForm = new HBox(10);
         Region spacer = new Region();
         HBox.setHgrow(spacer, Priority.ALWAYS);
@@ -119,7 +98,7 @@ public class ObservationTable {
         return createForm;
     }
     
-    public HBox menu() {
+    private HBox menu() {
         HBox menuPane = new HBox(10);
         Label menuLabel = new Label("Menu");
         Region menuSpacer = new Region();

@@ -1,5 +1,5 @@
 
-package project.ui;
+package project.scenes;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -28,8 +28,9 @@ import project.domain.Place;
 import project.domain.PlaceService;
 import project.domain.Species;
 import project.domain.SpeciesService;
+import project.ui.InputWindow;
 
-public class SearchWindow {
+public class SearchObservationScene {
     private InputWindow inputWindow;
     private DisplayableObservationService displayObsService;
     private SpeciesService speciesService;
@@ -38,7 +39,7 @@ public class SearchWindow {
     
     private ObservableList<DisplayableObservation> observations;
     
-    public SearchWindow(InputWindow inputWindow, ObservationService observationService, 
+    public SearchObservationScene(InputWindow inputWindow, ObservationService observationService, 
             SpeciesService speciesService, PlaceService placeService) {
         this.inputWindow = inputWindow;
         this.displayObsService = new DisplayableObservationService(observationService, speciesService, placeService);
@@ -73,7 +74,7 @@ public class SearchWindow {
                 speciesService.getSpeciesBySearchTerm(species, "englishName");
                 placeService.getPlaceBySearchTerm(place, "spot");
             } catch (Exception ex) {
-                Logger.getLogger(SearchWindow.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(SearchObservationScene.class.getName()).log(Level.SEVERE, null, ex);
             }
             
         });
