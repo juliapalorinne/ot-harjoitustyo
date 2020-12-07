@@ -1,8 +1,6 @@
 
 package project.ui;
 
-
-import project.scenes.SearchObservationScene;
 import project.scenes.NewSpeciesScene;
 import project.scenes.ObservationTableScene;
 import project.scenes.NewUserScene;
