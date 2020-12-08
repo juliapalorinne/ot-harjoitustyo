@@ -18,7 +18,7 @@ public class PlaceDatabaseDao extends DatabaseDao implements PlaceDao {
 
     /**
      * Sets database address in PlaceDatabaseDao.
-     * @param databaseAddress
+     * @param databaseAddress the address of the database
      */
     public PlaceDatabaseDao(String databaseAddress) {
         this.databaseAddress = databaseAddress;
@@ -27,8 +27,8 @@ public class PlaceDatabaseDao extends DatabaseDao implements PlaceDao {
     
     /**
      * Creates Place table if it doesn't exist.
-     * @param conn
-     * @throws java.sql.SQLException
+     * @param conn the database connection
+     * @throws SQLException Accessing database failed.
      */
     public void createSchemaIfNotExists(Connection conn) throws SQLException {
         Statement stmt = conn.createStatement();
@@ -44,8 +44,8 @@ public class PlaceDatabaseDao extends DatabaseDao implements PlaceDao {
     
     /**
      * Adds new place
-     * @param place
-     * @throws Exception
+     * @param place new Place
+     * @throws Exception Adding to database failed.
      */
     @Override
     public void addPlace(Place place) throws Exception {
@@ -67,12 +67,12 @@ public class PlaceDatabaseDao extends DatabaseDao implements PlaceDao {
     
     /**
      * Finds Place by id and modifies it.
-     * @param id
-     * @param country
-     * @param city
-     * @param spot
-     * @param type
-     * @throws Exception
+     * @param id the Place id
+     * @param country the country of the Place
+     * @param city the city of the Place
+     * @param spot the exact spot
+     * @param type the type of the Place
+     * @throws Exception Accessing database failed.
      */
     @Override
     public void modifyPlace(int id, String country, String city, String spot, String type) throws Exception {
@@ -99,8 +99,8 @@ public class PlaceDatabaseDao extends DatabaseDao implements PlaceDao {
     
     /**
      * Creates Place from database search result and lists them as StoreableObjects.
-     * @param result
-     * @throws Exception
+     * @param result the database query result
+     * @throws Exception Searching database failed.
      */
     @Override
     protected List<StoreableObject> createListFromResult(ResultSet result) throws Exception {
@@ -121,8 +121,8 @@ public class PlaceDatabaseDao extends DatabaseDao implements PlaceDao {
     
     /**
      * Searched database to find a Place by id.
-     * @param id
-     * @throws Exception
+     * @param id the Place id
+     * @throws Exception Searching database failed.
      */
     @Override
     public Place findPlaceById(int id) throws Exception {
@@ -132,9 +132,9 @@ public class PlaceDatabaseDao extends DatabaseDao implements PlaceDao {
     
     /**
      * Searched database to find a Place by name.
-     * @param name
-     * @param searchField
-     * @throws Exception
+     * @param name the name of the wanted Place
+     * @param searchField the field to search
+     * @throws Exception Searching database failed.
      */
     @Override
     public Place findPlaceByName(String name, String searchField) throws Exception {
@@ -144,7 +144,6 @@ public class PlaceDatabaseDao extends DatabaseDao implements PlaceDao {
     
     /**
      * Returns all Places in the database.
-     * @throws Exception
      */
     @Override
     public List<Place> getAllPlaces() throws Exception {
@@ -153,9 +152,8 @@ public class PlaceDatabaseDao extends DatabaseDao implements PlaceDao {
 
     /**
      * Returns Places with searchTerm in searchField.
-     * @param searchTerm
-     * @param searchField
-     * @throws Exception
+     * @param searchTerm searched term
+     * @param searchField the field to search
      */
     @Override
     public List<Place> searchPlaces(String searchTerm, String searchField) throws Exception {
@@ -165,8 +163,7 @@ public class PlaceDatabaseDao extends DatabaseDao implements PlaceDao {
     
     /**
      * Converts returned StorableObjects to Places.
-     * @param objects
-     * @throws Exception
+     * @param objects the list of objects
      */
     private List<Place> convertToPlaces(List<StoreableObject> objects) {
         List<Place> places = new ArrayList<>();

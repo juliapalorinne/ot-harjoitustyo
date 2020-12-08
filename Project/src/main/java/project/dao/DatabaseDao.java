@@ -25,8 +25,8 @@ public abstract class DatabaseDao {
     
     /**
      * Deletes a StorableObject from the database.
-     * @param id
-     * @throws Exception
+     * @param id the id of the StorableObject
+     * @throws Exception Deleting from database failed.
      */
     public void remove(int id) throws Exception {
         try (Connection conn = DriverManager.getConnection(databaseAddress)) {
@@ -39,8 +39,11 @@ public abstract class DatabaseDao {
     
     /**
      * Searched database to find a StorableObject by id.
-     * @param id
-     * @throws Exception
+     * @param id the id of the searched StorableObject
+     * @throws Exception Searching database failed.
+     * 
+     * @return returns the StorableObject with matching id.
+     * If no StorableObject is found returns null.
      */
     public StoreableObject findById(int id) throws Exception {
         List<StoreableObject> objects;
@@ -66,9 +69,12 @@ public abstract class DatabaseDao {
     /**
      * Searched database by name and returns a StorableObject.
      * SearchField specifies the name field to search.
-     * @param name
-     * @param searchField
-     * @throws Exception
+     * @param name searched name
+     * @param searchField the column in which to search
+     * @throws Exception Searching database failed.
+     * 
+     * @return returns the StorableObject with matching name in the searchField.
+     * If no StorableObject is found returns null.
      */
     public StoreableObject findByName(String name, String searchField) throws Exception {
         List<StoreableObject> objects;
@@ -94,7 +100,10 @@ public abstract class DatabaseDao {
 
     /**
      * Returns all StorableObjects in the database.
-     * @throws Exception
+     * @throws Exception Searching database failed.
+     * 
+     * @return returns a list of all StorableObjects.
+     * If no StorableObject is found returns an empty list.
      */
     public List<StoreableObject> getAll() throws Exception {
         List<StoreableObject> objects;
@@ -115,9 +124,12 @@ public abstract class DatabaseDao {
     
     /**
      * Returns all StorableObjects with searchTerm in searchField.
-     * @param searchTerm
-     * @param searchField
-     * @throws Exception
+     * @param searchTerm searched term
+     * @param searchField the column in which to search
+     * @throws Exception Searching database failed.
+     * 
+     * @return returns list of StorableObjects with matching term in the searchField.
+     * If no StorableObject is found returns empty list.
      */
     public List<StoreableObject> search(String searchTerm, String searchField) throws Exception {
         List<StoreableObject> objects;
@@ -151,8 +163,9 @@ public abstract class DatabaseDao {
     
     
     /**
-     * Creates an SQL statement wiht searchField to search for one StorableObject.
-     * @param searchField
+     * Creates an SQL statement with searchField to search for one StorableObject.
+     * @param searchField the column in which to search
+     * @return created SQL statement
      */
     protected String createSearchOneStatementByField(String searchField) {
         StringBuilder stmt = new StringBuilder();
@@ -163,7 +176,8 @@ public abstract class DatabaseDao {
     
     /**
      * Creates an SQL statement with searchField to search for multiple StorableObjects.
-     * @param searchField
+     * @param searchField the column in which to search
+     * @return created SQL statement
      */
     protected String createSearchAllStatementByField(String searchField) {
         StringBuilder stmt = new StringBuilder();
@@ -175,8 +189,11 @@ public abstract class DatabaseDao {
     /**
      * Creates an SQL statement to modify a StorableObject.
      * Inserts the searchTerm in the searchField.
-     * @param searchTerm
-     * @param searchField
+     * @param searchTerm searched term
+     * @param searchField the column in which to search
+     * @param id the id of the modified StoreableObject
+     * @param conn the database connection
+     * @throws Exception Accessing database failed.
      */
     protected void createModifyStatement(String searchField, String searchTerm, int id, Connection conn) throws Exception {
         StringBuilder stmt = new StringBuilder();

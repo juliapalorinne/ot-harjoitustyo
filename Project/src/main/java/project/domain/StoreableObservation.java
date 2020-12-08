@@ -6,10 +6,7 @@ import java.time.*;
 import java.util.Date;
 import java.util.List;
 
-/**
- *
- * @author Julia
- */
+
 public class StoreableObservation extends Observation {
     
     private int speciesId;

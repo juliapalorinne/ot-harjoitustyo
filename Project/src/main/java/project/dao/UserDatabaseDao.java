@@ -18,7 +18,7 @@ public class UserDatabaseDao extends DatabaseDao implements UserDao {
 
     /**
      * Sets database address in UserDatabaseDao.
-     * @param databaseAddress
+     * @param databaseAddress the address of the database
      */
     public UserDatabaseDao(String databaseAddress) {
         this.databaseAddress = databaseAddress;
@@ -28,8 +28,8 @@ public class UserDatabaseDao extends DatabaseDao implements UserDao {
     
     /**
      * Creates User table if it doesn't exist.
-     * @param conn
-     * @throws java.sql.SQLException
+     * @param conn the database connection
+     * @throws SQLException Accessing database failed.
      */
     public void createSchemaIfNotExists(Connection conn) throws SQLException {
         Statement stmt = conn.createStatement();
@@ -44,8 +44,8 @@ public class UserDatabaseDao extends DatabaseDao implements UserDao {
     
     /**
      * Adds new User to database.
-     * @param user
-     * @throws Exception
+     * @param user new User
+     * @throws Exception Adding to database failed.
      */
     @Override
     public void addUser(User user) throws Exception {
@@ -66,11 +66,11 @@ public class UserDatabaseDao extends DatabaseDao implements UserDao {
     /**
      * Finds User by id and modifies it.
      * If any of the fields is left empty, it is not modified.
-     * @param id
-     * @param username
-     * @param name
-     * @param password
-     * @throws Exception
+     * @param id the User id
+     * @param username an unique username
+     * @param name name
+     * @param password password
+     * @throws Exception Accessing database failed.
      */
     @Override
     public void modifyUser(int id, String username, String name, String password) throws Exception {
@@ -93,8 +93,8 @@ public class UserDatabaseDao extends DatabaseDao implements UserDao {
     
      /**
      * Creates an User from a database search result and lists them as StoreableObjects.
-     * @param result
-     * @throws Exception
+     * @param result the database query result
+     * @throws Exception Accessing database failed.
      */
     @Override
     protected List<StoreableObject> createListFromResult(ResultSet result) throws Exception {
@@ -114,8 +114,8 @@ public class UserDatabaseDao extends DatabaseDao implements UserDao {
     
     /**
      * Returns an User if found by id from the database.
-     * @param id
-     * @throws Exception
+     * @param id the User id
+     * @throws Exception Searching database failed.
      */
     @Override
     public User findUserById(int id) throws Exception {
@@ -126,9 +126,9 @@ public class UserDatabaseDao extends DatabaseDao implements UserDao {
     /**
      * Returns an User if found by name from the database.
      * SearchField specifies the name field to search.
-     * @param name
-     * @param searchField
-     * @throws Exception
+     * @param name searched name
+     * @param searchField the field to search
+     * @throws Exception Searching database failed.
      */
     @Override
     public User findUserByName(String name, String searchField) throws Exception {
@@ -138,7 +138,7 @@ public class UserDatabaseDao extends DatabaseDao implements UserDao {
     
     /**
      * Returns all Users in the database.
-     * @throws Exception
+     * @throws Exception Searching database failed.
      */
     @Override
     public List<User> getAllUsers() throws Exception {
@@ -149,9 +149,9 @@ public class UserDatabaseDao extends DatabaseDao implements UserDao {
     /**
      * Searched database to find all Users by name.
      * SearchField specifies the name field to search.
-     * @param searchTerm
-     * @param searchField
-     * @throws Exception
+     * @param name searched name
+     * @param searchField the field to search
+     * @throws Exception Searching database failed.
      */
     @Override
     public List<User> searchUsers(String name, String searchField) throws Exception {
@@ -161,8 +161,7 @@ public class UserDatabaseDao extends DatabaseDao implements UserDao {
     
     /**
      * Converts returned StorableObjects to Users.
-     * @param objects
-     * @throws Exception
+     * @param objects the list of objects
      */
     private List<User> convertToUsers(List<StoreableObject> objects) {
         List<User> users = new ArrayList<>();

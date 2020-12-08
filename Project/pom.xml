@@ -66,6 +66,7 @@
                 <configuration>
                     <excludes>
                         <exclude>project/ui/*</exclude>
+                        <exclude>project/scenes/*</exclude>
                     </excludes>
                 </configuration>
                 <executions>

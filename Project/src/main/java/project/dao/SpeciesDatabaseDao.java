@@ -19,7 +19,7 @@ public class SpeciesDatabaseDao extends DatabaseDao implements SpeciesDao {
     
     /**
      * Sets database address in SpeciesDatabaseDao.
-     * @param databaseAddress
+     * @param databaseAddress the address of the database
      */
     public SpeciesDatabaseDao(String databaseAddress) {
         this.databaseAddress = databaseAddress;
@@ -29,8 +29,8 @@ public class SpeciesDatabaseDao extends DatabaseDao implements SpeciesDao {
     
     /**
      * Creates Species table if it doesn't exist.
-     * @param conn
-     * @throws java.sql.SQLException
+     * @param conn the database connection
+     * @throws SQLException Accessing database failed.
      */
     public void createSchemaIfNotExists(Connection conn) throws SQLException {
         Statement stmt = conn.createStatement();
@@ -45,8 +45,8 @@ public class SpeciesDatabaseDao extends DatabaseDao implements SpeciesDao {
     
     /**
      * Adds new Species to database.
-     * @param species
-     * @throws Exception
+     * @param species new Species
+     * @throws Exception Adding to database failed.
      */
     public void addSpecies(Species species) throws Exception {
         try (Connection conn = DriverManager.getConnection(databaseAddress)) {
@@ -67,12 +67,12 @@ public class SpeciesDatabaseDao extends DatabaseDao implements SpeciesDao {
     /**
      * Finds Species by id and modifies it.
      * If any of the fields is left empty, it is not modified.
-     * @param id
-     * @param englishName
-     * @param scientificName
-     * @param finnishName
-     * @param abbreviation
-     * @throws Exception
+     * @param id the species id
+     * @param englishName English name of the species
+     * @param scientificName scientific name of the species
+     * @param finnishName Finnish name of the species
+     * @param abbreviation 3+3 abbreviation of the species
+     * @throws Exception Accessing database failed.
      */
     @Override
     public void modifySpecies(int id, String englishName, String scientificName, String finnishName, String abbreviation) throws Exception {
@@ -98,8 +98,8 @@ public class SpeciesDatabaseDao extends DatabaseDao implements SpeciesDao {
     
     /**
      * Creates a Species from a database search result and lists them as StoreableObjects.
-     * @param result
-     * @throws Exception
+     * @param result the database query result
+     * @throws Exception Accessing database failed.
      */
     @Override
     protected List<StoreableObject> createListFromResult(ResultSet result) throws Exception {
@@ -120,8 +120,7 @@ public class SpeciesDatabaseDao extends DatabaseDao implements SpeciesDao {
     
     /**
      * Returns a Species if found by id from the database.
-     * @param id
-     * @throws Exception
+     * @param id the species id
      */
     @Override
     public Species findSpeciesById(int id) throws Exception {
@@ -132,9 +131,9 @@ public class SpeciesDatabaseDao extends DatabaseDao implements SpeciesDao {
     /**
      * Returns a Species if found by name from the database.
      * SearchField specifies the name field to search.
-     * @param name
-     * @param searchField
-     * @throws Exception
+     * @param name the name of the wanted Species
+     * @param searchField the field to search
+     * @throws Exception Searching database failed.
      */
     @Override
     public Species findSpeciesByName(String name, String searchField) throws Exception {
@@ -144,7 +143,7 @@ public class SpeciesDatabaseDao extends DatabaseDao implements SpeciesDao {
 
     /**
      * Returns all Species in the database.
-     * @throws Exception
+     * @throws Exception Searching database failed.
      */
     @Override
     public List<Species> getAllSpecies() throws Exception {
@@ -154,9 +153,9 @@ public class SpeciesDatabaseDao extends DatabaseDao implements SpeciesDao {
     
     /**
      * Returns all Species with searchTerm in searchField.
-     * @param searchTerm
-     * @param searchField
-     * @throws Exception
+     * @param searchTerm searched term
+     * @param searchField the field to search
+     * @throws Exception Searching database failed.
      */
     @Override
     public List<Species> searchSpecies(String searchTerm, String searchField) throws Exception {
@@ -166,8 +165,7 @@ public class SpeciesDatabaseDao extends DatabaseDao implements SpeciesDao {
     
     /**
      * Converts returned StorableObjects to Species.
-     * @param objects
-     * @throws Exception
+     * @param objects the list of objects
      */
     private List<Species> convertToSpecies(List<StoreableObject> objects) {
         List<Species> species = new ArrayList<>();

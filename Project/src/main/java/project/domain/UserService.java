@@ -28,6 +28,8 @@ public class UserService {
      * Sets User loggedIn if login succeeds.
      * @param username username
      * @param password password
+     * @throws Exception Logging in failed.
+     * 
      * @return true if user is logged in, otherwise false.
      */
     public boolean login(String username, String password) throws Exception {
@@ -58,6 +60,8 @@ public class UserService {
      * @param username username
      * @param name name
      * @param password password
+     * @throws Exception Creating user failed.
+     * 
      * @return true if user is created, otherwise false.
      */
     public boolean createUser(String username, String name, String password) throws Exception  {   

@@ -21,7 +21,7 @@ public class ObservationDatabaseDao extends DatabaseDao implements ObservationDa
     
     /**
      * Sets database address in ObservationsDatabaseDao.
-     * @param databaseAddress
+     * @param databaseAddress the address of the database
      */
     public ObservationDatabaseDao(String databaseAddress) {
         this.databaseAddress = databaseAddress;
@@ -31,8 +31,8 @@ public class ObservationDatabaseDao extends DatabaseDao implements ObservationDa
     
     /**
      * Creates Observation table if it doesn't exist.
-     * @param conn
-     * @throws java.sql.SQLException
+     * @param conn the database connection
+     * @throws SQLException Accessing database failed.
      */
     public void createSchemaIfNotExists(Connection conn) throws SQLException {
         Statement stmt = conn.createStatement();
@@ -48,8 +48,8 @@ public class ObservationDatabaseDao extends DatabaseDao implements ObservationDa
     
     /**
      * Adds new Observation.
-     * @param observation
-     * @throws Exception
+     * @param observation new StoreableObservation
+     * @throws Exception Adding to database failed.
      */
     @Override
     public void addObservation(StoreableObservation observation) throws Exception {
@@ -74,15 +74,15 @@ public class ObservationDatabaseDao extends DatabaseDao implements ObservationDa
     
     /**
      * Finds an Observation by id and modifies it.
-     * @param id
-     * @param species
-     * @param individuals
-     * @param place
-     * @param date
-     * @param time
-     * @param info
-     * @param username
-     * @throws Exception
+     * @param id the Observation id
+     * @param species the id of the Species of the Observation
+     * @param individuals the number of individuals
+     * @param place the id of the Place of the Observation
+     * @param date the date of the Observation
+     * @param time the time of the Observation (hh:mm)
+     * @param info additional info
+     * @param username username of the User
+     * @throws Exception Accessing database failed.
      */
     @Override
     public void modifyObservation(int id, int species, int individuals, int place, String date, String time, String info, String username) throws Exception {
@@ -117,8 +117,7 @@ public class ObservationDatabaseDao extends DatabaseDao implements ObservationDa
     
     /**
      * Creates an Observation from a database search result and lists them as StoreableObjects.
-     * @param result
-     * @throws Exception
+     * @param result the database query result
      */
     @Override
     protected List<StoreableObject> createListFromResult(ResultSet result) throws Exception {
@@ -142,8 +141,8 @@ public class ObservationDatabaseDao extends DatabaseDao implements ObservationDa
     
     /**
      * Returns an Observation if found by id from the database.
-     * @param id
-     * @throws Exception
+     * @param id the id of the wanted Observation
+     * @throws Exception Searching database failed.
      */
     @Override
     public StoreableObservation findObservationById(int id) throws Exception {
@@ -153,7 +152,7 @@ public class ObservationDatabaseDao extends DatabaseDao implements ObservationDa
     
     /**
      * Returns all Observations in the database.
-     * @throws Exception
+     * @throws Exception Searching database failed.
      */
     @Override
     public List<StoreableObservation> getAllObservations() throws Exception {
@@ -163,9 +162,9 @@ public class ObservationDatabaseDao extends DatabaseDao implements ObservationDa
     
     /**
      * Returns Observations with searchTerm in searchField.
-     * @param searchTerm
-     * @param searchField
-     * @throws Exception
+     * @param searchTerm searched term
+     * @param searchField the field to search
+     * @throws Exception Searching database failed.
      */
     @Override
     public List<StoreableObservation> searchObservations(String searchTerm, String searchField) throws Exception {
@@ -193,8 +192,7 @@ public class ObservationDatabaseDao extends DatabaseDao implements ObservationDa
     
     /**
      * Converts returned StorableObjects to Observations.
-     * @param objects
-     * @throws Exception
+     * @param objects the list of objects
      */
     private List<StoreableObservation> convertToObservations(List<StoreableObject> objects) {
         List<StoreableObservation> obs = new ArrayList<>();

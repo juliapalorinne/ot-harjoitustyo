@@ -25,6 +25,7 @@ public class PlaceService {
      * @param city the city where the place is
      * @param spot the exact spot
      * @param type the type of the place
+     * 
      * @return true if a new place is created, otherwise false.
      */
     public boolean createPlace(String country, String city, String spot, String type) {
