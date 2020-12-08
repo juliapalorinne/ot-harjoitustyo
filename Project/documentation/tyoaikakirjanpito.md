@@ -23,5 +23,8 @@ Päivämäärä | Tehtävä | Käytetty aika
 5.12.2020 | Hakuominaisuuden luominen aloitettu | 2 h
 6.12.2020 | Testikattavuudeksi 85 % ja checkstyle kuntoon | 2 h
 7.12.2020 | Käyttöohjeen kirjoitus | 0,5 h
+7.12.2020 | Toiston poistaminen yläluokkien avulla | 2 h
+8.12.2020 | Haku lajin ja paikan nimellä valmiiksi | 1,5 h
+8.12.2020 | JavaDoc | 2 h
  | | 
-24.11.2020 | **YHTEENSÄ**| **38,5 h**
+24.11.2020 | **YHTEENSÄ**| **42 h**
