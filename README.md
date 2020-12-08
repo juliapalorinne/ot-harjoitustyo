@@ -20,11 +20,15 @@ Sovellukseen on pian tulossa toiminnot havaintojen, lajien ja paikkojen muokkaam
 [*Testaus*](https://github.com/juliapalorinne/ot-harjoitustyo/blob/main/Project/documentation/testaus.md)
 
 
+## Releaset
+
+[*Uusin release: 8.12.2020 Save and search*](https://github.com/juliapalorinne/ot-harjoitustyo/releases)
+
 ## Komentoriviltä suoritettavat komennot
 
 Ohjelmasta voi luoda jar-tiedoston komennolla "mvn package".
 
-Testit voi suorittaa komennolla "mvn test".
+Testit voi suorittaa komennolla \fbox{*mvn test*}.
 
 Testikattavuusraportin saa näkyviin komennolla "mvn jacoco:report" ja testiraportti tallentuu seuraavaan tiedostoon:
 target/site/jacoco/index.html.
