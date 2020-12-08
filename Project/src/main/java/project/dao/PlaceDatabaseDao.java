@@ -11,11 +11,13 @@ import java.util.List;
 import project.domain.Place;
 import project.domain.StoreableObject;
 
-
+/**
+ * PlaceDatabaseDao Class. Used to access Places in the database.
+ */
 public class PlaceDatabaseDao extends DatabaseDao implements PlaceDao {
 
     /**
-     *
+     * Sets database address in PlaceDatabaseDao.
      * @param databaseAddress
      */
     public PlaceDatabaseDao(String databaseAddress) {
@@ -40,6 +42,11 @@ public class PlaceDatabaseDao extends DatabaseDao implements PlaceDao {
     }
     
     
+    /**
+     * Adds new place
+     * @param place
+     * @throws Exception
+     */
     @Override
     public void addPlace(Place place) throws Exception {
         try (Connection conn = DriverManager.getConnection(databaseAddress)) {
@@ -58,6 +65,15 @@ public class PlaceDatabaseDao extends DatabaseDao implements PlaceDao {
     }
 
     
+    /**
+     * Finds Place by id and modifies it.
+     * @param id
+     * @param country
+     * @param city
+     * @param spot
+     * @param type
+     * @throws Exception
+     */
     @Override
     public void modifyPlace(int id, String country, String city, String spot, String type) throws Exception {
         try (Connection conn = DriverManager.getConnection(databaseAddress)) {
@@ -65,15 +81,12 @@ public class PlaceDatabaseDao extends DatabaseDao implements PlaceDao {
                 if (!country.isEmpty()) {
                     createModifyStatement("country", country, id, conn);
                 }
-                
                 if (!city.isEmpty()) {
                     createModifyStatement("city", city, id, conn);
                 }
-                
                 if (!spot.isEmpty()) {
                     createModifyStatement("spot", spot, id, conn);
                 }
-                
                 if (!type.isEmpty()) {
                     createModifyStatement("type", type, id, conn);
                 }
@@ -106,31 +119,59 @@ public class PlaceDatabaseDao extends DatabaseDao implements PlaceDao {
     }
 
     
+    /**
+     * Searched database to find a Place by id.
+     * @param id
+     * @throws Exception
+     */
     @Override
     public Place findPlaceById(int id) throws Exception {
         return (Place) findById(id);
     }
 
+    
+    /**
+     * Searched database to find a Place by name.
+     * @param name
+     * @param searchField
+     * @throws Exception
+     */
     @Override
     public Place findPlaceByName(String name, String searchField) throws Exception {
         return (Place) findByName(name, searchField);
     }
-
+    
+    
+    /**
+     * Returns all Places in the database.
+     * @throws Exception
+     */
     @Override
     public List<Place> getAllPlaces() throws Exception {
         return convertToPlaces(getAll());
     }
 
+    /**
+     * Returns Places with searchTerm in searchField.
+     * @param searchTerm
+     * @param searchField
+     * @throws Exception
+     */
     @Override
     public List<Place> searchPlaces(String searchTerm, String searchField) throws Exception {
         return convertToPlaces(search(searchTerm, searchField));
     }
 
     
+    /**
+     * Converts returned StorableObjects to Places.
+     * @param objects
+     * @throws Exception
+     */
     private List<Place> convertToPlaces(List<StoreableObject> objects) {
         List<Place> places = new ArrayList<>();
         objects.forEach((o) -> {
-            places.add(Place) o);
+            places.add((Place) o);
         });
         return places;
     }

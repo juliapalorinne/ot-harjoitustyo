@@ -12,6 +12,8 @@ public interface SpeciesDao {
     
     public void modifySpecies(int id, String englishName, String scientificName, String finnishName, String abbreviation) throws Exception;
     
+    public void remove(int id) throws Exception;
+    
     public Species findSpeciesById(int id) throws Exception;
     
     public Species findSpeciesByName(String name, String searchField) throws Exception;

@@ -10,13 +10,15 @@ import java.util.ArrayList;
 import java.util.List;
 import project.domain.Species;
 import project.domain.StoreableObject;
-import project.domain.StoreableObservation;
 
-
+/**
+ * SpeciesDatabaseDao Class. Used to access Species in the database.
+ */
 public class SpeciesDatabaseDao extends DatabaseDao implements SpeciesDao {
 
+    
     /**
-     * 
+     * Sets database address in SpeciesDatabaseDao.
      * @param databaseAddress
      */
     public SpeciesDatabaseDao(String databaseAddress) {
@@ -32,25 +34,23 @@ public class SpeciesDatabaseDao extends DatabaseDao implements SpeciesDao {
      */
     public void createSchemaIfNotExists(Connection conn) throws SQLException {
         Statement stmt = conn.createStatement();
-
         try {
             stmt.execute(
                     "CREATE TABLE Species (id INTEGER PRIMARY KEY, englishName, scientificName, finnishName, abbreviation)");
         } catch (SQLException e) {
             
         }
-
     }
     
+    
     /**
-     * Adds new species
+     * Adds new Species to database.
      * @param species
      * @throws Exception
      */
     public void addSpecies(Species species) throws Exception {
         try (Connection conn = DriverManager.getConnection(databaseAddress)) {
-            createSchemaIfNotExists(conn);
-            
+            createSchemaIfNotExists(conn);            
             try (PreparedStatement stmt = conn.prepareStatement(
                     "INSERT INTO Species (englishName, scientificName, finnishName, abbreviation) "
                             + "VALUES (?,?,?,?)")) {
@@ -65,7 +65,8 @@ public class SpeciesDatabaseDao extends DatabaseDao implements SpeciesDao {
 
     
     /**
-     * Finds observation by id and modifies it.
+     * Finds Species by id and modifies it.
+     * If any of the fields is left empty, it is not modified.
      * @param id
      * @param englishName
      * @param scientificName
@@ -73,6 +74,7 @@ public class SpeciesDatabaseDao extends DatabaseDao implements SpeciesDao {
      * @param abbreviation
      * @throws Exception
      */
+    @Override
     public void modifySpecies(int id, String englishName, String scientificName, String finnishName, String abbreviation) throws Exception {
         try (Connection conn = DriverManager.getConnection(databaseAddress)) {
             try {
@@ -90,11 +92,12 @@ public class SpeciesDatabaseDao extends DatabaseDao implements SpeciesDao {
                 }
             } catch (Exception e) {
             }
-        }    }
+        }
+    }
     
     
     /**
-     * Creates Species from database search result and lists them as StoreableObjects.
+     * Creates a Species from a database search result and lists them as StoreableObjects.
      * @param result
      * @throws Exception
      */
@@ -115,28 +118,57 @@ public class SpeciesDatabaseDao extends DatabaseDao implements SpeciesDao {
     }
 
     
-
+    /**
+     * Returns a Species if found by id from the database.
+     * @param id
+     * @throws Exception
+     */
     @Override
     public Species findSpeciesById(int id) throws Exception {
         return (Species) findById(id);
     }
 
+    
+    /**
+     * Returns a Species if found by name from the database.
+     * SearchField specifies the name field to search.
+     * @param name
+     * @param searchField
+     * @throws Exception
+     */
     @Override
     public Species findSpeciesByName(String name, String searchField) throws Exception {
         return (Species) findByName(name, searchField);
     }
+    
 
+    /**
+     * Returns all Species in the database.
+     * @throws Exception
+     */
     @Override
     public List<Species> getAllSpecies() throws Exception {
         return convertToSpecies(getAll());
     }
 
+    
+    /**
+     * Returns all Species with searchTerm in searchField.
+     * @param searchTerm
+     * @param searchField
+     * @throws Exception
+     */
     @Override
     public List<Species> searchSpecies(String searchTerm, String searchField) throws Exception {
         return convertToSpecies(search(searchTerm, searchField));
     }
 
     
+    /**
+     * Converts returned StorableObjects to Species.
+     * @param objects
+     * @throws Exception
+     */
     private List<Species> convertToSpecies(List<StoreableObject> objects) {
         List<Species> species = new ArrayList<>();
         objects.forEach((o) -> {

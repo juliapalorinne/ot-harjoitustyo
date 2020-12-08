@@ -1,18 +1,11 @@
-
 package project.dao;
 
 import java.io.File;
-import java.io.IOException;
 import project.domain.*;
-import junit.framework.Assert;
 import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import org.junit.Rule;
-import org.junit.rules.TemporaryFolder;
 
 
 public class UserDaoTest { 
@@ -54,7 +47,7 @@ public class UserDaoTest {
     
     @Test
     public void usersCanBeRemovedFromDatabase() throws Exception {
-        userDao.removeUser(2);
+        userDao.remove(2);
         assertEquals(1, userDao.getAllUsers().size());
     }
     

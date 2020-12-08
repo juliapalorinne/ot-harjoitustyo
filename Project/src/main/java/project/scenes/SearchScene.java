@@ -8,7 +8,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.collections.transformation.FilteredList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -29,9 +28,7 @@ import javafx.stage.Stage;
 import project.domain.DisplayableObservation;
 import project.domain.DisplayableObservationService;
 import project.domain.StoreableObservationService;
-import project.domain.Place;
 import project.domain.PlaceService;
-import project.domain.Species;
 import project.domain.SpeciesService;
 import project.ui.InputWindow;
 
@@ -78,8 +75,7 @@ public class SearchScene {
             String searchSpecies = speciesInput.getText();
             String searchPlace = placeInput.getText();
             try {
-                table.setItems(filteredBySpecies(searchSpecies));
-//                table.setItems(filteredByPlace(searchPlace));
+                table.setItems(filteredBySpeciesAndPlace(searchSpecies, searchPlace));
             } catch (Exception ex) {
                 Logger.getLogger(SearchScene.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -113,18 +109,23 @@ public class SearchScene {
         }
     }
     
-    private ObservableList<DisplayableObservation> filteredBySpecies(String filter) throws Exception {
+    private ObservableList<DisplayableObservation> filteredBySpeciesAndPlace(String species, String place) throws Exception {
         redrawObservationList();
-        ObservableList<DisplayableObservation> data = FXCollections.observableArrayList(displayObsService.filterBySpecies(filter));
-        return data;
+        
+        if (species.isEmpty() && place.isEmpty()) {
+            return observations;
+        }
+        if (species.isEmpty()) {
+            return FXCollections.observableArrayList(displayObsService.filterByPlace(place));
+        }
+        
+        if (place.isEmpty()) {
+            return FXCollections.observableArrayList(displayObsService.filterBySpecies(species));
+        }
+        
+        return FXCollections.observableArrayList(displayObsService.filterBySpeciesAndPlace(species, place));
     }
-    
-    private ObservableList<DisplayableObservation> filteredByPlace(String filter) throws Exception {
-        redrawObservationList();
-        ObservableList<DisplayableObservation> data = FXCollections.observableArrayList(displayObsService.filterByPlace(filter));
-        return data;
-    }
-     
+   
     
    
 }

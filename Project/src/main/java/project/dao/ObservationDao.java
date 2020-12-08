@@ -12,6 +12,8 @@ public interface ObservationDao {
     public void modifyObservation(int id, int species, int individuals, int place,
             String date, String time, String info, String username) throws Exception;
     
+    public void remove(int id) throws Exception;
+    
     public StoreableObservation findObservationById(int id) throws Exception;
 
     public List<StoreableObservation> getAllObservations() throws Exception;

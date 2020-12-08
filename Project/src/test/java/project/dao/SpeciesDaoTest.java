@@ -1,19 +1,12 @@
-
 package project.dao;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.List;
 import project.domain.*;
-import junit.framework.Assert;
 import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import org.junit.Rule;
-import org.junit.rules.TemporaryFolder;
 
 
 public class SpeciesDaoTest { 
@@ -60,7 +53,7 @@ public class SpeciesDaoTest {
     
     @Test
     public void speciesCanBeRemovedFromDatabase() throws Exception {
-        speciesDao.removeSpecies(6);
+        speciesDao.remove(6);
         assertEquals(6, speciesDao.getAllSpecies().size());
     }
     

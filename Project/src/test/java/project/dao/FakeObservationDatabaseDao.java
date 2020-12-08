@@ -1,8 +1,6 @@
 package project.dao;
 
-import project.dao.*;
 import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import project.domain.StoreableObservation;
@@ -82,7 +80,7 @@ public class FakeObservationDatabaseDao implements ObservationDao {
     
 
     @Override
-    public void removeObservation(int id) throws Exception {
+    public void remove(int id) throws Exception {
         for (int i = 0; i < observations.size(); i++) {
             if (observations.get(i).getId() == id) {
                 observations.remove(i);

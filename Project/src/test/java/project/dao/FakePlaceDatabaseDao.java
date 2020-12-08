@@ -80,7 +80,7 @@ public class FakePlaceDatabaseDao implements PlaceDao {
     
 
     @Override
-    public void removePlace(int id) throws Exception {
+    public void remove(int id) throws Exception {
         for (Place p : places) {
             if (p.getId() == id) {
                 places.remove(p);

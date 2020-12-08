@@ -6,6 +6,7 @@ import project.dao.SpeciesDao;
 import project.dao.SpeciesDatabaseDao;
 
 public class SpeciesService {
+    
     private SpeciesDao speciesDao;
     
     public SpeciesService() {
@@ -13,7 +14,7 @@ public class SpeciesService {
     }
     
     public void setDatabase(SpeciesDao database) {
-        speciesDao = database;
+        this.speciesDao = database;
     }
     
     public boolean createSpecies(String englishName, String scientificName, String finnishName, String abbreviation) {
@@ -26,12 +27,13 @@ public class SpeciesService {
         return true;
     }
     
-    public void removeSpecies(int id) throws Exception {
-        speciesDao.removeSpecies(id);
-    }
     
     public void modifySpecies(int id, String englishName, String scientificName, String finnishName, String abbreviation) throws Exception {
         speciesDao.modifySpecies(id, englishName, scientificName, finnishName, abbreviation);
+    }
+    
+    public void removeSpecies(int id) throws Exception {
+        speciesDao.remove(id);
     }
     
     public Species getSpeciesById(int id) throws Exception {

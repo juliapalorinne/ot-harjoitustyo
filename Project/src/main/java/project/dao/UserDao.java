@@ -9,6 +9,8 @@ public interface UserDao {
     public void addUser(User user) throws Exception;
     
     public void modifyUser(int id, String username, String name, String password) throws Exception;
+    
+    public void remove(int id) throws Exception;
 
     public User findUserById(int id) throws Exception;
     

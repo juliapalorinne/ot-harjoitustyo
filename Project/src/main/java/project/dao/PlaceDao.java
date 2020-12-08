@@ -12,7 +12,7 @@ public interface PlaceDao {
     
     public void modifyPlace(int id, String country, String city, String spot, String type) throws Exception;
     
-    public void removePlace(int id) throws Exception;
+    public void remove(int id) throws Exception;
     
     public Place findPlaceById(int id) throws Exception;
     

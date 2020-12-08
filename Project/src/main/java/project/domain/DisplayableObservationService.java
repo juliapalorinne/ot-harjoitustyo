@@ -1,4 +1,3 @@
-
 package project.domain;
 
 import java.time.*;
@@ -7,7 +6,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.cell.PropertyValueFactory;
 
@@ -91,11 +89,21 @@ public class DisplayableObservationService {
         
         for (DisplayableObservation d : obs) {
             if (d.getSpecies().toLowerCase().contains(s)) {
-                System.out.println(d.getSpecies() + "added!");
                 result.add(d);
             }
         }
-        
+        return result;
+    }
+    
+    public List<DisplayableObservation> filterBySpeciesAndPlace(String species, String place) throws Exception {
+        List<DisplayableObservation> sList = filterBySpecies(species);
+        List<DisplayableObservation> result = new ArrayList<>();
+        String p = place.toLowerCase();
+        for (DisplayableObservation d : sList) {
+            if (d.getPlace().toLowerCase().contains(p)) {
+                result.add(d);
+            }
+        }
         return result;
     }
     

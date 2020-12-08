@@ -70,7 +70,7 @@ public class FakeUserDatabaseDao implements UserDao {
     
 
     @Override
-    public void removeUser(int id) throws Exception {
+    public void remove(int id) throws Exception {
         users.remove(id);
     }
     

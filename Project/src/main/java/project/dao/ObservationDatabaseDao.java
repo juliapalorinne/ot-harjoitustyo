@@ -12,13 +12,15 @@ import java.util.ArrayList;
 import java.util.List;
 import project.domain.StoreableObject;
 import project.domain.StoreableObservation;
-import project.domain.User;
 
-
+/**
+ * ObservationsDatabaseDao Class. Used to access Observations in the database.
+ */
 public class ObservationDatabaseDao extends DatabaseDao implements ObservationDao {
 
+    
     /**
-     * 
+     * Sets database address in ObservationsDatabaseDao.
      * @param databaseAddress
      */
     public ObservationDatabaseDao(String databaseAddress) {
@@ -30,6 +32,7 @@ public class ObservationDatabaseDao extends DatabaseDao implements ObservationDa
     /**
      * Creates Observation table if it doesn't exist.
      * @param conn
+     * @throws java.sql.SQLException
      */
     public void createSchemaIfNotExists(Connection conn) throws SQLException {
         Statement stmt = conn.createStatement();
@@ -44,7 +47,7 @@ public class ObservationDatabaseDao extends DatabaseDao implements ObservationDa
     
     
     /**
-     * Adds new observation
+     * Adds new Observation.
      * @param observation
      * @throws Exception
      */
@@ -70,7 +73,7 @@ public class ObservationDatabaseDao extends DatabaseDao implements ObservationDa
 
     
     /**
-     * Finds observation by id and modifies it.
+     * Finds an Observation by id and modifies it.
      * @param id
      * @param species
      * @param individuals
@@ -113,7 +116,7 @@ public class ObservationDatabaseDao extends DatabaseDao implements ObservationDa
 
     
     /**
-     * Creates Observation from database search result and lists them as StoreableObjects.
+     * Creates an Observation from a database search result and lists them as StoreableObjects.
      * @param result
      * @throws Exception
      */
@@ -138,7 +141,7 @@ public class ObservationDatabaseDao extends DatabaseDao implements ObservationDa
     
     
     /**
-     * Finds one Observation by id.
+     * Returns an Observation if found by id from the database.
      * @param id
      * @throws Exception
      */
@@ -149,13 +152,14 @@ public class ObservationDatabaseDao extends DatabaseDao implements ObservationDa
     
     
     /**
-     * Returns all observations.
+     * Returns all Observations in the database.
      * @throws Exception
      */
     @Override
     public List<StoreableObservation> getAllObservations() throws Exception {
         return convertToObservations(getAll());
     }
+    
     
     /**
      * Returns Observations with searchTerm in searchField.
@@ -169,7 +173,7 @@ public class ObservationDatabaseDao extends DatabaseDao implements ObservationDa
         try (Connection conn = DriverManager.getConnection(databaseAddress)) {
             observations = new ArrayList<>();
             try {
-                String stmt = createSearchAllStatementByField(searchField);
+                String stmt = createSearchOneStatementByField(searchField);
                 PreparedStatement p = conn.prepareStatement(stmt);
                 if (searchField.equals("species") || searchField.equals("place")) {
                     p.setInt(1, Integer.parseInt(searchTerm));
@@ -187,7 +191,11 @@ public class ObservationDatabaseDao extends DatabaseDao implements ObservationDa
     }
     
     
-    
+    /**
+     * Converts returned StorableObjects to Observations.
+     * @param objects
+     * @throws Exception
+     */
     private List<StoreableObservation> convertToObservations(List<StoreableObject> objects) {
         List<StoreableObservation> obs = new ArrayList<>();
         objects.forEach((o) -> {
@@ -195,6 +203,28 @@ public class ObservationDatabaseDao extends DatabaseDao implements ObservationDa
         });
         return obs;
     }
+    
+    
+    
+    
+    
+//    protected List<StoreableObservation> createObservationListFromResult(ResultSet result) throws Exception {
+//        List<StoreableObservation> observations = new ArrayList<>();
+//        while (result.next()) {
+//            int id = result.getInt("id");
+//            int speciesId = result.getInt("species");
+//            int individuals = result.getInt("individuals");
+//            int placeId = result.getInt("place");
+//            String date = result.getString("date");
+//            String time = result.getString("time");
+//            String info = result.getString("info");
+//            String username = result.getString("user");
+//
+//            StoreableObservation observation = new StoreableObservation(id, speciesId, individuals, placeId, LocalDate.parse(date), LocalTime.parse(time), info, username);
+//            observations.add(observation);
+//        }
+//        return observations;
+//    }
     
     
 

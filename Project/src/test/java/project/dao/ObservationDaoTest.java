@@ -1,22 +1,15 @@
-
 package project.dao;
 
 import java.io.File;
-import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import project.domain.*;
-import junit.framework.Assert;
 import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import org.junit.Rule;
-import org.junit.rules.TemporaryFolder;
 
 
 public class ObservationDaoTest { 
@@ -91,8 +84,8 @@ public class ObservationDaoTest {
     
     @Test
     public void observationCanBeRemovedFromDatabase() throws Exception {
-        observationDao.removeObservation(3);
-        observationDao.removeObservation(1);
+        observationDao.remove(3);
+        observationDao.remove(1);
         assertEquals(3, observationDao.getAllObservations().size());
     }
     

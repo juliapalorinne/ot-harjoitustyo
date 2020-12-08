@@ -1,19 +1,12 @@
-
 package project.dao;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.List;
 import project.domain.*;
-import junit.framework.Assert;
 import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import org.junit.Rule;
-import org.junit.rules.TemporaryFolder;
 
 
 public class PlaceDaoTest { 
@@ -63,7 +56,7 @@ public class PlaceDaoTest {
     
     @Test
     public void placesCanBeRemovedFromDatabase() throws Exception {
-        placeDao.removePlace(2);
+        placeDao.remove(2);
         assertEquals(2, placeDao.getAllPlaces().size());
     }
     

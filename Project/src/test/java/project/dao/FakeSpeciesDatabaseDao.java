@@ -64,7 +64,7 @@ public class FakeSpeciesDatabaseDao implements SpeciesDao {
                 return s;
             }
         }
-        return new Species();
+        return null;
     }
 
     
@@ -87,14 +87,14 @@ public class FakeSpeciesDatabaseDao implements SpeciesDao {
             }
         }
         
-        return new Species();
+        return null;
     }
 
 
     
 
     @Override
-    public void removeSpecies(int id) throws Exception {
+    public void remove(int id) throws Exception {
         for (Species s : speciesList) {
             if (s.getId() == id) {
                 speciesList.remove(s);
