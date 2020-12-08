@@ -46,3 +46,7 @@ Jos havainto tallennetaan salaisena, vain käyttäjä itse näkee havainnon.
 
 Käyttäjä voi avata havainnon omaan ikkunaansa valitsemalla sen taulukosta ja painamalla *Avaa*-nappia.
 Avatessaan havainnon käyttäjä saa näkyviin valinnat *Muokkaa* ja *Poista*.
+
+## Lopetus
+
+Halutessaan lopettaa sovelluksen käytön, käyttäjä pääsee takaisin perusnäkymään painamalla tarpeeksi monta kertaa *Return*-nappia. Perusnäkymän ylälaidassa on painike *Log out*, josta käyttäjä voi kirjautua ulos ja lopettaa käytön.
