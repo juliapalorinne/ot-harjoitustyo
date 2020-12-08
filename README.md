@@ -28,7 +28,7 @@ Sovellukseen on pian tulossa toiminnot havaintojen, lajien ja paikkojen muokkaam
 
 Ohjelmasta voi luoda jar-tiedoston komennolla "mvn package".
 
-Testit voi suorittaa komennolla >**_mvn test_**.
+Testit voi suorittaa komennolla <code>mvn test</code>.
 
 Testikattavuusraportin saa näkyviin komennolla "mvn jacoco:report" ja testiraportti tallentuu seuraavaan tiedostoon:
 target/site/jacoco/index.html.
