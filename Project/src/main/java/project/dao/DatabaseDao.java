@@ -118,7 +118,7 @@ public abstract class DatabaseDao {
             }
         }
 
-        return objects ;
+        return objects;
     }
     
     

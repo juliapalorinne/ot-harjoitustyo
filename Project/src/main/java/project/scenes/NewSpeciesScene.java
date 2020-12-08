@@ -1,4 +1,3 @@
-
 package project.scenes;
 
 import java.util.logging.Level;
@@ -8,7 +7,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
@@ -47,24 +45,26 @@ public class NewSpeciesScene {
             if (englishName.length() < 2 || scientificName.length() < 2) {
                 speciesCreationMessage.setText("One of the names too short");
                 speciesCreationMessage.setTextFill(Color.BLUE);              
-            } else try {
-                if (speciesService.createSpecies(englishName, scientificName, finnishName, abbreviation)) {
-                    speciesCreationMessage.setText("");
-                    stage.setScene(newObservationScene);
-                } else {
-                    speciesCreationMessage.setText("Error while creating new species");
-                    speciesCreationMessage.setTextFill(Color.BLUE);        
+            } else {
+                try {
+                    if (speciesService.createSpecies(englishName, scientificName, finnishName, abbreviation)) {
+                        speciesCreationMessage.setText("");
+                        stage.setScene(newObservationScene);
+                    } else {
+                        speciesCreationMessage.setText("Error while creating new species");
+                        speciesCreationMessage.setTextFill(Color.BLUE);        
+                    }
+                } catch (Exception ex) {
+                    Logger.getLogger(NewSpeciesScene.class.getName()).log(Level.SEVERE, null, ex);
                 }
-            } catch (Exception ex) {
-                Logger.getLogger(NewSpeciesScene.class.getName()).log(Level.SEVERE, null, ex);
             }
- 
         });  
         
         newSpeciesPane.getChildren().addAll(speciesCreationMessage, createNewSpeciesButton, returnButton);
         Scene newSpeciesScene = new Scene(newSpeciesPane, 400, 400);
         return newSpeciesScene;
     }
+    
     
     public Button returnButton() {
         return this.returnButton;

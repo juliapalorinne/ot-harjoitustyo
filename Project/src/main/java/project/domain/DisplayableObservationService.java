@@ -110,27 +110,27 @@ public class DisplayableObservationService {
     public ArrayList<TableColumn> getColumns() {
         TableColumn<DisplayableObservation, String> speciesCol = new TableColumn("Species");
         speciesCol.setCellValueFactory(new PropertyValueFactory<>("species"));
-        speciesCol.setMaxWidth( 1f * Integer.MAX_VALUE * 30 );
+        speciesCol.setMaxWidth(1f * Integer.MAX_VALUE * 30);
         
         TableColumn<DisplayableObservation, Integer> individualCol = new TableColumn("Individuals");
         individualCol.setCellValueFactory(new PropertyValueFactory<>("individuals"));
-        individualCol.setMaxWidth( 1f * Integer.MAX_VALUE * 5 );
+        individualCol.setMaxWidth(1f * Integer.MAX_VALUE * 5);
         
         TableColumn<DisplayableObservation, String> placeCol = new TableColumn("Place");
         placeCol.setCellValueFactory(new PropertyValueFactory<>("place"));
-        placeCol.setMaxWidth( 1f * Integer.MAX_VALUE * 35 );
+        placeCol.setMaxWidth(1f * Integer.MAX_VALUE * 35);
         
         TableColumn<DisplayableObservation, Date> dateCol = new TableColumn("Date");
         dateCol.setCellValueFactory(new PropertyValueFactory<>("date"));
-        dateCol.setMaxWidth( 1f * Integer.MAX_VALUE * 10 );
+        dateCol.setMaxWidth(1f * Integer.MAX_VALUE * 10);
         
         TableColumn<DisplayableObservation, LocalTime> timeCol = new TableColumn("Time");
         timeCol.setCellValueFactory(new PropertyValueFactory<>("time"));
-        timeCol.setMaxWidth( 1f * Integer.MAX_VALUE * 5 );
+        timeCol.setMaxWidth(1f * Integer.MAX_VALUE * 5);
         
         TableColumn<DisplayableObservation, String> infoCol = new TableColumn("Info");
         infoCol.setCellValueFactory(new PropertyValueFactory<>("info"));
-        infoCol.setMaxWidth( 1f * Integer.MAX_VALUE * 15 );
+        infoCol.setMaxWidth(1f * Integer.MAX_VALUE * 15);
         
         ArrayList<TableColumn> list = new ArrayList<>();
         list.add(speciesCol);

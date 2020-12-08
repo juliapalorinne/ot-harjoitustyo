@@ -47,16 +47,18 @@ public class NewPlaceScene {
             if (country.length() < 2 || city.length() < 2) {
                 placeCreationMessage.setText("Country or city too short");
                 placeCreationMessage.setTextFill(Color.BLUE);              
-            } else try {
-                if (placeService.createPlace(country, city, spot, type)) {
-                    placeCreationMessage.setText("");
-                    stage.setScene(newObservationScene);
-                } else {
-                    placeCreationMessage.setText("Error while creating new place");
-                    placeCreationMessage.setTextFill(Color.BLUE);        
+            } else {
+                try {
+                    if (placeService.createPlace(country, city, spot, type)) {
+                        placeCreationMessage.setText("");
+                        stage.setScene(newObservationScene);
+                    } else {
+                        placeCreationMessage.setText("Error while creating new place");
+                        placeCreationMessage.setTextFill(Color.BLUE);        
+                    }
+                } catch (Exception ex) {
+                    Logger.getLogger(NewPlaceScene.class.getName()).log(Level.SEVERE, null, ex);
                 }
-            } catch (Exception ex) {
-                Logger.getLogger(NewPlaceScene.class.getName()).log(Level.SEVERE, null, ex);
             }
  
         });  

@@ -124,7 +124,7 @@ public class ObservationTableScene {
         HBox searchForm = new HBox(10);
         Region spacer = new Region();
         HBox.setHgrow(spacer, Priority.ALWAYS);
-        searchForm .getChildren().addAll(spacer, searchButton());
+        searchForm.getChildren().addAll(spacer, searchButton());
         return searchForm;
     }
     

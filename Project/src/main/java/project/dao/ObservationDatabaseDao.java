@@ -111,7 +111,8 @@ public class ObservationDatabaseDao extends DatabaseDao implements ObservationDa
                 }
             } catch (Exception e) {
             }
-        }    }
+        }
+    }
     
 
     

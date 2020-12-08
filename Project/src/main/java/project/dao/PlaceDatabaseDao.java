@@ -92,7 +92,8 @@ public class PlaceDatabaseDao extends DatabaseDao implements PlaceDao {
                 }
             } catch (Exception e) {
             }
-        }    }
+        }
+    }
     
 
     
