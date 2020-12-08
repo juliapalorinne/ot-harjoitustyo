@@ -29,3 +29,4 @@ target/site/jacoco/index.html.
 Checkstyle-raportin saa näkyviin komennolla "mvn jxr:jxr checkstyle:checkstyle" ja testiraportti tallentuu seuraavaan tiedostoon:
 /target/site/checkstyle.html.
 
+Javadocin saa näkyviin komennolla mvn javadoc:javadoc ja generoitu JavaDoc löytyy kansiosta \target\site\apidocs\.
