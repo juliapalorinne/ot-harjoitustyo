@@ -19,7 +19,7 @@ Käyttöliittymä sisältää tällä hetkellä 7 eri näkymää:
 - Näkymä uuden paikan lisäämiseen
 - Näkymä havaintojen etsimiseen
 
-Kaaviossa on kuvattu ohjelman tämänhetkinen rakenne. Rakennetta tullaan kehittämään uusien ominaisuuksien käyttöönoton yhteydessä.
+Kaaviossa on kuvattu ohjelman tämänhetkinen rakenne havaintojen käsittelyn osalta. Paikan ja lajin käsittelyyn tarkoitetut luokat eivät näy kuvassa. Rakennetta tullaan kehittämään uusien ominaisuuksien käyttöönoton yhteydessä.
 <br/><br/>
 
 ![Ohjelman rakenne](https://github.com/juliapalorinne/ot-harjoitustyo/blob/main/Project/documentation/kuvat/rakenne.jpg)
