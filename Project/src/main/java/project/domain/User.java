@@ -1,9 +1,8 @@
 
 package project.domain;
 
-public class User {
+public class User extends StoreableObject {
     
-    private int id;
     private String name;
     private String username;
     private String password;
@@ -22,10 +21,6 @@ public class User {
         this.username = username;
         this.password = password;
     }
-
-    public void setId(int id) {
-        this.id = id;
-    } 
     
     public void setUsername(String username) {
         this.username = username;
@@ -38,10 +33,6 @@ public class User {
     public void setPassword(String password) {
         this.password = password;
     }    
-    
-    public int getId() {
-        return id;
-    }
     
     public String getName() {
         return name;

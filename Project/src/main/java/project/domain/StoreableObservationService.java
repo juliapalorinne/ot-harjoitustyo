@@ -3,18 +3,16 @@ package project.domain;
 
 import java.time.*;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 import project.dao.ObservationDao;
 import project.dao.ObservationDatabaseDao;
-import project.dao.UserDao;
 
-public class ObservationService {
+public class StoreableObservationService {
     private ObservationDao observationDao;
     private User loggedIn;
     
-    public ObservationService() {
+    public StoreableObservationService() {
         observationDao = new ObservationDatabaseDao("jdbc:sqlite:observation.db");
     }
     
@@ -23,7 +21,7 @@ public class ObservationService {
     }
     
     public boolean createObservation() {
-        Observation observation = new Observation();
+        StoreableObservation observation = new StoreableObservation();
         observation.setUser(loggedIn.getUsername());
         try {   
             observationDao.addObservation(observation);
@@ -34,7 +32,7 @@ public class ObservationService {
     }
     
     public boolean createObservation(Species species, int individuals, Place place, LocalDate date, LocalTime time, String info) {
-        Observation observation = new Observation(species.getId(), individuals, place.getId(), date, time, info, loggedIn.getUsername());
+        StoreableObservation observation = new StoreableObservation(species.getId(), individuals, place.getId(), date, time, info, loggedIn.getUsername());
         try {   
             observationDao.addObservation(observation);
         } catch (Exception ex) {
@@ -43,7 +41,7 @@ public class ObservationService {
         return true;
     }
     
-    public List<Observation> getAll() throws Exception {
+    public List<StoreableObservation> getAll() throws Exception {
         if (loggedIn == null) {
             return new ArrayList<>();
         }
@@ -55,7 +53,7 @@ public class ObservationService {
     }
     
     
-    public List<Observation> getObservationsBySearchTerm(String searchTerm, String searchField) throws Exception {
+    public List<StoreableObservation> getObservationsBySearchTerm(String searchTerm, String searchField) throws Exception {
         if (loggedIn == null) {
             return new ArrayList<>();
         }
@@ -66,13 +64,13 @@ public class ObservationService {
             .collect(Collectors.toList());
     }
     
-    public Observation findObservationById(int id) throws Exception {
+    public StoreableObservation findObservationById(int id) throws Exception {
         return observationDao.findObservationById(id);
     }
     
     
     public void removeObservation(int id) throws Exception {
-        observationDao.removeObservation(id);
+        observationDao.remove(id);
     }
     
     public void modifyObservation(int id, Species species, int individuals, Place place, String date, String time, String info) throws Exception {

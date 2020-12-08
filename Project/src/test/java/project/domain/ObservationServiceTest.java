@@ -18,14 +18,14 @@ import project.dao.FakeObservationDatabaseDao;
 
 public class ObservationServiceTest {
 
-    private ObservationService observationService;
+    private StoreableObservationService observationService;
     private FakeObservationDatabaseDao observationDao;
     private List<Place> places;
     private List<Species> speciesList;
     
     @Before
     public void setUp() {
-        observationService = new ObservationService();
+        observationService = new StoreableObservationService();
         observationDao = new FakeObservationDatabaseDao();
         observationService.setDatabase(observationDao);
         places = new ArrayList<>();
@@ -60,7 +60,7 @@ public class ObservationServiceTest {
     @Test
     public void ifLoggedInNullGetAllReturnsEmptyList() throws Exception {
         observationService.setLoggedUser(null);
-        assertEquals(new ArrayList<Observation>(), observationService.getAll());
+        assertEquals(new ArrayList<StoreableObservation>(), observationService.getAll());
     }
     
     
@@ -79,10 +79,10 @@ public class ObservationServiceTest {
     @Test
     public void searchBySpeciesReturnsCorrectList() throws Exception {
         String id = Integer.toString(speciesList.get(1).getId());
-        List<Observation> obs = observationService.getObservationsBySearchTerm(id, "species");
+        List<StoreableObservation> obs = observationService.getObservationsBySearchTerm(id, "species");
         assertEquals(2, obs.size());
         
-        for (Observation o : obs) {
+        for (StoreableObservation o : obs) {
             assertEquals(112, o.getSpeciesId());
         }
     }
@@ -90,17 +90,17 @@ public class ObservationServiceTest {
     @Test
     public void searchByPlaceReturnsCorrectList() throws Exception {
         String id = Integer.toString(places.get(0).getId());
-        List<Observation> obs = observationService.getObservationsBySearchTerm(id, "place");
+        List<StoreableObservation> obs = observationService.getObservationsBySearchTerm(id, "place");
         assertEquals(2, obs.size());
         
-        for (Observation o : obs) {
+        for (StoreableObservation o : obs) {
             assertEquals(123, o.getPlaceId());
         }
     }
     
     @Test
     public void findByIdReturnsCorrectObservation() throws Exception {
-        Observation o = observationService.findObservationById(1);
+        StoreableObservation o = observationService.findObservationById(1);
         assertEquals(220, o.getSpeciesId());
     }
     

@@ -17,7 +17,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-import project.domain.ObservationService;
+import project.domain.StoreableObservationService;
 import project.domain.PlaceService;
 import project.domain.SpeciesService;
 import project.domain.UserService;
@@ -25,7 +25,7 @@ import project.scenes.SearchScene;
 
 
 public class ProjectUi extends Application {
-    private ObservationService observationService;
+    private StoreableObservationService observationService;
     private UserService userService;
     private PlaceService placeService;
     private SpeciesService speciesService;
@@ -46,7 +46,7 @@ public class ProjectUi extends Application {
     
     @Override
     public void init() throws Exception {
-        observationService = new ObservationService();
+        observationService = new StoreableObservationService();
         userService = new UserService(observationService);
         speciesService = new SpeciesService();
         placeService = new PlaceService();

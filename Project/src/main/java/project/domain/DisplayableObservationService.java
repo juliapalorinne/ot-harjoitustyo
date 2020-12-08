@@ -15,18 +15,18 @@ import javafx.scene.control.cell.PropertyValueFactory;
 public class DisplayableObservationService {
     private List<DisplayableObservation> obsList;
     
-    private ObservationService observationService;
+    private StoreableObservationService observationService;
     private SpeciesService speciesService;
     private PlaceService placeService;
     
-    public DisplayableObservationService(ObservationService o, SpeciesService s, PlaceService p) {
+    public DisplayableObservationService(StoreableObservationService o, SpeciesService s, PlaceService p) {
         obsList = new ArrayList<>();
         this.observationService = o;
         this.speciesService = s;
         this.placeService = p;
     }
     
-    public void addObservation(Observation obs) throws Exception {
+    public void addObservation(StoreableObservation obs) throws Exception {
         DisplayableObservation d = new DisplayableObservation();
         d.setId(obs.getId());
         d.setSpecies(speciesService.getSpeciesById(obs.getSpeciesId()).toString());
@@ -47,7 +47,7 @@ public class DisplayableObservationService {
     
     
     public void redrawObservationList() throws Exception {
-        List<Observation> observationlist = observationService.getAll();
+        List<StoreableObservation> observationlist = observationService.getAll();
         observationlist.forEach(obs-> {
             try {
                 addObservation(obs);

@@ -7,156 +7,26 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import project.domain.StoreableObject;
 import project.domain.User;
 
-
-public class UserDatabaseDao implements UserDao {
-
-    private String databaseAddress;
+/**
+ * UserDatabaseDao Class. Used to access Users in the database.
+ */
+public class UserDatabaseDao extends DatabaseDao implements UserDao {
 
     public UserDatabaseDao(String databaseAddress) {
         this.databaseAddress = databaseAddress;
+        this.tableName = "User";
     }
     
     
-    @Override
-    public void addUser(User user) throws Exception {
-        Connection conn = DriverManager.getConnection(databaseAddress);
-        createSchemaIfNotExists(conn);
-
-        PreparedStatement stmt = conn.prepareStatement(
-                "INSERT INTO User (username, name, password) "
-                + "VALUES (?,?,?)");
-
-        stmt.setString(1, user.getUsername());
-        stmt.setString(2, user.getName());
-        stmt.setString(3, user.getPassword());
-        stmt.execute();
-
-        stmt.close();
-        conn.close();
-    }
-
-    
-    @Override
-    public List<User> getAllUsers() throws Exception {
-        Connection conn = DriverManager.getConnection(databaseAddress);
-        List<User> users = new ArrayList<>();
-
-        try {
-            Statement stmt = conn.createStatement();
-            ResultSet result = stmt.executeQuery("SELECT * FROM User");
-            users = createListFromResult(result);
-        } catch (Exception e) {
-            System.out.println("Database is empty.");
-        }
-        conn.close();
-
-        return users;
-    }
-    
-    
-    @Override
-    public void modifyUser(int id, String username, String name, String password) throws Exception {
-        Connection conn = DriverManager.getConnection(databaseAddress);
-        
-        try {
-            if (!username.isEmpty()) { 
-                createModifyStatement("username", username, id, conn);
-            }
-            if (!name.isEmpty()) { 
-                createModifyStatement("name", name, id, conn);
-            }
-            if (!password.isEmpty()) { 
-                createModifyStatement("password", password, id, conn);
-            }
-        } catch (Exception e) {
-        }
-        conn.close();
-    }
-    
-
-    @Override
-    public List<User> searchUsers(String searchTerm, String searchField) throws Exception {
-        Connection conn = DriverManager.getConnection(databaseAddress);
-        List<User> users = new ArrayList<>();
-        try {
-            String stmt = createStatementByField(searchField);
-            PreparedStatement p = conn.prepareStatement(stmt);
-            p.setString(1, searchTerm);
-
-            ResultSet result = p.executeQuery();
-            users = createListFromResult(result);
-        } catch (Exception e) {
-
-        }
-        conn.close();
-        return users;
-    }
-    
-    
-    @Override
-    public User findUserById(int id) throws Exception {
-        Connection conn = DriverManager.getConnection(databaseAddress);
-        List<User> users = new ArrayList<>();
-        try {
-            PreparedStatement stmt = conn.prepareStatement("SELECT * FROM User WHERE id = ?");
-            stmt.setInt(1, id);
-            
-            ResultSet result = stmt.executeQuery();
-            users = createListFromResult(result);
-        } catch (Exception e) {
-        }
-        conn.close();
-        
-        if (users.size() == 1) {
-            return users.get(0);
-        }
-        return null;
-    }
-
-    
-    @Override
-    public User findUserByName(String name, String searchField) throws Exception {
-        Connection conn = DriverManager.getConnection(databaseAddress);
-        List<User> users = new ArrayList<>();
-        try {
-            String stmt = createStatementByField(searchField);
-            PreparedStatement p = conn.prepareStatement(stmt);
-            p.setString(1, name);
-            
-            ResultSet result = p.executeQuery();
-            users = createListFromResult(result);
-        } catch (Exception e) {
-        }
-        conn.close();
-        
-        if (users.size() == 1) {
-            return users.get(0);
-        }
-        return null;
-    }
-
-
-    
-
-    @Override
-    public void removeUser(int id) throws Exception {
-
-        Connection conn = DriverManager.getConnection(databaseAddress);
-        PreparedStatement stmt = conn.prepareStatement("DELETE FROM User WHERE id = ?");
-        stmt.setInt(1, id);
-        stmt.executeUpdate();
-        conn.close();
-    }
-    
-    
-
-    
-
     /**
      * Creates User table if it doesn't exist.
+     * @param conn
+     * @throws java.sql.SQLException
      */
     public void createSchemaIfNotExists(Connection conn) throws SQLException {
         Statement stmt = conn.createStatement();
@@ -164,38 +34,64 @@ public class UserDatabaseDao implements UserDao {
         try {
             stmt.execute(
                     "CREATE TABLE User (id INTEGER PRIMARY KEY, username, name, password)");
-        } catch (Exception e) {
+        } catch (SQLException e) {
             
         }
 
     }
     
-        
-    private String createStatementByField(String searchField) {
-        StringBuilder stmt = new StringBuilder();
-        stmt.append("SELECT * FROM User WHERE ");
-        if (searchField.equals("username")) {
-            stmt.append("username = ?");
-        }
-        if (searchField.equals("name")) {
-            stmt.append("name = ?");
-        }
-        
-        return stmt.toString();
-    }
     
-    private void createModifyStatement(String field, String newInfo, int id, Connection conn) throws Exception {
-        StringBuilder stmt = new StringBuilder();
-        stmt.append("UPDATE User SET ").append(field).append(" = ? WHERE id = ?");
-        String s = stmt.toString();
-        PreparedStatement p = conn.prepareStatement(s);
-        p.setString(1, newInfo);
-        p.setInt(2, id);        
-        p.executeUpdate();
+    /**
+     * Adds new user.
+     * @param user
+     * @throws Exception
+     */
+    @Override
+    public void addUser(User user) throws Exception {
+        try (Connection conn = DriverManager.getConnection(databaseAddress)) {
+            createSchemaIfNotExists(conn);
+            
+            try (PreparedStatement stmt = conn.prepareStatement(
+                    "INSERT INTO User (username, name, password) "
+                            + "VALUES (?,?,?)")) {
+                stmt.setString(1, user.getUsername());
+                stmt.setString(2, user.getName());
+                stmt.setString(3, user.getPassword());
+                stmt.execute();
+            }
+        }
     }
+
+    /**
+     * Finds user by id and modifies it.
+     * If any field is left empty, it is not modified.
+     * @param id
+     * @param username
+     * @param name
+     * @param password
+     * @throws Exception
+     */
+    @Override
+    public void modifyUser(int id, String username, String name, String password) throws Exception {
+        try (Connection conn = DriverManager.getConnection(databaseAddress)) {
+            try {
+                if (!username.isEmpty()) {
+                    createModifyStatement("username", username, id, conn);
+                }
+                if (!name.isEmpty()) {
+                    createModifyStatement("name", name, id, conn);
+                }
+                if (!password.isEmpty()) {
+                    createModifyStatement("password", password, id, conn);
+                }
+            } catch (Exception e) {
+            }
+        }    }
     
-    private List<User> createListFromResult(ResultSet result) throws Exception {
-        List<User> users = new ArrayList<>();
+    
+    @Override
+    protected List<StoreableObject> createListFromResult(ResultSet result) throws Exception {
+        List<StoreableObject> users = new ArrayList<>();
         while (result.next()) {
             int id = result.getInt("id");
             String username = result.getString("username");
@@ -205,6 +101,36 @@ public class UserDatabaseDao implements UserDao {
             User user = new User(id, username, name, password);
             users.add(user);
         }
+        return users;
+    }
+
+    @Override
+    public User findUserById(int id) throws Exception {
+        return (User) findById(id);
+    }
+
+    @Override
+    public User findUserByName(String name, String searchField) throws Exception {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public List<User> getAllUsers() throws Exception {
+        return convertToUsers(getAll());
+    }
+
+    @Override
+    public List<User> searchUsers(String name, String searchField) throws Exception {
+        return convertToUsers(search(name, searchField));
+    }
+    
+    
+    
+    private List<User> convertToUsers(List<StoreableObject> objects) {
+        List<User> users = new ArrayList<>();
+        objects.forEach((o) -> {
+            users.add((User) o);
+        });
         return users;
     }
 

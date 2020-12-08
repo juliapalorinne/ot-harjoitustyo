@@ -18,7 +18,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import project.domain.ObservationService;
+import project.domain.StoreableObservationService;
 import project.domain.Place;
 import project.domain.PlaceService;
 import project.domain.Species;
@@ -26,7 +26,7 @@ import project.domain.SpeciesService;
 import project.ui.InputWindow;
 
 public class NewObservationScene {
-    private ObservationService observationService;
+    private StoreableObservationService observationService;
     private SpeciesService speciesService;
     private PlaceService placeService;
     private InputWindow inputWindow;
@@ -35,7 +35,7 @@ public class NewObservationScene {
     private Button addNewPlaceButton;
     
     
-    public NewObservationScene(ObservationService observationService, SpeciesService speciesService, 
+    public NewObservationScene(StoreableObservationService observationService, SpeciesService speciesService, 
             PlaceService placeService, InputWindow inputWindow) {
         this.observationService = observationService;
         this.speciesService = speciesService;

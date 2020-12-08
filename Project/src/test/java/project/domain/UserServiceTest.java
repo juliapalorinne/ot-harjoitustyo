@@ -21,7 +21,7 @@ public class UserServiceTest {
     
     @Before
     public void setUp() throws Exception {
-        ObservationService observationService = new ObservationService();
+        StoreableObservationService observationService = new StoreableObservationService();
         userDao = new FakeUserDatabaseDao();
         userService = new UserService(observationService);
         userService.setDatabase(userDao);

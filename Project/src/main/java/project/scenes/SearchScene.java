@@ -28,7 +28,7 @@ import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import project.domain.DisplayableObservation;
 import project.domain.DisplayableObservationService;
-import project.domain.ObservationService;
+import project.domain.StoreableObservationService;
 import project.domain.Place;
 import project.domain.PlaceService;
 import project.domain.Species;
@@ -44,7 +44,7 @@ public class SearchScene {
     
     private ObservableList<DisplayableObservation> observations;
     
-    public SearchScene(InputWindow inputWindow, ObservationService observationService, 
+    public SearchScene(InputWindow inputWindow, StoreableObservationService observationService, 
             SpeciesService speciesService, PlaceService placeService) {
         this.inputWindow = inputWindow;
         this.displayObsService = new DisplayableObservationService(observationService, speciesService, placeService);

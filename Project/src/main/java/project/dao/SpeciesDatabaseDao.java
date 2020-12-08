@@ -9,160 +9,26 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import project.domain.Species;
+import project.domain.StoreableObject;
+import project.domain.StoreableObservation;
 
 
-public class SpeciesDatabaseDao implements SpeciesDao {
-
-    private String databaseAddress;
-
-    public SpeciesDatabaseDao(String databaseAddress) {
-        this.databaseAddress = databaseAddress;
-    }
-    
-    
-    @Override
-    public void addSpecies(Species species) throws Exception {
-        Connection conn = DriverManager.getConnection(databaseAddress);
-        createSchemaIfNotExists(conn);
-
-        PreparedStatement stmt = conn.prepareStatement(
-                "INSERT INTO Species (englishName, scientificName, finnishName, abbreviation) "
-                + "VALUES (?,?,?,?)");
-
-        stmt.setString(1, species.getEnglishName());
-        stmt.setString(2, species.getScientificName());
-        stmt.setString(3, species.getFinnishName());
-        stmt.setString(4, species.getAbbreviation());
-        stmt.execute();
-
-        stmt.close();
-        conn.close();
-    }
-
-    
-    @Override
-    public List<Species> getAllSpecies() throws Exception {
-
-        Connection conn = DriverManager.getConnection(databaseAddress);
-        List<Species> speciesList = new ArrayList<>();
-
-        try {
-            Statement stmt = conn.createStatement();
-            ResultSet result = stmt.executeQuery("SELECT * FROM Species");
-            speciesList = createListFromResult(result);
-        } catch (Exception e) {
-            System.out.println("Database is empty.");
-        }
-        conn.close();
-
-        return speciesList;
-    }
-    
-    
-    @Override
-    public void modifySpecies(int id, String englishName, String scientificName, String finnishName, String abbreviation) throws Exception {
-        Connection conn = DriverManager.getConnection(databaseAddress);
-        
-        try {
-            if (!englishName.isEmpty()) {
-                createModifyStatement("englishName", englishName, id, conn);
-            }
-            if (!scientificName.isEmpty()) { 
-                createModifyStatement("scientificName", scientificName, id, conn);
-            }
-            if (!finnishName.isEmpty()) {
-                createModifyStatement("finnishName", finnishName, id, conn);
-            }
-            if (!abbreviation.isEmpty()) {
-                createModifyStatement("abbreviation", abbreviation, id, conn);
-            }
-        } catch (Exception e) {
-        }
-        conn.close();
-    }
-    
-
-    @Override
-    public List<Species> searchSpecies(String searchTerm, String searchField) throws Exception {
-        Connection conn = DriverManager.getConnection(databaseAddress);
-        List<Species> speciesList = new ArrayList<>();
-        try {
-            String stmt = createSearchAllStatementByField(searchField);
-            PreparedStatement p = conn.prepareStatement(stmt);
-            String s = "%" + searchTerm + "%";
-            p.setString(1, s);
-
-            ResultSet result = p.executeQuery();
-            speciesList = createListFromResult(result);
-        } catch (Exception e) {
-
-        }
-        conn.close();
-        return speciesList;
-    }
-    
-    
-    @Override
-    public Species findSpeciesById(int id) throws Exception {
-        Connection conn = DriverManager.getConnection(databaseAddress);
-        List<Species> speciesList = new ArrayList<>();
-        try {
-            PreparedStatement stmt = conn.prepareStatement("SELECT * FROM Species WHERE id = ?");
-            stmt.setInt(1, id);
-            
-            ResultSet result = stmt.executeQuery();
-            speciesList = createListFromResult(result);
-        } catch (Exception e) {
-        }
-        conn.close();
-        
-        if (speciesList.size() == 1) {
-            return speciesList.get(0);
-        }
-        return null;
-    }
-
-    
-    @Override
-    public Species findSpeciesByName(String name, String searchField) throws Exception {
-        Connection conn = DriverManager.getConnection(databaseAddress);
-        List<Species> speciesList = new ArrayList<>();
-        try {
-            String stmt = createSearchOneStatementByField(searchField);
-            PreparedStatement p = conn.prepareStatement(stmt);
-            p.setString(1, name);
-            
-            ResultSet result = p.executeQuery();
-            speciesList = createListFromResult(result);
-        } catch (Exception e) {
-        }
-        conn.close();
-        
-        if (speciesList.size() == 1) {
-            return speciesList.get(0);
-        }
-        return null;
-    }
-
-
-    
-
-    @Override
-    public void removeSpecies(int id) throws Exception {
-
-        Connection conn = DriverManager.getConnection(databaseAddress);
-        PreparedStatement stmt = conn.prepareStatement("DELETE FROM Species WHERE id = ?");
-        stmt.setInt(1, id);
-        stmt.executeUpdate();
-        conn.close();
-    }
-    
-    
-
-    
+public class SpeciesDatabaseDao extends DatabaseDao implements SpeciesDao {
 
     /**
+     * 
+     * @param databaseAddress
+     */
+    public SpeciesDatabaseDao(String databaseAddress) {
+        this.databaseAddress = databaseAddress;
+        this.tableName = "Species";
+    }
+    
+    
+    /**
      * Creates Species table if it doesn't exist.
+     * @param conn
+     * @throws java.sql.SQLException
      */
     public void createSchemaIfNotExists(Connection conn) throws SQLException {
         Statement stmt = conn.createStatement();
@@ -170,60 +36,71 @@ public class SpeciesDatabaseDao implements SpeciesDao {
         try {
             stmt.execute(
                     "CREATE TABLE Species (id INTEGER PRIMARY KEY, englishName, scientificName, finnishName, abbreviation)");
-        } catch (Exception e) {
+        } catch (SQLException e) {
             
         }
 
     }
     
-    private void createModifyStatement(String field, String newInfo, int id, Connection conn) throws Exception {
-        StringBuilder stmt = new StringBuilder();
-        stmt.append("UPDATE Species SET ").append(field).append(" = ? WHERE id = ?");
-        String s = stmt.toString();
-        PreparedStatement p = conn.prepareStatement(s);
-        p.setString(1, newInfo);
-        p.setInt(2, id);        
-        p.executeUpdate();
+    /**
+     * Adds new species
+     * @param species
+     * @throws Exception
+     */
+    public void addSpecies(Species species) throws Exception {
+        try (Connection conn = DriverManager.getConnection(databaseAddress)) {
+            createSchemaIfNotExists(conn);
+            
+            try (PreparedStatement stmt = conn.prepareStatement(
+                    "INSERT INTO Species (englishName, scientificName, finnishName, abbreviation) "
+                            + "VALUES (?,?,?,?)")) {
+                stmt.setString(1, species.getEnglishName());
+                stmt.setString(2, species.getScientificName());
+                stmt.setString(3, species.getFinnishName());
+                stmt.setString(4, species.getAbbreviation());
+                stmt.execute();
+            }
+        }
     }
+
     
-    private String createSearchAllStatementByField(String searchField) {
-        StringBuilder stmt = new StringBuilder();
-        stmt.append("SELECT * FROM Species WHERE ");
-        if (searchField.equals("englishName")) {
-            stmt.append("englishName LIKE ?");
-        }
-        if (searchField.equals("scientificName")) {
-            stmt.append("scientificName LIKE ?");
-        }
-        if (searchField.equals("finnishName")) {
-            stmt.append("finnishName LIKE ?");
-        }
-        if (searchField.equals("abbreviation")) {
-            stmt.append("abbreviation LIKE ?");
-        }
-        return stmt.toString();
-    }
+    /**
+     * Finds observation by id and modifies it.
+     * @param id
+     * @param englishName
+     * @param scientificName
+     * @param finnishName
+     * @param abbreviation
+     * @throws Exception
+     */
+    public void modifySpecies(int id, String englishName, String scientificName, String finnishName, String abbreviation) throws Exception {
+        try (Connection conn = DriverManager.getConnection(databaseAddress)) {
+            try {
+                if (!englishName.isEmpty()) {
+                    createModifyStatement("englishName", englishName, id, conn);
+                }
+                if (!scientificName.isEmpty()) {
+                    createModifyStatement("scientificName", scientificName, id, conn);
+                }
+                if (!finnishName.isEmpty()) {
+                    createModifyStatement("finnishName", finnishName, id, conn);
+                }
+                if (!abbreviation.isEmpty()) {
+                    createModifyStatement("abbreviation", abbreviation, id, conn);
+                }
+            } catch (Exception e) {
+            }
+        }    }
     
-    private String createSearchOneStatementByField(String searchField) {
-        StringBuilder stmt = new StringBuilder();
-        stmt.append("SELECT * FROM Species WHERE ");
-        if (searchField.equals("englishName")) {
-            stmt.append("englishName = ?");
-        }
-        if (searchField.equals("scientificName")) {
-            stmt.append("scientificName = ?");
-        }
-        if (searchField.equals("finnishName")) {
-            stmt.append("finnishName = ?");
-        }
-        if (searchField.equals("abbreviation")) {
-            stmt.append("abbreviation = ?");
-        }
-        return stmt.toString();
-    }
     
-    private List<Species> createListFromResult(ResultSet result) throws Exception {
-        List<Species> speciesList = new ArrayList<>();
+    /**
+     * Creates Species from database search result and lists them as StoreableObjects.
+     * @param result
+     * @throws Exception
+     */
+    @Override
+    protected List<StoreableObject> createListFromResult(ResultSet result) throws Exception {
+        List<StoreableObject> speciesList = new ArrayList<>();
         while (result.next()) {
             int id = result.getInt("id");
             String englishName = result.getString("englishName");
@@ -237,5 +114,35 @@ public class SpeciesDatabaseDao implements SpeciesDao {
         return speciesList;
     }
 
+    
+
+    @Override
+    public Species findSpeciesById(int id) throws Exception {
+        return (Species) findById(id);
+    }
+
+    @Override
+    public Species findSpeciesByName(String name, String searchField) throws Exception {
+        return (Species) findByName(name, searchField);
+    }
+
+    @Override
+    public List<Species> getAllSpecies() throws Exception {
+        return convertToSpecies(getAll());
+    }
+
+    @Override
+    public List<Species> searchSpecies(String searchTerm, String searchField) throws Exception {
+        return convertToSpecies(search(searchTerm, searchField));
+    }
+
+    
+    private List<Species> convertToSpecies(List<StoreableObject> objects) {
+        List<Species> species = new ArrayList<>();
+        objects.forEach((o) -> {
+            species.add((Species) o);
+        });
+        return species;
+    }
 
 }

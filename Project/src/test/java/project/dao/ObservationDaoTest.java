@@ -61,11 +61,11 @@ public class ObservationDaoTest {
         users.add(u1);
         users.add(u2);
 
-        observationDao.addObservation(new Observation(s1.getId(), 12, p1.getId(), date1, time1, "p", u1.getUsername()));
-        observationDao.addObservation(new Observation(s1.getId(), 4, p2.getId(), date2, time1, "p", u2.getUsername()));
-        observationDao.addObservation(new Observation(s3.getId(), 1, p3.getId(), date1, time2, "p", u2.getUsername()));
-        observationDao.addObservation(new Observation(s3.getId(), 3, p2.getId(), date1, time1, "p", u2.getUsername()));
-        observationDao.addObservation(new Observation(s2.getId(), 1, p2.getId(), date2, time2, "p", u1.getUsername()));
+        observationDao.addObservation(new StoreableObservation(s1.getId(), 12, p1.getId(), date1, time1, "p", u1.getUsername()));
+        observationDao.addObservation(new StoreableObservation(s1.getId(), 4, p2.getId(), date2, time1, "p", u2.getUsername()));
+        observationDao.addObservation(new StoreableObservation(s3.getId(), 1, p3.getId(), date1, time2, "p", u2.getUsername()));
+        observationDao.addObservation(new StoreableObservation(s3.getId(), 3, p2.getId(), date1, time1, "p", u2.getUsername()));
+        observationDao.addObservation(new StoreableObservation(s2.getId(), 1, p2.getId(), date2, time2, "p", u1.getUsername()));
     }
     
     @After
@@ -77,15 +77,15 @@ public class ObservationDaoTest {
     
     @Test
     public void ObservationCanBeAddedToDatabaseAndFoundById() throws Exception {
-        Observation o1 = observationDao.findObservationById(1);
-        Observation o2 = observationDao.findObservationById(2);
+        StoreableObservation o1 = observationDao.findObservationById(1);
+        StoreableObservation o2 = observationDao.findObservationById(2);
         assertEquals(LocalDate.parse("2020-05-22"), o1.getDate());
         assertEquals("keijo_k", o2.getUserId());
     }
     
     @Test
     public void nonExistingObservationCanNotBeFoundById() throws Exception {
-        Observation o1 = observationDao.findObservationById(18);
+        StoreableObservation o1 = observationDao.findObservationById(18);
         assertEquals(null, o1);
     }
     
@@ -98,25 +98,25 @@ public class ObservationDaoTest {
     
     @Test
     public void observationsCanBeSearchedByDate() throws Exception {
-        List<Observation> obs = observationDao.searchObservations("2020-05-22", "date");
+        List<StoreableObservation> obs = observationDao.searchObservations("2020-05-22", "date");
         assertEquals(3, obs.size());
     }
     
     @Test
     public void observationsCanBeSearchedBySpecies() throws Exception {
-        List<Observation> obs = observationDao.searchObservations(Integer.toString(14), "species");
+        List<StoreableObservation> obs = observationDao.searchObservations(Integer.toString(14), "species");
         assertEquals(2, obs.size());
     }
     
     @Test
     public void observationsCanBeSearchedByPlace() throws Exception {
-        List<Observation> obs = observationDao.searchObservations(Integer.toString(845), "place");
+        List<StoreableObservation> obs = observationDao.searchObservations(Integer.toString(845), "place");
         assertEquals(3, obs.size());
     }
     
     @Test
     public void observationsCanBeSearchedByUser() throws Exception {
-        List<Observation> obs = observationDao.searchObservations("tanja.t", "user");
+        List<StoreableObservation> obs = observationDao.searchObservations("tanja.t", "user");
         assertEquals(2, obs.size());
     }
     
@@ -128,14 +128,14 @@ public class ObservationDaoTest {
         observationDao.modifyObservation(1, 12, 1, 1, date.toString(), time.toString(), "", "");
         observationDao.modifyObservation(5, 2, 2, 2, "", "", "m", "keijo_k");
         
-        Observation o1 = observationDao.findObservationById(1);
-        Observation o2 = observationDao.findObservationById(5);
+        StoreableObservation o1 = observationDao.findObservationById(1);
+        StoreableObservation o2 = observationDao.findObservationById(5);
         assertEquals(date, o1.getDate());
         assertEquals(time, o1.getTime());
         assertEquals(2, o2.getIndividuals());
         assertEquals("m", o2.getInfo());
         
-        List<Observation> obs = observationDao.searchObservations("keijo_k", "user");
+        List<StoreableObservation> obs = observationDao.searchObservations("keijo_k", "user");
         assertEquals(4, obs.size());
     }
     

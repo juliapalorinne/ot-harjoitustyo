@@ -1,17 +1,13 @@
 
 package project.domain;
 
-import project.dao.ObservationDao;
 
-public class Species {
-    private int id;
+public class Species extends StoreableObject {
     private String englishName;
     private String scientificName;
     private String finnishName;
     private String abbreviation;
 
-    public Species() {
-    }
     
     public Species(int id, String englishName, String scientificName, String finnishName, String abbreviation) {
         this.id = id;
@@ -28,9 +24,6 @@ public class Species {
         this.abbreviation = abbreviation;
     }    
     
-    public void setId(int id) {
-        this.id = id;
-    }
     
     public void setEnglishName(String englishName) {
         this.englishName = englishName;
@@ -48,9 +41,6 @@ public class Species {
         this.abbreviation = abbreviation;
     }
     
-    public int getId() {
-        return id;
-    }
     
     public String getEnglishName() {
         return englishName;
@@ -80,6 +70,7 @@ public class Species {
     }
 
     
+    @Override
     public String toString() {
         return this.englishName + " (" + this.finnishName + ", " + this.scientificName + ")";
     }

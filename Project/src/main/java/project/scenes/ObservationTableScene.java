@@ -24,8 +24,8 @@ import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import project.domain.DisplayableObservationService;
-import project.domain.Observation;
-import project.domain.ObservationService;
+import project.domain.StoreableObservation;
+import project.domain.StoreableObservationService;
 import project.domain.PlaceService;
 import project.domain.SpeciesService;
 
@@ -39,7 +39,7 @@ public class ObservationTableScene {
     private ObservableList<DisplayableObservation> observations;
     
     
-    public ObservationTableScene(ObservationService observationService, SpeciesService speciesService, PlaceService placeService) {
+    public ObservationTableScene(StoreableObservationService observationService, SpeciesService speciesService, PlaceService placeService) {
         this.displayObsService = new DisplayableObservationService(observationService, speciesService, placeService);
         this.observations = FXCollections.observableArrayList();
         addButton = new Button("Add new observation");

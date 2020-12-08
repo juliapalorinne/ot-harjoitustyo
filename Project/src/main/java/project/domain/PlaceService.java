@@ -2,25 +2,25 @@
 package project.domain;
 
 import java.util.List;
-import project.dao.PlaceDao;
+import project.dao.DatabaseDao;
 import project.dao.PlaceDatabaseDao;
 
 public class PlaceService {
-    private PlaceDao placeDao;
+    private DatabaseDao placeDao;
     
     public PlaceService() {
         placeDao = new PlaceDatabaseDao("jdbc:sqlite:place.db");
     }
     
     
-    public void setDatabase(PlaceDao database) {
+    public void setDatabase(DatabaseDao database) {
         placeDao = database;
     }
     
     public boolean createPlace(String country, String city, String spot, String type) {
         Place place = new Place(country, city, spot, type);
         try {   
-            placeDao.addPlace(place);
+            placeDao.add(place);
         } catch (Exception ex) {
             return false;
         }
@@ -28,11 +28,11 @@ public class PlaceService {
     }
     
     public void removePlace(int id) throws Exception {
-        placeDao.removePlace(id);
+        placeDao.remove(id);
     }
     
     public void modifyPlace(int id, String country, String city, String spot, String type) throws Exception {
-        placeDao.modifyPlace(id, country, city, spot, type);
+        placeDao.modify(id, country, city, spot, type);
     }
     
     public Place getPlaceById(int id) throws Exception {

@@ -5,12 +5,12 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
-import project.domain.Observation;
+import project.domain.StoreableObservation;
 
 
 public class FakeObservationDatabaseDao implements ObservationDao {
 
-    private List<Observation> observations;
+    private List<StoreableObservation> observations;
     private int id;
 
     public FakeObservationDatabaseDao() {
@@ -20,7 +20,7 @@ public class FakeObservationDatabaseDao implements ObservationDao {
     
     
     @Override
-    public void addObservation(Observation observation) throws Exception {
+    public void addObservation(StoreableObservation observation) throws Exception {
         observation.setId(id);
         id++;
         observations.add(observation);
@@ -28,7 +28,7 @@ public class FakeObservationDatabaseDao implements ObservationDao {
 
     
     @Override
-    public List<Observation> getAllObservations() throws Exception {
+    public List<StoreableObservation> getAllObservations() throws Exception {
         return observations;
     }
     
@@ -40,25 +40,25 @@ public class FakeObservationDatabaseDao implements ObservationDao {
     
 
     @Override
-    public List<Observation> searchObservations(String searchTerm, String searchField) throws Exception {
-        List<Observation> wantedObservations = new ArrayList<>();
+    public List<StoreableObservation> searchObservations(String searchTerm, String searchField) throws Exception {
+        List<StoreableObservation> wantedObservations = new ArrayList<>();
         
         if (searchField.equals("date")) {
-            for (Observation o : observations) {
+            for (StoreableObservation o : observations) {
                 if (o.getDate().equals(LocalDate.parse(searchTerm))) {
                     wantedObservations.add(o);
                 }
             }
         } else if (searchField.equals("species")) {
             int speciesId = Integer.parseInt(searchTerm);
-            for (Observation o : observations) {
+            for (StoreableObservation o : observations) {
                 if (o.getSpeciesId() == speciesId) {
                     wantedObservations.add(o);
                 }
             }
         } else if (searchField.equals("place")) {
             int placeId = Integer.parseInt(searchTerm);
-            for (Observation o : observations) {
+            for (StoreableObservation o : observations) {
                 if (o.getPlaceId() == placeId) {
                     wantedObservations.add(o);
                 }
@@ -71,13 +71,13 @@ public class FakeObservationDatabaseDao implements ObservationDao {
     
     
     @Override
-    public Observation findObservationById(int id) throws Exception {
-        for (Observation o : observations) {
+    public StoreableObservation findObservationById(int id) throws Exception {
+        for (StoreableObservation o : observations) {
             if (o.getId() == id) {
                 return o;
             }
         }
-        return new Observation();
+        return new StoreableObservation();
     }
     
 
