@@ -14,20 +14,20 @@ Sovelluksessa on aluksi vain yksi käyttäjärooli, **normaali käyttäjä**. So
 
 ## Toiminnallisuudet
 
-- Käyttäjä voi luoda palveluun tunnukset ja kirjautua niillä sisään. (Tehty!)
-- Käyttäjä kirjaa palveluun **havaintoja**. (Tehty!)
-- Havainnoista tallennetaan seuraavat tiedot: (Tehty!)
+- Käyttäjä voi luoda palveluun tunnukset ja kirjautua niillä sisään. (Valmis)
+- Käyttäjä kirjaa palveluun **havaintoja**. (Valmis)
+- Havainnoista tallennetaan seuraavat tiedot: (Valmis)
     - lintulaji
     - yksilöiden lukumäärä
     - havaintopaikka
     - havaintoaika
     - linnun tila (esim. muuttava/paikallinen, laulava/muuten ääntelevä/nähty)
     - mahdolliset lisätiedot.
-- Käyttäjä voi etsiä kirjaamiaan havaintoja esimerkiksi lajin, ajan tai paikan perusteella.
+- Käyttäjä voi etsiä kirjaamiaan havaintoja esimerkiksi lajin ja/tai paikan perusteella. *(Uusi!)*
 - Käyttäjä voi tarkastella ja muokata kirjaamiaan havaintoja.
-- Käyttäjä määrittelee havainnot salaisiksi tai julkisiksi. 
+- Käyttäjä voi määritellä havainnot salaisiksi tai julkisiksi. 
 - Käyttäjä voi tarkastella toisten käyttäjien kirjaamia havaintoja.
-- Käyttäjä voi etsiä **lintulajeja** tai **havaintopaikkoja** nimen perusteella ja lisätä uusia, jos niitä ei vielä löydy tietokannasta. (Melkein tehty!)
+- Käyttäjä voi etsiä **lintulajeja** tai **havaintopaikkoja** nimen perusteella ja lisätä uusia, jos niitä ei vielä löydy tietokannasta. *(Uusi!)*
 - Käyttäjä näkee tilastoja kirjaamistaan havainnoista, esim.
     - kuluvana vuonna havaittujen lajien määrä
     - tietyssä paikassa havaittujen lajien määrä
