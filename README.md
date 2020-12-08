@@ -22,7 +22,7 @@ Sovellukseen on pian tulossa toiminnot havaintojen, lajien ja paikkojen muokkaam
 
 ## Releaset
 
-[*Uusin release: 8.12.2020 Save and search*](https://github.com/juliapalorinne/ot-harjoitustyo/releases)
+[*Uusin release: 8.12.2020 Save and search observations*](https://github.com/juliapalorinne/ot-harjoitustyo/releases)
 
 ## Komentoriviltä suoritettavat komennot
 
