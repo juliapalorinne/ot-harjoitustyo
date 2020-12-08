@@ -42,3 +42,7 @@ havainto tallennetaan julkisena, myös muut käyttäjät näkevät sen hakuja te
 Jos havainto tallennetaan salaisena, vain käyttäjä itse näkee havainnon.
 
 
+## Havaintojen muokkaaminen ja poistaminen
+
+Käyttäjä voi avata havainnon omaan ikkunaansa valitsemalla sen taulukosta ja painamalla *Avaa*-nappia.
+Avatessaan havainnon käyttäjä saa näkyviin valinnat *Muokkaa* ja *Poista*.
