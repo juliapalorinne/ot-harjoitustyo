@@ -31,6 +31,7 @@ public class ProjectUi extends Application {
     private SpeciesService speciesService;
     
     private InputWindow inputWindow;
+    
     private NewUserScene newUser;
     private ObservationTableScene observationTable;
     private NewObservationScene newObservation;
@@ -128,7 +129,7 @@ public class ProjectUi extends Application {
     }
     
     public void getMainView(Stage stage) throws Exception {
-        observationScene = observationTable.observationScene();        
+        observationScene = observationTable.observationScene(stage);        
         stage.setScene(observationScene);
         
         observationTable.logoutButton().setOnAction(e->{
@@ -156,7 +157,7 @@ public class ProjectUi extends Application {
     }
     
     public void getNewObservationView(Stage stage) throws Exception {
-        newObservationScene = newObservation.createNewObservation(stage, observationTable);
+        newObservationScene = newObservation.createNewObservationScene(stage, observationTable);
         stage.setScene(newObservationScene);
         
         newObservation.returnButton().setOnAction(e-> {
@@ -275,6 +276,7 @@ public class ProjectUi extends Application {
         speciesService.createSpecies("Common raven", "Corvus corax", "korppi", "corrax");
         speciesService.createSpecies("Crested tit", "Parus cristatus", "töyhtötiainen", "parcri");
         speciesService.createSpecies("Great tit", "Parus major", "talitiainen", "parmaj");
+        speciesService.createSpecies("Willow tit", "Parus montanus", "hömötiainen", "parmon");
         speciesService.createSpecies("Wood lark", "Lullula arborea", "kangaskiuru", "lularb");
         speciesService.createSpecies("Bearded reedling", "Panurus biarmicus", "viiksitimali", "panbia");
         speciesService.createSpecies("Icterine warbler", "Hippolais icterina", "kultarinta", "hipict");
@@ -293,7 +295,7 @@ public class ProjectUi extends Application {
         speciesService.createSpecies("Song thrush", "Turdus philomelos", "laulurastas", "turphi");
         speciesService.createSpecies("Bluethroat", "Luscinia svecica", "sinirinta", "lussve");
         speciesService.createSpecies("Whinchat", "Saxicola rubetra", "pensastasku", "saxrub");
-        speciesService.createSpecies("", "", "", "");
+//        speciesService.createSpecies("", "", "", "");
         
         
         
@@ -314,7 +316,7 @@ public class ProjectUi extends Application {
         placeService.createPlace("Finland", "Parainen", "Jurmo", "bird station");
         placeService.createPlace("Finland", "Parainen", "Utö", "island");
         placeService.createPlace("Finland", "Sipoo", "Sipoonkorpi", "forest");
-        placeService.createPlace("", "", "", "");
+//        placeService.createPlace("", "", "", "");
         
     }
 }

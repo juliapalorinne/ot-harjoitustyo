@@ -1,4 +1,3 @@
-
 package project.scenes;
 
 import java.util.logging.Level;
@@ -8,17 +7,13 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import project.domain.PlaceService;
 import project.ui.InputWindow;
 
-public class NewPlaceScene {
-    private InputWindow inputWindow;
-    private PlaceService placeService;
-    private Button returnButton;
+public class NewPlaceScene extends LoggedInScene {
     
     public NewPlaceScene(InputWindow inputWindow, PlaceService placeService) {
         this.inputWindow = inputWindow;
@@ -68,7 +63,4 @@ public class NewPlaceScene {
         return newPlaceScene;
     }
     
-    public Button returnButton() {
-        return this.returnButton;
-    }
 }

@@ -1,91 +1,83 @@
-
 package project.scenes;
 
-import project.domain.DisplayableObservation;
-import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.geometry.Insets;
-import javafx.scene.Group;
+import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Font;
+import javafx.stage.Stage;
+import project.domain.DisplayableObservation;
 import project.domain.DisplayableObservationService;
-import project.domain.StoreableObservation;
 import project.domain.StoreableObservationService;
 import project.domain.PlaceService;
 import project.domain.SpeciesService;
 
-public class ObservationTableScene {
-    private DisplayableObservationService displayObsService;
+public class ObservationTableScene extends LoggedInScene {
+    
     private TableView table;
-    private Button addButton;
-    private Button searchButton;
-    private Button logoutButton;
-    
-    private ObservableList<DisplayableObservation> observations;
+    private final Button addButton;
+    private final Button searchButton;
+    private final Button logoutButton;
     
     
-    public ObservationTableScene(StoreableObservationService observationService, SpeciesService speciesService, PlaceService placeService) {
+    public ObservationTableScene(StoreableObservationService observationService,
+            SpeciesService speciesService, PlaceService placeService) {
+        
         this.displayObsService = new DisplayableObservationService(observationService, speciesService, placeService);
         this.observations = FXCollections.observableArrayList();
-        addButton = new Button("Add new observation");
-        searchButton = new Button("Search observations");
-        logoutButton = new Button("Logout");
+        addButton = inputWindow.createButton("Add new observation");
+        searchButton = inputWindow.createButton("Search observations");
+        logoutButton = inputWindow.createButton("Logout");
+        this.showOne = new ShowOneObservationScene(observationService, speciesService, placeService);
     }  
     
     
-    public Scene observationScene() throws Exception {
-        Scene observationScene = new Scene(createTable(), 800, 600);
+    public Scene observationScene(Stage stage) throws Exception {
+        Scene observationScene = new Scene(createTable(stage), 800, 600);
         return observationScene;
     }
     
     
-    private VBox createTable() throws Exception {
-        TableView table = new TableView();
+    private VBox createTable(Stage stage) throws Exception {
+        HBox infoBox = inputWindow.infoBox("Double click observation to open or modify. " + successMessage().getText());
+        table = new TableView();
         table.setEditable(true);
         table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
         
         redrawObservationList();
-        
         table.setItems(observations);
         
         ArrayList<TableColumn> columns = displayObsService.getColumns();
+        
         table.getColumns().addAll(columns);
         
-        
-        Label label = new Label("Observations");
-        label.setFont(new Font("Arial", 20));
+        Label label = inputWindow.createBigLabel("Observations", 200);
 
-        VBox vbox = new VBox();
-        vbox.setStyle("-fx-background-color: #FFB6C1;");
-        vbox.setSpacing(5);
-        vbox.setPadding(new Insets(10, 10, 10, 10));
-        vbox.getChildren().addAll(menu(), label, table, searchObservations(), createObservation());
-        vbox.setVgrow(table, Priority.ALWAYS);
+        table.setOnMouseClicked((MouseEvent event) -> {
+            Clicked(stage);
+        });
+        
+        VBox vbox = inputWindow.createNewWindow();
+        vbox.getChildren().addAll(menu(), label, infoBox, table, searchObservations(), createObservation());
+        VBox.setVgrow(table, Priority.ALWAYS);
         return vbox;
     }  
     
-    private void redrawObservationList() throws Exception {
-        displayObsService.redrawObservationList();
-        List<DisplayableObservation> obs = displayObsService.getAll();
-        for (DisplayableObservation o : obs) {
-            if (!observations.contains(o)) {
-                observations.add(o);
-            }
+    private void Clicked(Stage stage) {
+        try {
+            DisplayableObservation o = (DisplayableObservation) table.getSelectionModel().getSelectedItem();
+            stage.setScene(showOne.showOneScene(stage, this, o));
+        } catch(Exception e) {
+            successMessage.setText("Could not open the observation. Try again!");
+            e.printStackTrace();
         }
     }
     

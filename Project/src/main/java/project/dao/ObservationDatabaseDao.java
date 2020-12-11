@@ -39,7 +39,8 @@ public class ObservationDatabaseDao extends DatabaseDao implements ObservationDa
 
         try {
             stmt.execute(
-                    "CREATE TABLE Observation (id INTEGER PRIMARY KEY, species, individuals, place, date, time, info, user)");
+                    "CREATE TABLE Observation (id INTEGER PRIMARY KEY, species, individuals, "
+                            + "place, date, time, info, privacy, user)");
         } catch (SQLException e) {
         }
 
@@ -57,17 +58,19 @@ public class ObservationDatabaseDao extends DatabaseDao implements ObservationDa
             createSchemaIfNotExists(conn);
             
             try (PreparedStatement stmt = conn.prepareStatement(
-                    "INSERT INTO Observation (species, individuals, place, date, time, info, user) "
-                            + "VALUES (?,?,?,?,?,?,?)")) {
+                    "INSERT INTO Observation (species, individuals, place, date, time, info, privacy, user) "
+                            + "VALUES (?,?,?,?,?,?,?,?)")) {
                 stmt.setInt(1, observation.getSpeciesId());
                 stmt.setInt(2, observation.getIndividuals());
                 stmt.setInt(3, observation.getPlaceId());
                 stmt.setString(4, observation.getDate().toString());
                 stmt.setString(5, observation.getTime().toString());
                 stmt.setString(6, observation.getInfo());
-                stmt.setString(7, observation.getUserId());
+                stmt.setInt(7, observation.getPrivacy());
+                stmt.setString(8, observation.getUserId());
                 stmt.execute();
             }
+            conn.close();
         }
     }
 
@@ -81,20 +84,22 @@ public class ObservationDatabaseDao extends DatabaseDao implements ObservationDa
      * @param date the date of the Observation
      * @param time the time of the Observation (hh:mm)
      * @param info additional info
+     * @param privacy 1 if observation is private, 0 if public
      * @param username username of the User
      * @throws Exception Accessing database failed.
      */
     @Override
-    public void modifyObservation(int id, int species, int individuals, int place, String date, String time, String info, String username) throws Exception {
+    public void modifyObservation(int id, int species, int individuals, int place, String date, String time,
+            String info, int privacy, String username) throws Exception {
         try (Connection conn = DriverManager.getConnection(databaseAddress)) {
             try {
-                if (species != 0) {
+                if (species > 0) {
                     createModifyStatement("species", Integer.toString(species), id, conn);
                 }
-                if (individuals != 0) {
+                if (individuals >= 0) {
                     createModifyStatement("individuals", Integer.toString(individuals), id, conn);
                 }
-                if (place != 0) {
+                if (place > 0) {
                     createModifyStatement("place", Integer.toString(place), id, conn);
                 }
                 if (!date.isEmpty()) {
@@ -106,11 +111,15 @@ public class ObservationDatabaseDao extends DatabaseDao implements ObservationDa
                 if (!info.isEmpty()) {
                     createModifyStatement("info", info, id, conn);
                 }
+                if (privacy == 0 || privacy == 1) {
+                    createModifyStatement("privacy", Integer.toString(privacy), id, conn);
+                }
                 if (!username.isEmpty()) {
                     createModifyStatement("user", username, id, conn);
                 }
             } catch (Exception e) {
             }
+            conn.close();
         }
     }
     
@@ -131,9 +140,11 @@ public class ObservationDatabaseDao extends DatabaseDao implements ObservationDa
             String date = result.getString("date");
             String time = result.getString("time");
             String info = result.getString("info");
+            int privacy = result.getInt("privacy");
             String username = result.getString("user");
 
-            StoreableObservation observation = new StoreableObservation(id, speciesId, individuals, placeId, LocalDate.parse(date), LocalTime.parse(time), info, username);
+            StoreableObservation observation = new StoreableObservation(id, speciesId, individuals, 
+                    placeId, LocalDate.parse(date), LocalTime.parse(time), info, privacy, username);
             observations.add(observation);
         }
         return observations;
@@ -175,7 +186,7 @@ public class ObservationDatabaseDao extends DatabaseDao implements ObservationDa
             try {
                 String stmt = createSearchOneStatementByField(searchField);
                 PreparedStatement p = conn.prepareStatement(stmt);
-                if (searchField.equals("species") || searchField.equals("place")) {
+                if (searchField.equals("species") || searchField.equals("place") || searchField.equals("privacy")) {
                     p.setInt(1, Integer.parseInt(searchTerm));
                 } else {
                     p.setString(1, searchTerm);

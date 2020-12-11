@@ -9,13 +9,27 @@ import java.util.logging.Logger;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.cell.PropertyValueFactory;
 
-
+/**
+ * Provides methods for handling DisplayableObservations.
+ */
 public class DisplayableObservationService {
-    private List<DisplayableObservation> obsList;
     
-    private StoreableObservationService observationService;
-    private SpeciesService speciesService;
-    private PlaceService placeService;
+    /**
+    * Accessing the Species database.
+    */
+    private final SpeciesService speciesService;
+    
+    /**
+    * Accessing the Place database.
+    */
+    private final PlaceService placeService;
+    
+    /**
+    * Accessing the Observation database with links to Places and Species.
+    */
+    private final StoreableObservationService observationService;
+    
+    private List<DisplayableObservation> obsList;
     
     public DisplayableObservationService(StoreableObservationService o, SpeciesService s, PlaceService p) {
         obsList = new ArrayList<>();
@@ -33,6 +47,11 @@ public class DisplayableObservationService {
         d.setDate(obs.getDate());
         d.setTime(obs.getTime());
         d.setInfo(obs.getInfo());
+        if (obs.getPrivacy() == 1) {
+            d.setPrivacy(true);     // Observation is private
+        } else {
+            d.setPrivacy(false);    // Observation is public
+        }
         if (!obsList.contains(d)) {
             obsList.add(d);
         }

@@ -45,9 +45,9 @@ public class ObservationServiceTest {
         speciesList.add(species1);
         speciesList.add(species2);
         
-        observationService.createObservation(species1, 2, place1, date, time, "p");
-        observationService.createObservation(species2, 2, place1, date, time, "p");
-        observationService.createObservation(species2, 2, place2, date, time, "p");
+        observationService.createObservation(species1, 2, place1, date, time, "p", 0);
+        observationService.createObservation(species2, 2, place1, date, time, "p", 1);
+        observationService.createObservation(species2, 2, place2, date, time, "p", 0);
     }
     
     @Test

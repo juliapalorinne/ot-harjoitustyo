@@ -54,11 +54,11 @@ public class ObservationDaoTest {
         users.add(u1);
         users.add(u2);
 
-        observationDao.addObservation(new StoreableObservation(s1.getId(), 12, p1.getId(), date1, time1, "p", u1.getUsername()));
-        observationDao.addObservation(new StoreableObservation(s1.getId(), 4, p2.getId(), date2, time1, "p", u2.getUsername()));
-        observationDao.addObservation(new StoreableObservation(s3.getId(), 1, p3.getId(), date1, time2, "p", u2.getUsername()));
-        observationDao.addObservation(new StoreableObservation(s3.getId(), 3, p2.getId(), date1, time1, "p", u2.getUsername()));
-        observationDao.addObservation(new StoreableObservation(s2.getId(), 1, p2.getId(), date2, time2, "p", u1.getUsername()));
+        observationDao.addObservation(new StoreableObservation(s1.getId(), 12, p1.getId(), date1, time1, "p", 1, u1.getUsername()));
+        observationDao.addObservation(new StoreableObservation(s1.getId(), 4, p2.getId(), date2, time1, "p", 0, u2.getUsername()));
+        observationDao.addObservation(new StoreableObservation(s3.getId(), 1, p3.getId(), date1, time2, "p", 0, u2.getUsername()));
+        observationDao.addObservation(new StoreableObservation(s3.getId(), 3, p2.getId(), date1, time1, "p", 1, u2.getUsername()));
+        observationDao.addObservation(new StoreableObservation(s2.getId(), 1, p2.getId(), date2, time2, "p", 0, u1.getUsername()));
     }
     
     @After
@@ -118,8 +118,8 @@ public class ObservationDaoTest {
         LocalDate date = LocalDate.parse("2020-05-21");
         LocalTime time = LocalTime.parse("08:00");
         
-        observationDao.modifyObservation(1, 12, 1, 1, date.toString(), time.toString(), "", "");
-        observationDao.modifyObservation(5, 2, 2, 2, "", "", "m", "keijo_k");
+        observationDao.modifyObservation(1, 12, 1, 0, date.toString(), time.toString(), "", 0, "");
+        observationDao.modifyObservation(5, 2, 2, 2, "", "", "m", 1, "keijo_k");
         
         StoreableObservation o1 = observationDao.findObservationById(1);
         StoreableObservation o2 = observationDao.findObservationById(5);

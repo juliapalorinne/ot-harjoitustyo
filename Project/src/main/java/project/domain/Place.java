@@ -1,7 +1,5 @@
-
 package project.domain;
 
-import project.dao.ObservationDao;
 
 public class Place extends StoreableObject {
     

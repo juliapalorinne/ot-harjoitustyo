@@ -2,8 +2,6 @@ package project.domain;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import javafx.scene.control.Button;
-import javafx.scene.control.TextField;
 
 
 public abstract class Observation extends StoreableObject {

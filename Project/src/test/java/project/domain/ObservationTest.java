@@ -28,8 +28,8 @@ public class ObservationTest {
         observations = new ArrayList<>();
         LocalDate date = LocalDate.parse("2020-12-01");
         LocalTime time = LocalTime.parse("14:15");
-        StoreableObservation obs1 = new StoreableObservation(1, 1, 1, 1, date, time, "no info", "pekka");
-        StoreableObservation obs2 = new StoreableObservation(2, 1, 1, 2, date, time, "no info", "pekka");
+        StoreableObservation obs1 = new StoreableObservation(1, 1, 1, 1, date, time, "no info", 1, "pekka");
+        StoreableObservation obs2 = new StoreableObservation(2, 1, 1, 2, date, time, "no info", 0, "pekka");
         observations.add(obs1);
         observations.add(obs2);
     }
@@ -39,7 +39,7 @@ public class ObservationTest {
         LocalDate date = LocalDate.parse("2020-12-01");
         LocalTime time = LocalTime.parse("14:15");
         StoreableObservation obs1 = observations.get(0);
-        StoreableObservation o = new StoreableObservation(1, 1, 1, 1, date, time, "no info", "pekka");
+        StoreableObservation o = new StoreableObservation(1, 1, 1, 1, date, time, "no info", 1, "pekka");
         assertTrue(obs1.equals(o));
     }
   

@@ -1,4 +1,3 @@
-
 package project.domain;
 
 import java.time.*;
@@ -8,6 +7,9 @@ import java.util.stream.Collectors;
 import project.dao.ObservationDao;
 import project.dao.ObservationDatabaseDao;
 
+/**
+ * Provides methods for handling StorableObservations.
+ */
 public class StoreableObservationService {
     private ObservationDao observationDao;
     private User loggedIn;
@@ -20,6 +22,10 @@ public class StoreableObservationService {
         observationDao = database;
     }
     
+    /**
+     * Tries to create a new StoreableObservation with only User information.
+     * @return true if new observation created, otherwise false.
+     */
     public boolean createObservation() {
         StoreableObservation observation = new StoreableObservation();
         observation.setUser(loggedIn.getUsername());
@@ -31,8 +37,18 @@ public class StoreableObservationService {
         return true;
     }
     
-    public boolean createObservation(Species species, int individuals, Place place, LocalDate date, LocalTime time, String info) {
-        StoreableObservation observation = new StoreableObservation(species.getId(), individuals, place.getId(), date, time, info, loggedIn.getUsername());
+    /**
+     * Tries to create a new StoreableObservation with all information.
+     * @param species Species
+     * @param individuals number of Individuals
+     * @param place Place
+     * @param date date
+     * @param time time (hh:mm)
+     * @param info additional info
+     * @return true if new observation created, otherwise false.
+     */
+    public boolean createObservation(Species species, int individuals, Place place, LocalDate date, LocalTime time, String info, int privacy) {
+        StoreableObservation observation = new StoreableObservation(species.getId(), individuals, place.getId(), date, time, info, privacy, loggedIn.getUsername());
         try {   
             observationDao.addObservation(observation);
         } catch (Exception ex) {
@@ -41,18 +57,28 @@ public class StoreableObservationService {
         return true;
     }
     
+    /**
+     * Lists all Observations saved by the logged User.
+     * @throws Exception Getting observation list failed.
+     * @return The list of all Observations by User. If User not found, returns an empty list.
+     */
     public List<StoreableObservation> getAll() throws Exception {
         if (loggedIn == null) {
             return new ArrayList<>();
         }
-          
         return observationDao.getAllObservations()
             .stream()
             .filter(o-> o.getUserId().equals(loggedIn.getUsername()))
             .collect(Collectors.toList());
     }
     
-    
+    /**
+     * Lists all Observations saved by the logged User with the searchTerm in the searchField.
+     * @param searchTerm search term
+     * @param searchField the field to search
+     * @throws Exception Getting observation list failed.
+     * @return The list of all Observations by User. If User not found, returns an empty list.
+     */
     public List<StoreableObservation> getObservationsBySearchTerm(String searchTerm, String searchField) throws Exception {
         if (loggedIn == null) {
             return new ArrayList<>();
@@ -73,8 +99,14 @@ public class StoreableObservationService {
         observationDao.remove(id);
     }
     
-    public void modifyObservation(int id, Species species, int individuals, Place place, String date, String time, String info) throws Exception {
-        observationDao.modifyObservation(id, species.getId(), individuals, place.getId(), date, time, info, loggedIn.getUsername());
+    public boolean modifyObservation(int id, Species species, int individuals, Place place, String date, String time, String info, int privacy) throws Exception {
+        try {   
+            observationDao.modifyObservation(id, species.getId(), individuals, place.getId(), date, time, info, privacy, loggedIn.getUsername());
+        } catch (Exception ex) {
+            return false;
+        }
+        return true;
+        
     }
     
 
