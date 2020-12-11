@@ -26,5 +26,6 @@ Päivämäärä | Tehtävä | Käytetty aika
 7.12.2020 | Toiston poistaminen yläluokkien avulla | 2 h
 8.12.2020 | Haku lajin ja paikan nimellä valmiiksi | 1,5 h
 8.12.2020 | JavaDoc | 2 h
+10.12.2020 | Ulkoasun kehittäminen, hakuominaisuuden parantelu, näkymän luominen yksittäisen havainnon tarkasteluun ja muokkaukseen | 6 h
  | | 
-24.11.2020 | **YHTEENSÄ**| **42 h**
+24.11.2020 | **YHTEENSÄ**| **48 h**
