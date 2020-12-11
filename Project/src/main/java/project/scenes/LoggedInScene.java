@@ -3,8 +3,6 @@ package project.scenes;
 import java.util.Arrays;
 import project.domain.*;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
@@ -41,7 +39,7 @@ public abstract class LoggedInScene {
     
     
     public LoggedInScene() {
-        this.successMessage = new Label("");
+        this.successMessage = inputWindow.createErrorMessage("");
         this.addNewSpeciesButton = inputWindow.createButton("Add new Species");
         this.addNewPlaceButton = inputWindow.createButton("Add new Place");
         this.returnButton = inputWindow.createButton("Return");
@@ -79,11 +77,10 @@ public abstract class LoggedInScene {
     protected ListView<Species> listSpecies(VBox pane) throws Exception {
         ListView<Species> listView = new ListView<>();
         listView.setItems(getObservableSpeciesList());
-        listView.setPrefWidth(400);
+        listView.setPrefWidth(500);
         
         HBox speciesPane = new HBox(10);
-        Label speciesLabel = inputWindow.createSmallLabel("Species", 150);
-        speciesPane.getChildren().addAll(speciesLabel, listView, addNewSpeciesButton());
+        speciesPane.getChildren().addAll(listView);
         pane.getChildren().addAll(speciesPane);
         return listView;
     }
@@ -92,11 +89,10 @@ public abstract class LoggedInScene {
     protected ListView<Place> listPlaces(VBox pane) throws Exception {
         ListView<Place> listView = new ListView<>();
         listView.setItems(getObservablePlaceList());
-        listView.setPrefWidth(400);
+        listView.setPrefWidth(500);
         
         HBox placePane = new HBox(10);
-        Label placeLabel = inputWindow.createSmallLabel("Place", 150);
-        placePane.getChildren().addAll(placeLabel, listView, addNewPlaceButton());
+        placePane.getChildren().addAll(listView);
         pane.getChildren().addAll(placePane);
         return listView;
     }
@@ -114,7 +110,6 @@ public abstract class LoggedInScene {
                 flSpecies.setPredicate(s -> s.toString().toLowerCase().contains(speciesInput.getText().toLowerCase().trim()));
             } catch (Exception ex) {
                 successMessage.setText("Something went wrong when creating the species list.");
-                Logger.getLogger(LoggedInScene.class.getName()).log(Level.SEVERE, null, ex);
             }
         });
         return speciesList;
@@ -131,7 +126,6 @@ public abstract class LoggedInScene {
             try {   
                 flPlace.setPredicate(p -> p.toString().toLowerCase().contains(placeInput.getText().toLowerCase().trim()));
             } catch (Exception ex) {
-                Logger.getLogger(LoggedInScene.class.getName()).log(Level.SEVERE, null, ex);
                 successMessage.setText("Something went wrong when creating the place list.");
             }
         });
@@ -165,11 +159,14 @@ public abstract class LoggedInScene {
     protected ListView<Species> showSpeciesInputAndListSideBySide(VBox pane) throws Exception {
         VBox labelColumn = new VBox();
         HBox speciesPane = new HBox(10);
-        speciesPane.setPadding(new Insets(10, 0, 0, 10));
+        speciesPane.setPadding(new Insets(10, 0, 0, 0));
         ListView<Species> speciesList = searchSpecies(pane);
         speciesList.setPrefWidth(400);
+        speciesInput.setPrefWidth(200);
         Label label = inputWindow.createSmallLabel("Type and select species", 200);
         labelColumn.getChildren().addAll(label, speciesInput);
+//        labelColumn.setAlignment(Pos.BOTTOM_LEFT);
+//        label.setAlignment(Pos.BOTTOM_LEFT);
         speciesPane.getChildren().addAll(labelColumn, speciesList, addNewSpeciesButton());
         pane.getChildren().addAll(label, speciesPane);
         return speciesList;
@@ -178,9 +175,10 @@ public abstract class LoggedInScene {
     protected ListView<Place> showPlaceInputAndListSideBySide(VBox pane) throws Exception {
         VBox labelColumn = new VBox();
         HBox placePane = new HBox(10);
-        placePane.setPadding(new Insets(10, 0, 0, 10));
+        placePane.setPadding(new Insets(10, 0, 0, 0));
         ListView<Place> placeList = searchPlace(pane);
         placeList.setPrefWidth(400);
+        placeInput.setPrefWidth(200);
         Label label = inputWindow.createSmallLabel("Type and select place", 200);
         labelColumn.getChildren().addAll(label, placeInput);
         placePane.getChildren().addAll(labelColumn, placeList, addNewPlaceButton());
@@ -224,6 +222,7 @@ public abstract class LoggedInScene {
         try {
             int number = Integer.parseInt(input);
         } catch (NumberFormatException ex) {
+            successMessage.setText("Input is not a number.");
             return false;
         }
         return true;

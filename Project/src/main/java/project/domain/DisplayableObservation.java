@@ -5,6 +5,7 @@ import java.time.*;
 public class DisplayableObservation extends Observation {
     
     private String species;
+    private String fullSpecies;
     private String place;
     private boolean privacy;
     
@@ -28,6 +29,10 @@ public class DisplayableObservation extends Observation {
         this.species = species;
     }
     
+    public void setFullSpecies(String species) {
+        this.fullSpecies = species;
+    }
+    
     public void setPlace(String place) {
         this.place = place;
     }
@@ -38,6 +43,10 @@ public class DisplayableObservation extends Observation {
     
     public String getSpecies() {
         return species;
+    }
+    
+    public String getFullSpecies() {
+        return fullSpecies;
     }
    
     public String getPlace() {

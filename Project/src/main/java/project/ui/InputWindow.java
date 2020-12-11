@@ -12,53 +12,84 @@ import javafx.scene.text.Font;
 
 public class InputWindow {
 
+    
+    /**
+     *
+     * @return
+     */
     public VBox createNewWindow() {
         VBox pane = new VBox(10);
         pane.setStyle("-fx-border-width: 3px;"
                 + "-fx-border-color: #330066;"
                 + "-fx-background-color: linear-gradient(from 25% 0% to 100% 75%, #FF69B4, #663399)");
-//        pane.setStyle("-fx-font-weight: bold; -fx-text-fill: #F0F8FF;");
         pane.setPadding(new Insets(10));
         pane.setSpacing(5);
         return pane;
     }
     
-    public VBox observationBox() {
+    /**
+     *
+     * @return
+     */
+    public VBox ShowOneBox() {
         VBox vbox = new VBox();
         vbox.setStyle("-fx-border-width: 1px; -fx-border-color: #330066; "
-                + "-fx-background-color: linear-gradient(to top right, #e6ccff, #bf80ff);");
+                + "-fx-background-color: linear-gradient(to top right, #e6ccff, #bf80ff);"
+                + "-fx-background-radius: 5px; -fx-border-radius: 5px;");
         return vbox;
     }
     
+    /**
+     *
+     * @return
+     */
     public HBox observationBoxRow() {
         HBox hbox = new HBox(10);
         hbox.setPadding(new Insets(5, 10, 5, 20));
         return hbox;
     }
     
+    /**
+     *
+     * @param text
+     * @return
+     */
     public HBox infoBox(String text) {
         HBox hbox = new HBox(10);
         hbox.setPadding(new Insets(10));
         hbox.setStyle("-fx-border-width: 1px; -fx-border-color:  #330066; "
-                + "-fx-background-color: linear-gradient(to bottom right, #ffb3ec,  #ffb3e6);");
+                + "-fx-background-color: linear-gradient(to bottom right, #ffb3ec,  #ffb3e6);"
+                + "-fx-background-radius: 5px; -fx-border-radius: 5px;");
         Label label = new Label(text);
         label.setFont(Font.font("Arial", 16));
         hbox.getChildren().addAll(label);
         return hbox;
     }
     
+    /**
+     *
+     * @param width
+     * @return
+     */
     public TextField createTextField(int width) {
         TextField newInput = new TextField();
-        newInput.setStyle("-fx-background-radius: 5px;");
+        newInput.setStyle("-fx-background-radius: 5px; -fx-border-radius: 5px;");
         newInput.setPrefWidth(width);
         return newInput;
     }
     
+    
+    /**
+     *
+     * @param pane
+     * @param name
+     * @return
+     */
     public TextField createInputField(VBox pane, String name) {
         HBox newPane = new HBox(10);
         newPane.setPadding(new Insets(10));
         TextField newInput = new TextField();
-        newInput.setStyle("-fx-background-radius: 5px;");
+        newInput.setStyle("-fx-background-radius: 5px; -fx-border-radius: 5px;");
         
         Label newLabel = createSmallLabel(name, 150);
         
@@ -71,7 +102,7 @@ public class InputWindow {
         HBox newPane = new HBox(10);
         newPane.setPadding(new Insets(10));
         TextField newInput = new TextField();
-        newInput.setStyle("-fx-background-radius: 5px;");
+        newInput.setStyle("-fx-background-radius: 5px; -fx-border-radius: 5px;");
         newInput.setPrefSize(400, 60);
         
         Label newLabel = createSmallLabel(name, 150);
@@ -84,6 +115,7 @@ public class InputWindow {
     
     /**
      * Create DatePicker
+     * 
      * @param pane in which the DatePicker is added
      * @param name the text label shown beside the DatePicker
      * @return created DatePicker
@@ -92,7 +124,6 @@ public class InputWindow {
         HBox newPane = new HBox(10);
         newPane.setPadding(new Insets(10));
         DatePicker datePicker = new DatePicker();
-        
         Label newLabel = createSmallLabel(name, 150);
         
         newPane.getChildren().addAll(newLabel, datePicker);
@@ -103,6 +134,7 @@ public class InputWindow {
     
     /**
      * Create purple Button with light blue text
+     * 
      * @param name the name shown on the Button
      * @return created Button
      */
@@ -119,12 +151,13 @@ public class InputWindow {
     
     /**
      * Create purple ChoiceBox with light blue text
+     * 
      * @return created ChoiceBox
      */
     public ChoiceBox<String> createChoiceBox() {
         ChoiceBox choiceBox = new ChoiceBox();
         choiceBox.setStyle("-fx-background-color: linear-gradient(to top right, #e6ccff, #cc99ff);"
-                + "-fx-background-radius: 5px;");
+                + "-fx-background-radius: 5px; -fx-border-radius: 5px;");
         choiceBox.setPadding(new Insets(5, 20, 5, 10));
         return choiceBox;
     }
@@ -132,7 +165,8 @@ public class InputWindow {
     
     /**
      * Set label style for input Labels
-     * @param label the Label to style
+     * 
+     * @param text the label text
      * @param width the size of the Label
      */
     public Label createSmallLabel(String text, double width) {
@@ -145,6 +179,7 @@ public class InputWindow {
 
     /**
      * Set label style for input Labels
+     * 
      * @param text the label text
      * @param width the size of the Label
      */
@@ -153,6 +188,18 @@ public class InputWindow {
         label.setFont(Font.font("Arial", 20));
         label.setStyle("-fx-font-weight: bold;");
         label.setPrefWidth(width);
+        return label;
+    }    
+    
+    /**
+     * Set label style for error messages
+     * 
+     * @param text the error message text
+     */
+    public Label createErrorMessage(String text) {
+        Label label = new Label(text);
+        label.setFont(Font.font("Arial", 18));
+        label.setStyle("-fx-font-weight: bold; -fx-text-fill: #ffcc00;");
         return label;
     }    
     

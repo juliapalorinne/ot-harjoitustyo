@@ -1,27 +1,18 @@
 package project.scenes;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import project.domain.SpeciesService;
-import project.ui.InputWindow;
 
-public class NewSpeciesScene {
-    private InputWindow inputWindow;
-    private SpeciesService speciesService;
-    private Button returnButton;
+public class NewSpeciesScene extends LoggedInScene {
     
-    public NewSpeciesScene(InputWindow inputWindow, SpeciesService speciesService) {
-        this.inputWindow = inputWindow;
+    public NewSpeciesScene(SpeciesService speciesService) {
         this.speciesService = speciesService;
-        returnButton = inputWindow.createButton("Return");
     } 
 
     public Scene newSpeciesScene(Stage stage, Scene newObservationScene) {
@@ -42,20 +33,18 @@ public class NewSpeciesScene {
             String finnishName = finnishNameInput.getText();
             String abbreviation = abbreviationInput.getText();
    
-            if (englishName.length() < 2 || scientificName.length() < 2) {
-                speciesCreationMessage.setText("One of the names too short");
-                speciesCreationMessage.setTextFill(Color.BLUE);              
+            if (englishName.length() < 2 || scientificName.length() < 6) {
+                speciesCreationMessage.setText("One of the names is too short.");
             } else {
                 try {
                     if (speciesService.createSpecies(englishName, scientificName, finnishName, abbreviation)) {
                         speciesCreationMessage.setText("");
                         stage.setScene(newObservationScene);
                     } else {
-                        speciesCreationMessage.setText("Error while creating new species");
-                        speciesCreationMessage.setTextFill(Color.BLUE);        
+                        speciesCreationMessage.setText("Error while creating new species.");
                     }
                 } catch (Exception ex) {
-                    Logger.getLogger(NewSpeciesScene.class.getName()).log(Level.SEVERE, null, ex);
+                    successMessage.setText("Something went wrong! Try again.");
                 }
             }
         });  
@@ -63,10 +52,5 @@ public class NewSpeciesScene {
         newSpeciesPane.getChildren().addAll(speciesCreationMessage, createNewSpeciesButton, returnButton);
         Scene newSpeciesScene = new Scene(newSpeciesPane, 400, 400);
         return newSpeciesScene;
-    }
-    
-    
-    public Button returnButton() {
-        return this.returnButton;
     }
 }

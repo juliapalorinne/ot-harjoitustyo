@@ -28,8 +28,13 @@ public class SpeciesService {
     }
     
     
-    public void modifySpecies(int id, String englishName, String scientificName, String finnishName, String abbreviation) throws Exception {
-        speciesDao.modifySpecies(id, englishName, scientificName, finnishName, abbreviation);
+    public boolean modifySpecies(int id, String englishName, String scientificName, String finnishName, String abbreviation) throws Exception {
+        try {   
+            speciesDao.modifySpecies(id, englishName, scientificName, finnishName, abbreviation);
+        } catch (Exception ex) {
+            return false;
+        }
+        return true;
     }
     
     public void removeSpecies(int id) throws Exception {

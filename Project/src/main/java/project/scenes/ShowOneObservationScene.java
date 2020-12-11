@@ -34,7 +34,6 @@ public class ShowOneObservationScene extends LoggedInScene {
     private DatePicker datePicker;
     private TextField timeInput;
     private TextField infoInput;
-    private ToggleGroup selectPrivacy;
     
     public ShowOneObservationScene(StoreableObservationService observationService, SpeciesService speciesService, 
             PlaceService placeService) {
@@ -52,7 +51,7 @@ public class ShowOneObservationScene extends LoggedInScene {
     
     
     private VBox showObservation(DisplayableObservation o) {
-        VBox vbox = inputWindow.observationBox();
+        VBox vbox = inputWindow.ShowOneBox();
         
         HBox speciesBox = inputWindow.observationBoxRow();
         Label species = inputWindow.createSmallLabel("Species", 150);
@@ -91,7 +90,9 @@ public class ShowOneObservationScene extends LoggedInScene {
         VBox pane = inputWindow.createNewWindow();
         Label label = inputWindow.createBigLabel("View and modify observation", 400);
         HBox infoBox = inputWindow.infoBox("Submit to modify this observation. Remember to choose the species and place from the lists.");
-        pane.getChildren().addAll(label, showObservation(o),infoBox);
+        HBox messageBox = inputWindow.observationBoxRow();
+        messageBox.getChildren().addAll(successMessage());
+        pane.getChildren().addAll(label, showObservation(o),infoBox, messageBox);
         
         createInputFields(pane, o);
         
@@ -112,23 +113,21 @@ public class ShowOneObservationScene extends LoggedInScene {
                             stage.setScene(observationTable.observationScene(stage));
                         } catch (Exception ex) {
                             successMessage.setText("Something went wrong! Try again.");
-                            Logger.getLogger(ShowOneObservationScene.class.getName()).log(Level.SEVERE, null, ex);
                         }
                     } else {
                         successMessage.setText("Invalid input! Try again.");
                     }
                 } catch (Exception ex) {
                     successMessage.setText("Something went wrong! Try again.");
-                    Logger.getLogger(ShowOneObservationScene.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         }); 
         
-        returnButton().setOnAction(e-> {
+        returnButton().setOnAction(e -> {
             try {
                 stage.setScene(observationTable.observationScene(stage));
             } catch (Exception ex) {
-                Logger.getLogger(ProjectUi.class.getName()).log(Level.SEVERE, null, ex);
+                successMessage.setText("Something went wrong! Try again.");
             }
         });
         

@@ -2,7 +2,6 @@ package project.scenes;
 
 import java.util.ArrayList;
 import javafx.collections.FXCollections;
-import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -25,7 +24,11 @@ public class ObservationTableScene extends LoggedInScene {
     private TableView table;
     private final Button addButton;
     private final Button searchButton;
+    private final Button listSpeciesButton;
+    private final Button listPlacesButton;
     private final Button logoutButton;
+    private final ShowSpeciesListScene showSpecies;
+    private final ShowPlaceListScene showPlaces;
     
     
     public ObservationTableScene(StoreableObservationService observationService,
@@ -36,6 +39,10 @@ public class ObservationTableScene extends LoggedInScene {
         addButton = inputWindow.createButton("Add new observation");
         searchButton = inputWindow.createButton("Search observations");
         logoutButton = inputWindow.createButton("Logout");
+        listSpeciesButton = inputWindow.createButton("Show species list");
+        listPlacesButton = inputWindow.createButton("Show place list");
+        showSpecies = new ShowSpeciesListScene(speciesService, this);
+        showPlaces = new ShowPlaceListScene(placeService, this);
         this.showOne = new ShowOneObservationScene(observationService, speciesService, placeService);
     }  
     
@@ -58,15 +65,31 @@ public class ObservationTableScene extends LoggedInScene {
         ArrayList<TableColumn> columns = displayObsService.getColumns();
         
         table.getColumns().addAll(columns);
-        
-        Label label = inputWindow.createBigLabel("Observations", 200);
 
         table.setOnMouseClicked((MouseEvent event) -> {
-            Clicked(stage);
+            if (event.getClickCount() == 2) { 
+                Clicked(stage);
+            }
+        });
+        
+        listSpeciesButton().setOnAction(e-> {
+            try {
+                stage.setScene(showSpecies.speciesScene(stage));
+            } catch (Exception ex) {
+                successMessage.setText("Could not open the species list. Try again!");
+            }
+        });
+        
+        listPlacesButton().setOnAction(e-> {
+            try {
+                stage.setScene(showPlaces.placeScene(stage));
+            } catch (Exception ex) {
+                successMessage.setText("Could not open the place list. Try again!");
+            }
         });
         
         VBox vbox = inputWindow.createNewWindow();
-        vbox.getChildren().addAll(menu(), label, infoBox, table, searchObservations(), createObservation());
+        vbox.getChildren().addAll(labelBar(), infoBox, table, searchObservations(), createObservation());
         VBox.setVgrow(table, Priority.ALWAYS);
         return vbox;
     }  
@@ -77,7 +100,6 @@ public class ObservationTableScene extends LoggedInScene {
             stage.setScene(showOne.showOneScene(stage, this, o));
         } catch(Exception e) {
             successMessage.setText("Could not open the observation. Try again!");
-            e.printStackTrace();
         }
     }
     
@@ -86,16 +108,24 @@ public class ObservationTableScene extends LoggedInScene {
         HBox createForm = new HBox(10);
         Region spacer = new Region();
         HBox.setHgrow(spacer, Priority.ALWAYS);
-        createForm.getChildren().addAll(spacer, addButton());
+        createForm.getChildren().addAll(listSpeciesButton(), spacer, addButton());
         return createForm;
     }
     
-    private HBox menu() {
+    public HBox searchObservations() {
+        HBox searchForm = new HBox(10);
+        Region spacer = new Region();
+        HBox.setHgrow(spacer, Priority.ALWAYS);
+        searchForm.getChildren().addAll(listPlacesButton(), spacer, searchButton());
+        return searchForm;
+    }
+    
+    private HBox labelBar() {
         HBox menuPane = new HBox(10);
-        Label menuLabel = new Label("Menu");
         Region menuSpacer = new Region();
         HBox.setHgrow(menuSpacer, Priority.ALWAYS);
-        menuPane.getChildren().addAll(menuLabel, menuSpacer, logoutButton); 
+        Label label = inputWindow.createBigLabel("Observations", 200);
+        menuPane.getChildren().addAll(label, menuSpacer, logoutButton()); 
         return menuPane;
     }
     
@@ -109,16 +139,18 @@ public class ObservationTableScene extends LoggedInScene {
     
     public Button logoutButton() {
         return this.logoutButton;
-    }    
+    }  
+    
+    public Button listSpeciesButton() {
+        return this.listSpeciesButton;
+    } 
+    
+    public Button listPlacesButton() {
+        return this.listPlacesButton;
+    } 
     
     
-    public HBox searchObservations() {
-        HBox searchForm = new HBox(10);
-        Region spacer = new Region();
-        HBox.setHgrow(spacer, Priority.ALWAYS);
-        searchForm.getChildren().addAll(spacer, searchButton());
-        return searchForm;
-    }
+    
     
     
 }

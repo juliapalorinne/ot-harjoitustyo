@@ -37,8 +37,13 @@ public class PlaceService {
         return true;
     }
     
-    public void modifyPlace(int id, String country, String city, String spot, String type) throws Exception {
-        placeDao.modifyPlace(id, country, city, spot, type);
+    public boolean modifyPlace(int id, String country, String city, String spot, String type) throws Exception {
+        try {   
+            placeDao.modifyPlace(id, country, city, spot, type);
+        } catch (Exception ex) {
+            return false;
+        }
+        return true;
     }
     
     public void removePlace(int id) throws Exception {

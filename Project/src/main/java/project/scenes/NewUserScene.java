@@ -1,7 +1,5 @@
 package project.scenes;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -14,9 +12,9 @@ import project.domain.UserService;
 import project.ui.InputWindow;
 
 public class NewUserScene {
-    private InputWindow inputWindow;
-    private UserService userService;
-    private Button returnButton;
+    private final InputWindow inputWindow;
+    private final UserService userService;
+    private final Button returnButton;
     
     public NewUserScene(InputWindow inputWindow, UserService userService) {
         this.inputWindow = inputWindow;
@@ -35,7 +33,7 @@ public class NewUserScene {
         Button createNewUserButton = inputWindow.createButton("Create");
         createNewUserButton.setPadding(new Insets(10));
 
-        createNewUserButton.setOnAction(e-> {
+        createNewUserButton.setOnAction(e -> {
             String username = newUsernameInput.getText();
             String name = newNameInput.getText();
             String password = newPasswordInput.getText();
@@ -53,10 +51,9 @@ public class NewUserScene {
                         userCreationMessage.setTextFill(Color.RED);        
                     }
                 } catch (Exception ex) {
-                    Logger.getLogger(NewUserScene.class.getName()).log(Level.SEVERE, null, ex);
+                    userCreationMessage.setText("Something went wrong! Try again.");
                 }
             }
- 
         });  
         
         newUserPane.getChildren().addAll(userCreationMessage, createNewUserButton, returnButton);

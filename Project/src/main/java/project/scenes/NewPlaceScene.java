@@ -1,24 +1,18 @@
 package project.scenes;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import project.domain.PlaceService;
-import project.ui.InputWindow;
 
 public class NewPlaceScene extends LoggedInScene {
     
-    public NewPlaceScene(InputWindow inputWindow, PlaceService placeService) {
-        this.inputWindow = inputWindow;
+    public NewPlaceScene(PlaceService placeService) {
         this.placeService = placeService;
-        returnButton = inputWindow.createButton("Return");
     } 
 
     public Scene newPlaceScene(Stage stage, Scene newObservationScene) {
@@ -39,20 +33,18 @@ public class NewPlaceScene extends LoggedInScene {
             String spot = newSpotInput.getText();
             String type = newTypeInput.getText();
    
-            if (country.length() < 2 || city.length() < 2) {
-                placeCreationMessage.setText("Country or city too short");
-                placeCreationMessage.setTextFill(Color.BLUE);              
+            if (country.length() < 3 || city.length() < 3 || spot.length() < 3) {
+                placeCreationMessage.setText("Country, city or spot is too short");
             } else {
                 try {
                     if (placeService.createPlace(country, city, spot, type)) {
                         placeCreationMessage.setText("");
                         stage.setScene(newObservationScene);
                     } else {
-                        placeCreationMessage.setText("Error while creating new place");
-                        placeCreationMessage.setTextFill(Color.BLUE);        
+                        placeCreationMessage.setText("Error while creating new place.");
                     }
                 } catch (Exception ex) {
-                    Logger.getLogger(NewPlaceScene.class.getName()).log(Level.SEVERE, null, ex);
+                    successMessage.setText("Something went wrong! Try again.");
                 }
             }
  

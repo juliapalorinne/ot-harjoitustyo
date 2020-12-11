@@ -74,6 +74,10 @@ public class Species extends StoreableObject {
     public String toString() {
         return this.englishName + " (" + this.finnishName + ", " + this.scientificName + ")";
     }
+    
+    public String toStringWithAbbreviation() {
+        return this.englishName + " (" + this.finnishName + ", " + this.scientificName +  ", " + this.abbreviation + ")";
+    }
 
 
 }

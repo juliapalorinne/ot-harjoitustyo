@@ -42,6 +42,7 @@ public class DisplayableObservationService {
         DisplayableObservation d = new DisplayableObservation();
         d.setId(obs.getId());
         d.setSpecies(speciesService.getSpeciesById(obs.getSpeciesId()).toString());
+        d.setFullSpecies(speciesService.getSpeciesById(obs.getSpeciesId()).toStringWithAbbreviation());
         d.setPlace(placeService.getPlaceById(obs.getPlaceId()).toString());
         d.setIndividuals(obs.getIndividuals());
         d.setDate(obs.getDate());

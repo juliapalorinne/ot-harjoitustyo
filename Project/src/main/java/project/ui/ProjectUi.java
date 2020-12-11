@@ -1,4 +1,3 @@
-
 package project.ui;
 
 import project.scenes.NewSpeciesScene;
@@ -14,6 +13,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
@@ -53,11 +53,11 @@ public class ProjectUi extends Application {
         placeService = new PlaceService();
         inputWindow = new InputWindow();
         observationTable = new ObservationTableScene(observationService, speciesService, placeService);
-        newObservation = new NewObservationScene(observationService, speciesService, placeService, inputWindow); 
+        newObservation = new NewObservationScene(observationService, speciesService, placeService); 
         newUser = new NewUserScene(inputWindow, userService);
-        newSpecies = new NewSpeciesScene(inputWindow, speciesService);
-        newPlace = new NewPlaceScene(inputWindow, placeService);
-        searchWindow = new SearchScene(inputWindow, observationService, speciesService, placeService);
+        newSpecies = new NewSpeciesScene(speciesService);
+        newPlace = new NewPlaceScene(placeService);
+        searchWindow = new SearchScene(observationService, speciesService, placeService);
         
         
 //        addSpeciesListToDatabase();  // Tästä voi lisätä aluksi muutamankymmentä lintua tietokantaan.
@@ -73,10 +73,10 @@ public class ProjectUi extends Application {
         TextField usernameInput = inputWindow.createInputField(loginPane, "Username");
         TextField passwordInput = inputWindow.createInputField(loginPane, "Password");
         
-        Label loginMessage = new Label();
+        Label loginMessage = inputWindow.createErrorMessage("");
         Button loginButton = inputWindow.createButton("Login");
         Button createButton = inputWindow.createButton("Create new user");
-        loginButton.setOnAction(e->{
+        loginButton.setOnAction(e -> {
             String username = usernameInput.getText();
             String password = passwordInput.getText();
             try {
@@ -86,15 +86,20 @@ public class ProjectUi extends Application {
                     passwordInput.setText("");
                     getMainView(primaryStage);
                 } else {
-                    loginMessage.setText("user does not exist");
-                    loginMessage.setTextFill(Color.RED);      
+                    loginMessage.setText("User does not exist.");
                 }
             } catch (Exception ex) {
-                Logger.getLogger(ProjectUi.class.getName()).log(Level.SEVERE, null, ex);
+                loginMessage.setText("Something went wrong! Try again.");
             }
-        });  
+        });
         
-        createButton.setOnAction(e->{
+        loginButton.setOnKeyPressed(event -> {
+            if (event.getCode().equals(KeyCode.ENTER)) {
+                loginButton.fire();
+            }
+        });
+        
+        createButton.setOnAction(e -> {
             usernameInput.setText("");
             passwordInput.setText("");
             primaryStage.setScene(newUserScene);   
@@ -118,13 +123,10 @@ public class ProjectUi extends Application {
         primaryStage.setTitle("Observations");
         primaryStage.setScene(loginScene);
         primaryStage.show();
-        primaryStage.setOnCloseRequest(e->{
-            System.out.println("closing");
-            System.out.println(userService.getLoggedUser());
+        primaryStage.setOnCloseRequest(e -> {
             if (userService.getLoggedUser() != null) {
                 e.consume();   
             }
-            
         });
     }
     
@@ -132,7 +134,7 @@ public class ProjectUi extends Application {
         observationScene = observationTable.observationScene(stage);        
         stage.setScene(observationScene);
         
-        observationTable.logoutButton().setOnAction(e->{
+        observationTable.logoutButton().setOnAction(e -> {
             userService.logout();
             try {
                 start(stage);
@@ -140,14 +142,14 @@ public class ProjectUi extends Application {
                 Logger.getLogger(ProjectUi.class.getName()).log(Level.SEVERE, null, ex);
             }
         });        
-        observationTable.addButton().setOnAction(e->{
+        observationTable.addButton().setOnAction(e -> {
             try {
                 getNewObservationView(stage);
             } catch (Exception ex) {
                 Logger.getLogger(ProjectUi.class.getName()).log(Level.SEVERE, null, ex);
             }
         });
-        observationTable.searchButton().setOnAction(e->{
+        observationTable.searchButton().setOnAction(e -> {
             try {
                 getSearchView(stage);
             } catch (Exception ex) {
@@ -160,21 +162,21 @@ public class ProjectUi extends Application {
         newObservationScene = newObservation.createNewObservationScene(stage, observationTable);
         stage.setScene(newObservationScene);
         
-        newObservation.returnButton().setOnAction(e-> {
+        newObservation.returnButton().setOnAction(e -> {
             try {
                 getMainView(stage);
             } catch (Exception ex) {
                 Logger.getLogger(ProjectUi.class.getName()).log(Level.SEVERE, null, ex);
             }
         });
-        newObservation.addNewSpeciesButton().setOnAction(e-> {
+        newObservation.addNewSpeciesButton().setOnAction(e -> {
             try {
                 getNewSpeciesView(stage);
             } catch (Exception ex) {
                 Logger.getLogger(ProjectUi.class.getName()).log(Level.SEVERE, null, ex);
             }
         });        
-        newObservation.addNewPlaceButton().setOnAction(e-> {
+        newObservation.addNewPlaceButton().setOnAction(e -> {
             try {
                 getNewPlaceView(stage);
             } catch (Exception ex) {
@@ -188,7 +190,7 @@ public class ProjectUi extends Application {
         Scene newSpeciesScene = newSpecies.newSpeciesScene(stage, newObservationScene);
         stage.setScene(newSpeciesScene);
 
-        newSpecies.returnButton().setOnAction(e-> {
+        newSpecies.returnButton().setOnAction(e -> {
             try {
                 getNewObservationView(stage);
             } catch (Exception ex) {
@@ -202,7 +204,7 @@ public class ProjectUi extends Application {
         Scene newPlaceScene = newPlace.newPlaceScene(stage, newObservationScene);
         stage.setScene(newPlaceScene);
 
-        newPlace.returnButton().setOnAction(e-> {
+        newPlace.returnButton().setOnAction(e -> {
             try {
                 getNewObservationView(stage);
             } catch (Exception ex) {
@@ -213,10 +215,10 @@ public class ProjectUi extends Application {
     
     
     public void getSearchView(Stage stage) throws Exception {
-        Scene searchScene = searchWindow.searchScene(stage);
+        Scene searchScene = searchWindow.searchScene(stage, observationTable);
         stage.setScene(searchScene);
 
-        searchWindow.returnButton().setOnAction(e-> {
+        searchWindow.returnButton().setOnAction(e -> {
             try {
                 getMainView(stage);
             } catch (Exception ex) {
@@ -227,8 +229,7 @@ public class ProjectUi extends Application {
 
     @Override
     public void stop() {
-      // tee lopetustoimenpiteet täällä
-      System.out.println("app is closing");
+        
     }     
     
     

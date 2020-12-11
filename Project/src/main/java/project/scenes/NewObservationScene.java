@@ -2,17 +2,13 @@ package project.scenes;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
-import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
-import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -21,7 +17,6 @@ import project.domain.Place;
 import project.domain.PlaceService;
 import project.domain.Species;
 import project.domain.SpeciesService;
-import project.ui.InputWindow;
 
 public class NewObservationScene extends LoggedInScene {
     
@@ -36,11 +31,10 @@ public class NewObservationScene extends LoggedInScene {
     private TextField infoInput;
     
     public NewObservationScene(StoreableObservationService observationService, SpeciesService speciesService, 
-            PlaceService placeService, InputWindow inputWindow) {
+            PlaceService placeService) {
         this.observationService = observationService;
         this.speciesService = speciesService;
         this.placeService = placeService;
-        this.inputWindow = inputWindow;
         
         this.createNewObsButton = inputWindow.createButton("Add new observation");
     } 
@@ -72,7 +66,6 @@ public class NewObservationScene extends LoggedInScene {
                         stage.setScene(observationTable.observationScene(stage));
                     } catch (Exception ex) {
                         successMessage.setText("Something went wrong! Try again.");
-                        Logger.getLogger(NewObservationScene.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 } else {
                     successMessage.setText("Invalid input! Try again.");
