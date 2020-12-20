@@ -20,7 +20,7 @@ Sovellus on tarkoitettu lintuhavaintojen tallentamiseen ja vanhojen havaintojen 
 
 ## Releaset
 
-[*Uusin release: 8.12.2020 Save and search observations*](https://github.com/juliapalorinne/ot-harjoitustyo/releases)
+[*Uusin release 20.12.2020: Loppupalautus*](https://github.com/juliapalorinne/ot-harjoitustyo/releases)
 
 ## Komentoriviltä suoritettavat komennot
 
