@@ -33,4 +33,4 @@ Päivämäärä | Tehtävä | Käytetty aika
 20.12.2020 | Toisten käyttäjien havaintojen tarkastelu ja hakeminen | 3 h
 20.12.2020 | Dokumentaatio, JavaDoc ja Checkstyle | 2 h
  | | 
-24.11.2020 | **YHTEENSÄ**| **61 h**
+20.12.2020 | **YHTEENSÄ**| **61 h**
