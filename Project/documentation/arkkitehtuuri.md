@@ -23,7 +23,7 @@ Käyttöliittymä sisältää 13 eri näkymää:
 - Näkymä yhden paikan avaamiseen ja muokkaamiseen
 - Näkymä kaikkien käyttäjien julkisten havaintojen hakemiseen ja tarkasteluun
 
-Kaaviossa on kuvattu ohjelman rakenne havaintojen käsittelyn osalta. Paikan ja lajin käsittelyyn tarkoitetut luokat eivät näy kuvassa. Rakennetta tullaan kehittämään uusien ominaisuuksien käyttöönoton yhteydessä.
+Kaaviossa on kuvattu ohjelman rakenne muiden osien kuin erilaisten näkymien osalta.
 <br/><br/>
 
 ![Ohjelman rakenne](https://github.com/juliapalorinne/ot-harjoitustyo/blob/main/Project/documentation/kuvat/rakenne.jpg)
