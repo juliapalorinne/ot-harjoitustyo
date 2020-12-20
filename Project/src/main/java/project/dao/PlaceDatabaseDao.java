@@ -43,14 +43,6 @@ public class PlaceDatabaseDao extends DatabaseDao implements PlaceDao {
         }
     }    
     
-    
-    /**
-     * Adds new place.
-     * 
-     * @param place new Place
-     * 
-     * @throws Exception Adding to database failed.
-     */
     @Override
     public void addPlace(Place place) throws Exception {
         try (Connection conn = DriverManager.getConnection(databaseAddress)) {
@@ -68,18 +60,6 @@ public class PlaceDatabaseDao extends DatabaseDao implements PlaceDao {
         }
     }
     
-    
-    /**
-     * Finds Place by id and modifies it.
-     * 
-     * @param id the Place id
-     * @param country the country of the Place
-     * @param city the city of the Place
-     * @param spot the exact spot
-     * @param type the type of the Place
-     * 
-     * @throws Exception Accessing database failed.
-     */
     @Override
     public void modifyPlace(int id, String country, String city, String spot, String type) throws Exception {
         try (Connection conn = DriverManager.getConnection(databaseAddress)) {
@@ -102,16 +82,6 @@ public class PlaceDatabaseDao extends DatabaseDao implements PlaceDao {
         }
     }
     
-    
-    /**
-     * Creates Place from database search result and lists them as StoreableObjects.
-     * 
-     * @param result the database query result
-     * 
-     * @return the list as StorableObjects
-     * 
-     * @throws Exception Searching database failed.
-     */
     @Override
     protected List<StoreableObject> createListFromResult(ResultSet result) throws Exception {
         List<StoreableObject> places = new ArrayList<>();
@@ -128,61 +98,21 @@ public class PlaceDatabaseDao extends DatabaseDao implements PlaceDao {
         return places;
     }
 
-    
-    /**
-     * Searched database to find a Place by id.
-     * 
-     * @param id the Place id
-     * 
-     * @return the Place
-     * 
-     * @throws Exception Searching database failed.
-     */
     @Override
     public Place findPlaceById(int id) throws Exception {
         return (Place) findById(id);
     }
     
-    
-    /**
-     * Searched database to find a Place by name.
-     * 
-     * @param name the name of the wanted Place
-     * @param searchField the field to search
-     * 
-     * @return the Place
-     * 
-     * @throws Exception Searching database failed.
-     */
     @Override
     public Place findPlaceByName(String name, String searchField) throws Exception {
         return (Place) findByName(name, searchField);
     }
     
-    
-    /**
-     * Returns all Places in the database.
-     * 
-     * @return the list of Places
-     * 
-     * @throws Exception Searching database failed.
-     */
     @Override
     public List<Place> getAllPlaces() throws Exception {
         return convertToPlaces(getAll());
     }
     
-
-    /**
-     * Returns Places with searchTerm in searchField.
-     * 
-     * @param searchTerm searched term
-     * @param searchField the field to search
-     * 
-     * @return the list of Places
-     * 
-     * @throws Exception Searching database failed.
-     */
     @Override
     public List<Place> searchPlaces(String searchTerm, String searchField) throws Exception {
         return convertToPlaces(search(searchTerm, searchField));

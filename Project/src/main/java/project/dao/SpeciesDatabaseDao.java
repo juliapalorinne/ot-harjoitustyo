@@ -45,14 +45,6 @@ public class SpeciesDatabaseDao extends DatabaseDao implements SpeciesDao {
         }
     }
     
-    
-    /**
-     * Adds new Species to database.
-     * 
-     * @param species new Species
-     * 
-     * @throws Exception Adding to database failed.
-     */
     @Override
     public void addSpecies(Species species) throws Exception {
         try (Connection conn = DriverManager.getConnection(databaseAddress)) {
@@ -69,20 +61,7 @@ public class SpeciesDatabaseDao extends DatabaseDao implements SpeciesDao {
             conn.close();
         }
     }
-
     
-    /**
-     * Finds Species by id and modifies it.
-     * If any of the fields is left empty, it is not modified.
-     * 
-     * @param id the species id
-     * @param englishName English name of the species
-     * @param scientificName scientific name of the species
-     * @param finnishName Finnish name of the species
-     * @param abbreviation 3+3 abbreviation of the species
-     * 
-     * @throws Exception Accessing database failed.
-     */
     @Override
     public void modifySpecies(int id, String englishName, String scientificName, String finnishName, String abbreviation) throws Exception {
         try (Connection conn = DriverManager.getConnection(databaseAddress)) {
@@ -105,16 +84,6 @@ public class SpeciesDatabaseDao extends DatabaseDao implements SpeciesDao {
         }
     }
     
-    
-    /**
-     * Creates a Species from a database search result and lists them as StoreableObjects.
-     * 
-     * @param result the database query result
-     * 
-     * @return the list as StorableObjects
-     * 
-     * @throws Exception Accessing database failed.
-     */
     @Override
     protected List<StoreableObject> createListFromResult(ResultSet result) throws Exception {
         List<StoreableObject> speciesList = new ArrayList<>();
@@ -130,62 +99,22 @@ public class SpeciesDatabaseDao extends DatabaseDao implements SpeciesDao {
         }
         return speciesList;
     }
-
     
-    /**
-     * Returns a Species if found by id from the database.
-     * @param id the species id
-     * 
-     * @return the list of Species
-     * 
-     * @throws Exception Searching database failed.
-     */
     @Override
     public Species findSpeciesById(int id) throws Exception {
         return (Species) findById(id);
     }
-
     
-    /**
-     * Returns a Species if found by name from the database.
-     * SearchField specifies the name field to search.
-     * 
-     * @param name the name of the wanted Species
-     * @param searchField the field to search
-     * 
-     * @return the Species
-     * 
-     * @throws Exception Searching database failed.
-     */
     @Override
     public Species findSpeciesByName(String name, String searchField) throws Exception {
         return (Species) findByName(name, searchField);
     }
     
-
-    /**
-     * Returns all Species in the database.
-     * 
-     * @return the list of Species
-     * 
-     * @throws Exception Searching database failed.
-     */
     @Override
     public List<Species> getAllSpecies() throws Exception {
         return convertToSpecies(getAll());
     }
-
     
-    /**
-     * Returns all Species with searchTerm in searchField.
-     * 
-     * @param searchTerm the search term
-     * @param searchField the field to search
-     * 
-     * @return a list of Species
-     * 
-     * @throws Exception Searching database failed.
-     */
     @Override
     public List<Species> searchSpecies(String searchTerm, String searchField) throws Exception {
         return convertToSpecies(search(searchTerm, searchField));

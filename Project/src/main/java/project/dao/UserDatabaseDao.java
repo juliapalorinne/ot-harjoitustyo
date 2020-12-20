@@ -44,14 +44,6 @@ public class UserDatabaseDao extends DatabaseDao implements UserDao {
         }
     }
     
-    
-    /**
-     * Adds new User to database.
-     * 
-     * @param user new User
-     * 
-     * @throws Exception Adding to database failed.
-     */
     @Override
     public void addUser(User user) throws Exception {
         try (Connection conn = DriverManager.getConnection(databaseAddress)) {
@@ -67,19 +59,7 @@ public class UserDatabaseDao extends DatabaseDao implements UserDao {
             conn.close();
         }
     }
-
     
-    /**
-     * Finds User by id and modifies it.
-     * If any of the fields is left empty, it is not modified.
-     * 
-     * @param id the User id
-     * @param username an unique username
-     * @param name name
-     * @param password password
-     * 
-     * @throws Exception Accessing database failed.
-     */
     @Override
     public void modifyUser(int id, String username, String name, String password) throws Exception {
         try (Connection conn = DriverManager.getConnection(databaseAddress)) {
@@ -98,17 +78,7 @@ public class UserDatabaseDao extends DatabaseDao implements UserDao {
             conn.close();
         }
     }
-    
-    
-     /**
-     * Creates an User from a database search result and lists them as StoreableObjects.
-     * 
-     * @param result the database query result
-     * 
-     * @throws Exception Accessing database failed.
-     * 
-     * @return the list of Users
-     */
+     
     @Override
     protected List<StoreableObject> createListFromResult(ResultSet result) throws Exception {
         List<StoreableObject> users = new ArrayList<>();
@@ -123,58 +93,22 @@ public class UserDatabaseDao extends DatabaseDao implements UserDao {
         }
         return users;
     }
-
     
-    /**
-     * Returns an User if found by id from the database.
-     * 
-     * @param id the User id
-     * 
-     * @throws Exception Searching database failed.
-     */
     @Override
     public User findUserById(int id) throws Exception {
         return (User) findById(id);
     }
-
     
-    /**
-     * Returns an User if found by name from the database.
-     * SearchField specifies the name field to search.
-     * 
-     * @param name searched name
-     * @param searchField the field to search
-     * 
-     * @throws Exception Searching database failed.
-     */
     @Override
     public User findUserByName(String name, String searchField) throws Exception {
         return (User) findByName(name, searchField);
     }
-
     
-    /**
-     * Returns all Users in the database.
-     * 
-     * @throws Exception Searching database failed.
-     * 
-     * @return the list of Users
-     */
     @Override
     public List<User> getAllUsers() throws Exception {
         return convertToUsers(getAll());
     }
-
     
-    /**
-     * Searched database to find all Users by name.
-     * SearchField specifies the name field to search.
-     * 
-     * @param name searched name
-     * @param searchField the field to search
-     * 
-     * @throws Exception Searching database failed.
-     */
     @Override
     public List<User> searchUsers(String name, String searchField) throws Exception {
         return convertToUsers(search(name, searchField));

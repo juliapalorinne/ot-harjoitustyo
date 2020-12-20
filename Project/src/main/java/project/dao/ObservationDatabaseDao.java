@@ -49,13 +49,7 @@ public class ObservationDatabaseDao extends DatabaseDao implements ObservationDa
     }
     
     
-    /**
-     * Adds new Observation.
-     * 
-     * @param observation new StoreableObservation
-     * 
-     * @throws Exception Adding to database failed.
-     */
+    
     @Override
     public void addObservation(StoreableObservation observation) throws Exception {
         try (Connection conn = DriverManager.getConnection(databaseAddress)) {
@@ -78,23 +72,7 @@ public class ObservationDatabaseDao extends DatabaseDao implements ObservationDa
             conn.close();
         }
     }
-
     
-    /**
-     * Finds an Observation by id and modifies it.
-     * 
-     * @param id the Observation id
-     * @param species the id of the Species of the Observation
-     * @param individuals the number of individuals
-     * @param place the id of the Place of the Observation
-     * @param date the date of the Observation
-     * @param time the time of the Observation (hh:mm)
-     * @param info additional info
-     * @param privacy 1 if observation is private, 0 if public
-     * @param username username of the User
-     * 
-     * @throws Exception Accessing database failed.
-     */
     @Override
     public void modifyObservation(int id, int species, int individuals, int place, String date, String time,
             String info, int privacy, String username, String savingTime) throws Exception {
@@ -131,13 +109,6 @@ public class ObservationDatabaseDao extends DatabaseDao implements ObservationDa
         }
     }
     
-
-    
-    /**
-     * Creates an Observation from a database search result and lists them as StoreableObjects.
-     * 
-     * @param result the database query result
-     */
     @Override
     protected List<StoreableObject> createListFromResult(ResultSet result) throws Exception {
         List<StoreableObject> observations = new ArrayList<>();
@@ -160,39 +131,16 @@ public class ObservationDatabaseDao extends DatabaseDao implements ObservationDa
         return observations;
     }
     
-    
-    /**
-     * Returns an Observation if found by id from the database.
-     * 
-     * @param id the id of the wanted Observation
-     * 
-     * @throws Exception Searching database failed.
-     */
     @Override
     public StoreableObservation findObservationById(int id) throws Exception {
         return (StoreableObservation) findById(id);
     }
     
-    
-    /**
-     * Returns all Observations in the database.
-     * 
-     * @throws Exception Searching database failed.
-     */
     @Override
     public List<StoreableObservation> getAllObservations() throws Exception {
         return convertToObservations(getAll());
     }
     
-    
-    /**
-     * Returns Observations with searchTerm in searchField.
-     * 
-     * @param searchTerm searched term
-     * @param searchField the field to search
-     * 
-     * @throws Exception Searching database failed.
-     */
     @Override
     public List<StoreableObservation> searchObservations(String searchTerm, String searchField) throws Exception {
         List<StoreableObject> observations = new ArrayList<>();

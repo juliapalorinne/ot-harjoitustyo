@@ -20,7 +20,7 @@ public class StoreableObservation extends Observation {
     }
 
     /**
-     * Creates a new StorableObservation.
+     * Creates a new StorableObservation with id.
      * 
      * @param id id
      * @param species the Species id
@@ -31,6 +31,7 @@ public class StoreableObservation extends Observation {
      * @param info additional info
      * @param privacy 0 for public, 1 for private Observation
      * @param username the username of the User
+     * @param savingTime the time of the last modification
      */
     public StoreableObservation(int id, int species, int individuals, int place, LocalDate date, 
             LocalTime time, String info, int privacy, String username, LocalDateTime savingTime) {
@@ -47,7 +48,7 @@ public class StoreableObservation extends Observation {
     }
     
     /**
-     * Creates a new StorableObservation.
+     * Creates a new StorableObservation without id.
      * 
      * @param species the Species id
      * @param individuals the number of individuals
@@ -57,6 +58,7 @@ public class StoreableObservation extends Observation {
      * @param info additional info
      * @param privacy 0 for public, 1 for private Observation
      * @param username the username of the User
+     * @param savingTime the time of the last modification
      */
     public StoreableObservation(int species, int individuals, int place, LocalDate date, 
             LocalTime time, String info, int privacy, String username, LocalDateTime savingTime) {
