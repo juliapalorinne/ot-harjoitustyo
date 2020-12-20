@@ -19,7 +19,9 @@ Käyttöliittymä sisältää 13 eri näkymää:
 - Näkymä uuden paikan lisäämiseen
 - Näkymä havaintojen etsimiseen
 - Näkymä yhden havainnon avaamiseen ja muokkaamiseen
+- Näkymä kaikkien lajien listaamiseen
 - Näkymä yhden lajin avaamiseen ja muokkaamiseen
+- Näkymä kaikkien paikkojen listaamiseen
 - Näkymä yhden paikan avaamiseen ja muokkaamiseen
 - Näkymä kaikkien käyttäjien julkisten havaintojen hakemiseen ja tarkasteluun
 
