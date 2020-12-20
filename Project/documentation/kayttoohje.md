@@ -12,13 +12,8 @@ Sovellus käynnistetään suorittamalla jar-tiedosto birdingapp.jar.
 Käyttö aloitetaan luomalla käyttäjätunnus, jolla palveluun kirjaudutaan.
 Tunnuksen luomiseen tarvitaan nimi, käyttäjätunnus ja salasana. Käyttäjätunnuksen tulee olla uniikki eli se ei saa olla käytössä vielä kellään muulla käyttäjällä. Lisäksi käyttäjätunnuksen ja nimen pituuden tulee olla 2 ja 50 merkin välillä ja salasanan pituuden 8 ja 30 merkin välillä. Kun käyttäjätunnus on luotu, pääsee käyttäjä kirjautumaan palveluun painamalla *Login*.
 
-## Havaintojen tarkastelu ja hakeminen
+Kun käyttäjä kirjautuu sovellukseen, hänelle aukeaa taulukkonäkymä, jossa näkyvät hänen jo tallentamansa havainnot. Jos käyttäjällä ei vielä ole havaintoja, taulukko on tyhjä. Käyttäjä voi valita yksittäisen havainnon avattavaksi klikkaamalla sitä kahdesti.
 
-Kun käyttäjä kirjautuu palveluun, hän näkee taulukkonäkymän omista tallennetuista havainnoistaan.
-
-Käyttäjä voi avata sivun alalaidasta hakuikkunan, jossa käyttäjä voi hakea havaintoja lajin, paikan, päivämäärän, kellonajan tai muiden tietojen perusteella. Taulukossa näkyvät havainnot rajautuvat automaattisesti sitä mukaa, kun käyttäjä syöttää hakusanaa hakukenttään. Käyttäjä voi jälleen avata havainnon tarkasteltavaksi ja muokattavaksi napauttamalla sitä kahdesti.
-
-Käyttäjä voi tarkastella samaan tapaan myös muiden käyttäjien havaintoja valitsemalla *Show observations by all users*, jolloin hakua voi rajata edellisten lisäksi myös käyttäjän nimen perusteella. Tässä näkymässä havaintoja ei kuitenkaan saa avattua ja muokattua.
 
 ## Havaintojen tallennus
 
@@ -31,6 +26,15 @@ lisätään englanninkielinen, suomenkielinen ja tieteellinen nimi sekä 3+3-lyh
 
 Kun käyttäjä tallentaa havainnon, hän valitsee onko se salainen vai julkinen. Jos havainto tallennetaan julkisena, myös muut käyttäjät näkevät sen hakuja tehdessään.
 Jos havainto tallennetaan salaisena, vain käyttäjä itse näkee havainnon.
+
+
+## Havaintojen tarkastelu ja hakeminen
+
+Kun käyttäjä kirjautuu palveluun, hän näkee taulukkonäkymän omista tallennetuista havainnoistaan.
+
+Käyttäjä voi avata sivun alalaidasta hakuikkunan, jossa käyttäjä voi hakea havaintoja lajin, paikan, päivämäärän, kellonajan tai muiden tietojen perusteella. Taulukossa näkyvät havainnot rajautuvat automaattisesti sitä mukaa, kun käyttäjä syöttää hakusanaa hakukenttään. Käyttäjä voi jälleen avata havainnon tarkasteltavaksi ja muokattavaksi napauttamalla sitä kahdesti.
+
+Käyttäjä voi tarkastella samaan tapaan myös muiden käyttäjien havaintoja valitsemalla *Show observations by all users*, jolloin hakua voi rajata edellisten lisäksi myös käyttäjän nimen perusteella. Tässä näkymässä havaintoja ei kuitenkaan saa avattua ja muokattua.
 
 
 ## Havaintojen muokkaaminen
