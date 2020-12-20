@@ -4,6 +4,9 @@ package project.dao;
 import java.util.List;
 import project.domain.User;
 
+/**
+ * UserDao Interface.
+ */
 public interface UserDao {
     
     public void addUser(User user) throws Exception;

@@ -1,4 +1,3 @@
-
 package project.domain;
 
 
@@ -9,6 +8,15 @@ public class Species extends StoreableObject {
     private String abbreviation;
 
     
+    /**
+     * Creates a new Species.
+     * 
+     * @param id id
+     * @param englishName the English name
+     * @param scientificName the scientific name
+     * @param finnishName the Finnish name
+     * @param abbreviation 3+3 abbreviation
+     */
     public Species(int id, String englishName, String scientificName, String finnishName, String abbreviation) {
         this.id = id;
         this.englishName = englishName;
@@ -16,7 +24,16 @@ public class Species extends StoreableObject {
         this.finnishName = finnishName;
         this.abbreviation = abbreviation;
     }
+    
 
+    /**
+     * Creates a new Species.
+     * 
+     * @param englishName the English name
+     * @param scientificName the scientific name
+     * @param finnishName the Finnish name
+     * @param abbreviation 3+3 abbreviation
+     */
     public Species(String englishName, String scientificName, String finnishName, String abbreviation) {
         this.englishName = englishName;
         this.scientificName = scientificName;
@@ -75,6 +92,12 @@ public class Species extends StoreableObject {
         return this.englishName + " (" + this.finnishName + ", " + this.scientificName + ")";
     }
     
+    
+    /**
+     * Returns the Species as text.
+     * 
+     * @return the Species
+     */
     public String toStringWithAbbreviation() {
         return this.englishName + " (" + this.finnishName + ", " + this.scientificName +  ", " + this.abbreviation + ")";
     }

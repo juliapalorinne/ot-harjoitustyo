@@ -1,5 +1,6 @@
 package project.scenes;
 
+import java.time.LocalTime;
 import java.util.Arrays;
 import project.domain.*;
 import java.util.List;
@@ -20,8 +21,8 @@ import project.ui.InputWindow;
 
 public abstract class LoggedInScene {
     protected InputWindow inputWindow = new InputWindow();
-    protected ShowOneObservationScene showOne;
     
+    protected StoreableObservationService observationService;
     protected DisplayableObservationService displayObsService;
     protected SpeciesService speciesService;
     protected PlaceService placeService;
@@ -49,11 +50,19 @@ public abstract class LoggedInScene {
     protected void redrawObservationList() throws Exception {
         displayObsService.redrawObservationList();
         List<DisplayableObservation> obs = displayObsService.getAll();
-        obs.stream().filter((o) -> (!observations.contains(o))).forEachOrdered((o) -> {
-            observations.add(o);
-        });
-    }
-
+        for (DisplayableObservation o : obs) {
+            for (int i = 0; i < observations.size(); i++) {
+                if (observations.get(i).getId() == o.getId()) {
+                    if (!observations.get(i).getSavingTime().equals(o.getSavingTime())) {
+                        observations.set(i, o);
+                    }
+                }
+            }
+            if (!observations.contains(o)) {
+                observations.add(o);
+            }
+        }
+    }    
 
     protected ObservableList<Species> getObservableSpeciesList() throws Exception {
         List<Species> speciesList = speciesService.getAllSpecies();
@@ -139,7 +148,7 @@ public abstract class LoggedInScene {
         speciesList.setPrefWidth(500);
         speciesInput.setPrefWidth(400);
         Label label = inputWindow.createSmallLabel("Type and select species", 200);
-        speciesPane.getChildren().addAll(label, speciesInput, addNewSpeciesButton());
+        speciesPane.getChildren().addAll(label, speciesInput, addNewSpeciesButton);
         pane.getChildren().addAll(speciesPane, speciesList);
         return speciesList;
     }
@@ -151,7 +160,7 @@ public abstract class LoggedInScene {
         placeList.setPrefWidth(500);
         placeInput.setPrefWidth(400);
         Label label = inputWindow.createSmallLabel("Type and select place", 200);
-        placePane.getChildren().addAll(label, placeInput, addNewPlaceButton());
+        placePane.getChildren().addAll(label, placeInput, addNewPlaceButton);
         pane.getChildren().addAll(placePane, placeList);
         return placeList;
     }
@@ -165,9 +174,7 @@ public abstract class LoggedInScene {
         speciesInput.setPrefWidth(200);
         Label label = inputWindow.createSmallLabel("Type and select species", 200);
         labelColumn.getChildren().addAll(label, speciesInput);
-//        labelColumn.setAlignment(Pos.BOTTOM_LEFT);
-//        label.setAlignment(Pos.BOTTOM_LEFT);
-        speciesPane.getChildren().addAll(labelColumn, speciesList, addNewSpeciesButton());
+        speciesPane.getChildren().addAll(labelColumn, speciesList, addNewSpeciesButton);
         pane.getChildren().addAll(label, speciesPane);
         return speciesList;
     }
@@ -181,7 +188,7 @@ public abstract class LoggedInScene {
         placeInput.setPrefWidth(200);
         Label label = inputWindow.createSmallLabel("Type and select place", 200);
         labelColumn.getChildren().addAll(label, placeInput);
-        placePane.getChildren().addAll(labelColumn, placeList, addNewPlaceButton());
+        placePane.getChildren().addAll(labelColumn, placeList, addNewPlaceButton);
         pane.getChildren().addAll(label, placePane);
         return placeList;
     }
@@ -200,23 +207,6 @@ public abstract class LoggedInScene {
         selectPane.getChildren().addAll(selectLabel, rb1, rb2);
         return selectPane;
     }
-    
-    public Button returnButton() {
-        return this.returnButton;
-    }
-    
-    public Button addNewSpeciesButton() {
-        return this.addNewSpeciesButton;
-    }
-    
-    public Button addNewPlaceButton() {
-        return this.addNewPlaceButton;
-    }
-    
-    public Label successMessage() {
-        return this.successMessage;
-    }
-    
     
     protected boolean checkIfInputIsNumber(String input) {
         try {
@@ -245,25 +235,24 @@ public abstract class LoggedInScene {
         return true;
     }
 
-    public String[] forbiddenCharacters() {
-        return new String[]{"?", "*", "%", "="};
+    protected String[] forbiddenCharacters() {
+        return new String[]{"?", "*", "<", ">", "[", "]", "'", "&", "="};
     }
     
-    protected boolean checkObservationInputValidity(int individuals, int privacy, String info) {
+    protected boolean checkObservationInputValidity(int individuals, int privacy, LocalTime time, String info) {
         if (individuals < 0) {
             successMessage.setText("Number of individuals must be at least 0.");
             return false;
-        }
-        if (privacy < 0) {
+        } else if (privacy < 0) {
             successMessage.setText("Set observation private or public.");
             return false;
-        }
-        if (!checkCharacterValidity(info)) {
+        } else if (!checkCharacterValidity(info)) {
             successMessage.setText("Info contains forbidden characters. " + Arrays.toString(forbiddenCharacters()));
             return false;
-        }
-        if (!checkBigInputLength(info)) {
+        } else if (!checkBigInputLength(info)) {
             successMessage.setText("Info contains too many characters. Max number of characters is " + bigInputSize + ".");
+            return false;
+        } else if (time == null) {
             return false;
         }
         return true;
@@ -292,4 +281,10 @@ public abstract class LoggedInScene {
         return privacy;
     }
     
+    protected String privacyToString(boolean privacy) {
+        if (privacy) {
+            return "Private";
+        }
+        return "Public";
+    }
 }

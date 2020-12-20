@@ -18,6 +18,7 @@ public class UserDatabaseDao extends DatabaseDao implements UserDao {
 
     /**
      * Sets database address in UserDatabaseDao.
+     * 
      * @param databaseAddress the address of the database
      */
     public UserDatabaseDao(String databaseAddress) {
@@ -28,7 +29,9 @@ public class UserDatabaseDao extends DatabaseDao implements UserDao {
     
     /**
      * Creates User table if it doesn't exist.
+     * 
      * @param conn the database connection
+     * 
      * @throws SQLException Accessing database failed.
      */
     public void createSchemaIfNotExists(Connection conn) throws SQLException {
@@ -44,7 +47,9 @@ public class UserDatabaseDao extends DatabaseDao implements UserDao {
     
     /**
      * Adds new User to database.
+     * 
      * @param user new User
+     * 
      * @throws Exception Adding to database failed.
      */
     @Override
@@ -59,6 +64,7 @@ public class UserDatabaseDao extends DatabaseDao implements UserDao {
                 stmt.setString(3, user.getPassword());
                 stmt.execute();
             }
+            conn.close();
         }
     }
 
@@ -66,10 +72,12 @@ public class UserDatabaseDao extends DatabaseDao implements UserDao {
     /**
      * Finds User by id and modifies it.
      * If any of the fields is left empty, it is not modified.
+     * 
      * @param id the User id
      * @param username an unique username
      * @param name name
      * @param password password
+     * 
      * @throws Exception Accessing database failed.
      */
     @Override
@@ -87,14 +95,19 @@ public class UserDatabaseDao extends DatabaseDao implements UserDao {
                 }
             } catch (Exception e) {
             }
+            conn.close();
         }
     }
     
     
      /**
      * Creates an User from a database search result and lists them as StoreableObjects.
+     * 
      * @param result the database query result
+     * 
      * @throws Exception Accessing database failed.
+     * 
+     * @return the list of Users
      */
     @Override
     protected List<StoreableObject> createListFromResult(ResultSet result) throws Exception {
@@ -114,7 +127,9 @@ public class UserDatabaseDao extends DatabaseDao implements UserDao {
     
     /**
      * Returns an User if found by id from the database.
+     * 
      * @param id the User id
+     * 
      * @throws Exception Searching database failed.
      */
     @Override
@@ -126,8 +141,10 @@ public class UserDatabaseDao extends DatabaseDao implements UserDao {
     /**
      * Returns an User if found by name from the database.
      * SearchField specifies the name field to search.
+     * 
      * @param name searched name
      * @param searchField the field to search
+     * 
      * @throws Exception Searching database failed.
      */
     @Override
@@ -138,7 +155,10 @@ public class UserDatabaseDao extends DatabaseDao implements UserDao {
     
     /**
      * Returns all Users in the database.
+     * 
      * @throws Exception Searching database failed.
+     * 
+     * @return the list of Users
      */
     @Override
     public List<User> getAllUsers() throws Exception {
@@ -149,8 +169,10 @@ public class UserDatabaseDao extends DatabaseDao implements UserDao {
     /**
      * Searched database to find all Users by name.
      * SearchField specifies the name field to search.
+     * 
      * @param name searched name
      * @param searchField the field to search
+     * 
      * @throws Exception Searching database failed.
      */
     @Override
@@ -161,6 +183,7 @@ public class UserDatabaseDao extends DatabaseDao implements UserDao {
     
     /**
      * Converts returned StorableObjects to Users.
+     * 
      * @param objects the list of objects
      */
     private List<User> convertToUsers(List<StoreableObject> objects) {
@@ -170,6 +193,5 @@ public class UserDatabaseDao extends DatabaseDao implements UserDao {
         });
         return users;
     }
-
 
 }

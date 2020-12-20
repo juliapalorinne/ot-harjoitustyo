@@ -1,63 +1,26 @@
 package project.ui;
 
-import project.scenes.NewSpeciesScene;
-import project.scenes.ObservationTableScene;
-import project.scenes.NewUserScene;
-import project.scenes.NewPlaceScene;
-import project.scenes.NewObservationScene;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.application.Application;
 import static javafx.application.Application.launch;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
-import javafx.scene.input.KeyCode;
-import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import project.domain.StoreableObservationService;
 import project.domain.PlaceService;
 import project.domain.SpeciesService;
 import project.domain.UserService;
-import project.scenes.SearchScene;
+import project.scenes.LoginScene;
 
 
 public class ProjectUi extends Application {
     private StoreableObservationService observationService;
-    private UserService userService;
-    private PlaceService placeService;
+    private UserService userService;    
     private SpeciesService speciesService;
-    
-    private InputWindow inputWindow;
-    
-    private NewUserScene newUser;
-    private ObservationTableScene observationTable;
-    private NewObservationScene newObservation;
-    private NewPlaceScene newPlace;
-    private NewSpeciesScene newSpecies;
-    private SearchScene searchWindow;
-    
-    private Scene observationScene;
-    private Scene newUserScene;
-    private Scene loginScene;
-    private Scene newObservationScene;
+    private PlaceService placeService;
     
     
     @Override
     public void init() throws Exception {
         observationService = new StoreableObservationService();
         userService = new UserService(observationService);
-        speciesService = new SpeciesService();
-        placeService = new PlaceService();
-        inputWindow = new InputWindow();
-        observationTable = new ObservationTableScene(observationService, speciesService, placeService);
-        newObservation = new NewObservationScene(observationService, speciesService, placeService); 
-        newUser = new NewUserScene(inputWindow, userService);
-        newSpecies = new NewSpeciesScene(speciesService);
-        newPlace = new NewPlaceScene(placeService);
-        searchWindow = new SearchScene(observationService, speciesService, placeService);
         
         
 //        addSpeciesListToDatabase();  // Tästä voi lisätä aluksi muutamankymmentä lintua tietokantaan.
@@ -68,60 +31,10 @@ public class ProjectUi extends Application {
     
     @Override
     public void start(Stage primaryStage) throws Exception {
+        LoginScene loginScene = new LoginScene(userService, observationService);
         
-        VBox loginPane = inputWindow.createNewWindow();
-        TextField usernameInput = inputWindow.createInputField(loginPane, "Username");
-        TextField passwordInput = inputWindow.createInputField(loginPane, "Password");
-        
-        Label loginMessage = inputWindow.createErrorMessage("");
-        Button loginButton = inputWindow.createButton("Login");
-        Button createButton = inputWindow.createButton("Create new user");
-        loginButton.setOnAction(e -> {
-            String username = usernameInput.getText();
-            String password = passwordInput.getText();
-            try {
-                if (userService.login(username, password)){
-                    loginMessage.setText("");
-                    usernameInput.setText("");
-                    passwordInput.setText("");
-                    getMainView(primaryStage);
-                } else {
-                    loginMessage.setText("User does not exist.");
-                }
-            } catch (Exception ex) {
-                loginMessage.setText("Something went wrong! Try again.");
-            }
-        });
-        
-        loginButton.setOnKeyPressed(event -> {
-            if (event.getCode().equals(KeyCode.ENTER)) {
-                loginButton.fire();
-            }
-        });
-        
-        createButton.setOnAction(e -> {
-            usernameInput.setText("");
-            passwordInput.setText("");
-            primaryStage.setScene(newUserScene);   
-        });  
-        
-        loginPane.getChildren().addAll(loginMessage, loginButton, createButton);       
-        
-        loginScene = new Scene(loginPane, 400, 250);
- 
-        
-        // new createNewUserScene
-        
-        newUserScene = newUser.newUserScene(primaryStage, loginScene);
-        newUser.returnButton().setOnAction(e-> {
-            primaryStage.setScene(loginScene);
-        });
-
-        
-        // seutp primary stage
-        
-        primaryStage.setTitle("Observations");
-        primaryStage.setScene(loginScene);
+        primaryStage.setTitle("BirdingApp");
+        loginScene.setLoginScene(primaryStage);
         primaryStage.show();
         primaryStage.setOnCloseRequest(e -> {
             if (userService.getLoggedUser() != null) {
@@ -130,109 +43,10 @@ public class ProjectUi extends Application {
         });
     }
     
-    public void getMainView(Stage stage) throws Exception {
-        observationScene = observationTable.observationScene(stage);        
-        stage.setScene(observationScene);
-        
-        observationTable.logoutButton().setOnAction(e -> {
-            userService.logout();
-            try {
-                start(stage);
-            } catch (Exception ex) {
-                Logger.getLogger(ProjectUi.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        });        
-        observationTable.addButton().setOnAction(e -> {
-            try {
-                getNewObservationView(stage);
-            } catch (Exception ex) {
-                Logger.getLogger(ProjectUi.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        });
-        observationTable.searchButton().setOnAction(e -> {
-            try {
-                getSearchView(stage);
-            } catch (Exception ex) {
-                Logger.getLogger(ProjectUi.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        });  
-    }
-    
-    public void getNewObservationView(Stage stage) throws Exception {
-        newObservationScene = newObservation.createNewObservationScene(stage, observationTable);
-        stage.setScene(newObservationScene);
-        
-        newObservation.returnButton().setOnAction(e -> {
-            try {
-                getMainView(stage);
-            } catch (Exception ex) {
-                Logger.getLogger(ProjectUi.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        });
-        newObservation.addNewSpeciesButton().setOnAction(e -> {
-            try {
-                getNewSpeciesView(stage);
-            } catch (Exception ex) {
-                Logger.getLogger(ProjectUi.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        });        
-        newObservation.addNewPlaceButton().setOnAction(e -> {
-            try {
-                getNewPlaceView(stage);
-            } catch (Exception ex) {
-                Logger.getLogger(ProjectUi.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        });        
-        
-    }
-    
-    public void getNewSpeciesView(Stage stage) throws Exception {
-        Scene newSpeciesScene = newSpecies.newSpeciesScene(stage, newObservationScene);
-        stage.setScene(newSpeciesScene);
-
-        newSpecies.returnButton().setOnAction(e -> {
-            try {
-                getNewObservationView(stage);
-            } catch (Exception ex) {
-                Logger.getLogger(ProjectUi.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        });
-    }
-    
-    
-    public void getNewPlaceView(Stage stage) throws Exception {
-        Scene newPlaceScene = newPlace.newPlaceScene(stage, newObservationScene);
-        stage.setScene(newPlaceScene);
-
-        newPlace.returnButton().setOnAction(e -> {
-            try {
-                getNewObservationView(stage);
-            } catch (Exception ex) {
-                Logger.getLogger(ProjectUi.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        });
-    }
-    
-    
-    public void getSearchView(Stage stage) throws Exception {
-        Scene searchScene = searchWindow.searchScene(stage, observationTable);
-        stage.setScene(searchScene);
-
-        searchWindow.returnButton().setOnAction(e -> {
-            try {
-                getMainView(stage);
-            } catch (Exception ex) {
-                Logger.getLogger(ProjectUi.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        });
-    }
-
     @Override
     public void stop() {
         
-    }     
-    
-    
+    }
     
     public static void main(String[] args) {
         launch(args);

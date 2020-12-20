@@ -32,7 +32,7 @@ public class FakeObservationDatabaseDao implements ObservationDao {
     
     
     @Override
-    public void modifyObservation(int id, int species, int individuals, int place, String date, String time, String info, int privacy, String username) throws Exception {
+    public void modifyObservation(int id, int species, int individuals, int place, String date, String time, String info, int privacy, String username, String savingTime) throws Exception {
 
     }
     
@@ -75,7 +75,7 @@ public class FakeObservationDatabaseDao implements ObservationDao {
                 return o;
             }
         }
-        return new StoreableObservation();
+        return null;
     }
     
 

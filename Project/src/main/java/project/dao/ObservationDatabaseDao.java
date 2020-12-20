@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +22,7 @@ public class ObservationDatabaseDao extends DatabaseDao implements ObservationDa
     
     /**
      * Sets database address in ObservationsDatabaseDao.
+     * 
      * @param databaseAddress the address of the database
      */
     public ObservationDatabaseDao(String databaseAddress) {
@@ -31,25 +33,27 @@ public class ObservationDatabaseDao extends DatabaseDao implements ObservationDa
     
     /**
      * Creates Observation table if it doesn't exist.
+     * 
      * @param conn the database connection
+     * 
      * @throws SQLException Accessing database failed.
      */
     public void createSchemaIfNotExists(Connection conn) throws SQLException {
         Statement stmt = conn.createStatement();
-
         try {
             stmt.execute(
                     "CREATE TABLE Observation (id INTEGER PRIMARY KEY, species, individuals, "
-                            + "place, date, time, info, privacy, user)");
+                            + "place, date, time, info, privacy, user, savingTime)");
         } catch (SQLException e) {
         }
-
     }
     
     
     /**
      * Adds new Observation.
+     * 
      * @param observation new StoreableObservation
+     * 
      * @throws Exception Adding to database failed.
      */
     @Override
@@ -58,8 +62,8 @@ public class ObservationDatabaseDao extends DatabaseDao implements ObservationDa
             createSchemaIfNotExists(conn);
             
             try (PreparedStatement stmt = conn.prepareStatement(
-                    "INSERT INTO Observation (species, individuals, place, date, time, info, privacy, user) "
-                            + "VALUES (?,?,?,?,?,?,?,?)")) {
+                    "INSERT INTO Observation (species, individuals, place, date, time, info, privacy, user, savingTime) "
+                            + "VALUES (?,?,?,?,?,?,?,?,?)")) {
                 stmt.setInt(1, observation.getSpeciesId());
                 stmt.setInt(2, observation.getIndividuals());
                 stmt.setInt(3, observation.getPlaceId());
@@ -68,6 +72,7 @@ public class ObservationDatabaseDao extends DatabaseDao implements ObservationDa
                 stmt.setString(6, observation.getInfo());
                 stmt.setInt(7, observation.getPrivacy());
                 stmt.setString(8, observation.getUserId());
+                stmt.setString(9, observation.getSavingTime().toString());
                 stmt.execute();
             }
             conn.close();
@@ -77,6 +82,7 @@ public class ObservationDatabaseDao extends DatabaseDao implements ObservationDa
     
     /**
      * Finds an Observation by id and modifies it.
+     * 
      * @param id the Observation id
      * @param species the id of the Species of the Observation
      * @param individuals the number of individuals
@@ -86,11 +92,12 @@ public class ObservationDatabaseDao extends DatabaseDao implements ObservationDa
      * @param info additional info
      * @param privacy 1 if observation is private, 0 if public
      * @param username username of the User
+     * 
      * @throws Exception Accessing database failed.
      */
     @Override
     public void modifyObservation(int id, int species, int individuals, int place, String date, String time,
-            String info, int privacy, String username) throws Exception {
+            String info, int privacy, String username, String savingTime) throws Exception {
         try (Connection conn = DriverManager.getConnection(databaseAddress)) {
             try {
                 if (species > 0) {
@@ -117,6 +124,7 @@ public class ObservationDatabaseDao extends DatabaseDao implements ObservationDa
                 if (!username.isEmpty()) {
                     createModifyStatement("user", username, id, conn);
                 }
+                createModifyStatement("savingTime", savingTime, id, conn);
             } catch (Exception e) {
             }
             conn.close();
@@ -127,6 +135,7 @@ public class ObservationDatabaseDao extends DatabaseDao implements ObservationDa
     
     /**
      * Creates an Observation from a database search result and lists them as StoreableObjects.
+     * 
      * @param result the database query result
      */
     @Override
@@ -142,9 +151,10 @@ public class ObservationDatabaseDao extends DatabaseDao implements ObservationDa
             String info = result.getString("info");
             int privacy = result.getInt("privacy");
             String username = result.getString("user");
+            String savingTime = result.getString("savingTime");
 
             StoreableObservation observation = new StoreableObservation(id, speciesId, individuals, 
-                    placeId, LocalDate.parse(date), LocalTime.parse(time), info, privacy, username);
+                    placeId, LocalDate.parse(date), LocalTime.parse(time), info, privacy, username, LocalDateTime.parse(savingTime));
             observations.add(observation);
         }
         return observations;
@@ -153,7 +163,9 @@ public class ObservationDatabaseDao extends DatabaseDao implements ObservationDa
     
     /**
      * Returns an Observation if found by id from the database.
+     * 
      * @param id the id of the wanted Observation
+     * 
      * @throws Exception Searching database failed.
      */
     @Override
@@ -164,6 +176,7 @@ public class ObservationDatabaseDao extends DatabaseDao implements ObservationDa
     
     /**
      * Returns all Observations in the database.
+     * 
      * @throws Exception Searching database failed.
      */
     @Override
@@ -174,8 +187,10 @@ public class ObservationDatabaseDao extends DatabaseDao implements ObservationDa
     
     /**
      * Returns Observations with searchTerm in searchField.
+     * 
      * @param searchTerm searched term
      * @param searchField the field to search
+     * 
      * @throws Exception Searching database failed.
      */
     @Override
@@ -195,8 +210,8 @@ public class ObservationDatabaseDao extends DatabaseDao implements ObservationDa
                 ResultSet result = p.executeQuery();
                 observations = createListFromResult(result);
             } catch (Exception e) {
-                
             }
+            conn.close();
         }
         return convertToObservations(observations);
     }
@@ -204,6 +219,7 @@ public class ObservationDatabaseDao extends DatabaseDao implements ObservationDa
     
     /**
      * Converts returned StorableObjects to Observations.
+     * 
      * @param objects the list of objects
      */
     private List<StoreableObservation> convertToObservations(List<StoreableObject> objects) {
@@ -213,29 +229,6 @@ public class ObservationDatabaseDao extends DatabaseDao implements ObservationDa
         });
         return obs;
     }
-    
-    
-    
-    
-    
-//    protected List<StoreableObservation> createObservationListFromResult(ResultSet result) throws Exception {
-//        List<StoreableObservation> observations = new ArrayList<>();
-//        while (result.next()) {
-//            int id = result.getInt("id");
-//            int speciesId = result.getInt("species");
-//            int individuals = result.getInt("individuals");
-//            int placeId = result.getInt("place");
-//            String date = result.getString("date");
-//            String time = result.getString("time");
-//            String info = result.getString("info");
-//            String username = result.getString("user");
-//
-//            StoreableObservation observation = new StoreableObservation(id, speciesId, individuals, placeId, LocalDate.parse(date), LocalTime.parse(time), info, username);
-//            observations.add(observation);
-//        }
-//        return observations;
-//    }
-    
-    
+     
 
 }

@@ -1,13 +1,22 @@
-
 package project.domain;
 
+/**
+ * User class.
+ */
 public class User extends StoreableObject {
     
     private String name;
     private String username;
     private String password;
     
-
+    /**
+     * Creates User with id, username, name and password.
+     * 
+     * @param id id
+     * @param username username
+     * @param name name
+     * @param password password
+     */
     public User(int id, String username, String name, String password) {
         this.id = id;
         this.name = name;
@@ -15,7 +24,13 @@ public class User extends StoreableObject {
         this.password = password;
     }
     
-    
+    /**
+     * Creates User with username, name and password.
+     * 
+     * @param username username
+     * @param name name
+     * @param password password
+     */
     public User(String username, String name, String password) {
         this.name = name;
         this.username = username;

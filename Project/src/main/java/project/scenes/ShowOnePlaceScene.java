@@ -1,6 +1,5 @@
 package project.scenes;
 
-import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -12,10 +11,46 @@ import project.domain.Place;
 import project.domain.PlaceService;
 
 public class ShowOnePlaceScene extends LoggedInScene {
+    private final Button modifyButton;
+    private TextField newCountryInput;
+    private TextField newCityInput;
+    private TextField newSpotInput;
+    private TextField newTypeInput;
     
     public ShowOnePlaceScene(PlaceService placeService) {
         this.placeService = placeService;
+        modifyButton = inputWindow.createButton("Modify");
     } 
+    
+    public void setOnePlaceScene(Stage stage, ShowPlaceListScene placeList, Place place) throws Exception {
+        Scene newPlaceScene = new Scene(placeScene(stage, placeList, place), 500, 600);
+        stage.setScene(newPlaceScene);
+    }
+    
+    private VBox placeScene(Stage stage, ShowPlaceListScene placeList, Place place) throws Exception {
+        VBox placePane = inputWindow.createNewWindow();
+        setLabels(placePane, place);
+        setInputFields(placePane, place);
+
+        modifyButton.setOnAction(e-> {
+            modifyPlace(stage, placeList, place);
+        });  
+        
+        returnButton.setOnAction(e -> {
+            returnToPlaceList(stage, placeList);
+        });
+        
+        placePane.getChildren().addAll(modifyButton, returnButton);
+        return placePane;
+    }
+    
+    private void setLabels(VBox placePane, Place place) {
+        Label label = inputWindow.createBigLabel("Show this places", 300);
+        Label newLabel = inputWindow.createBigLabel("Modify place", 300);
+        HBox messageBox = inputWindow.observationBoxRow();
+        messageBox.getChildren().addAll(successMessage);
+        placePane.getChildren().addAll(label, showPlace(place), messageBox, newLabel);
+    }
     
     private VBox showPlace(Place p) {
         VBox vbox = inputWindow.ShowOneBox();
@@ -43,60 +78,44 @@ public class ShowOnePlaceScene extends LoggedInScene {
         return vbox;
     }
 
-    public Scene placeScene(Stage stage, ShowPlaceListScene placeList, Place place) throws Exception {
-        VBox placePane = inputWindow.createNewWindow();
-        Label label = inputWindow.createBigLabel("Show this places", 300);
-        Label newLabel = inputWindow.createBigLabel("Modify place", 300);
-        HBox messageBox = inputWindow.observationBoxRow();
-        messageBox.getChildren().addAll(successMessage);
-        placePane.getChildren().addAll(label, showPlace(place), messageBox, newLabel);
-        
-        TextField newCountryInput = inputWindow.createInputField(placePane, "Country");
+    private void setInputFields(VBox placePane, Place place) {
+        newCountryInput = inputWindow.createInputField(placePane, "Country");
         newCountryInput.setText(place.getCountry());
-        TextField newCityInput = inputWindow.createInputField(placePane, "City");
+        newCityInput = inputWindow.createInputField(placePane, "City");
         newCityInput.setText(place.getCity());
-        TextField newSpotInput = inputWindow.createInputField(placePane, "Spot");
+        newSpotInput = inputWindow.createInputField(placePane, "Spot");
         newSpotInput.setText(place.getSpot());
-        TextField newTypeInput = inputWindow.createInputField(placePane, "Type");
+        newTypeInput = inputWindow.createInputField(placePane, "Type");
         newTypeInput.setText(place.getType());
-        
-        Button modifyButton = inputWindow.createButton("Modify");
-        modifyButton.setPadding(new Insets(10));
+    }
 
-        modifyButton.setOnAction(e-> {
-            String country = newCountryInput.getText();
-            String city = newCityInput.getText();
-            String spot = newSpotInput.getText();
-            String type = newTypeInput.getText();
-   
-            if (country.length() < 3 || city.length() < 3 || spot.length() < 3) {
-                successMessage.setText("Country, city or is too short.");
-            } else {
-                try {
-                    if (placeService.modifyPlace(place.getId(), country, city, spot, type)) {
-                        successMessage.setText("");
-                        stage.setScene(placeList.placeScene(stage));
-                    } else {
-                        successMessage.setText("Error while modifying the place.");
-                    }
-                } catch (Exception ex) {
-                    successMessage.setText("Something went wrong! Try again.");
-                }
-            }
- 
-        });  
-        
-        returnButton().setOnAction(e -> {
+    private void modifyPlace(Stage stage, ShowPlaceListScene placeList, Place place) {
+        String country = newCountryInput.getText();
+        String city = newCityInput.getText();
+        String spot = newSpotInput.getText();
+        String type = newTypeInput.getText();
+
+        if (country.length() < 3 || city.length() < 3 || spot.length() < 3) {
+            successMessage.setText("Country, city or is too short.");
+        } else {
             try {
-                stage.setScene(placeList.placeScene(stage));
+                if (placeService.modifyPlace(place.getId(), country, city, spot, type)) {
+                    successMessage.setText("");
+                    stage.setScene(placeList.placeScene(stage));
+                } else {
+                    successMessage.setText("Error while modifying the place.");
+                }
             } catch (Exception ex) {
                 successMessage.setText("Something went wrong! Try again.");
             }
-        });
-        
-        placePane.getChildren().addAll(modifyButton, returnButton);
-        Scene newPlaceScene = new Scene(placePane, 500, 600);
-        return newPlaceScene;
+        }
     }
-
+    
+    private void returnToPlaceList(Stage stage, ShowPlaceListScene placeList) {
+        try {
+            stage.setScene(placeList.placeScene(stage));
+        } catch (Exception ex) {
+            successMessage.setText("Could not return to place list. Try again.");
+        }
+    }
 }

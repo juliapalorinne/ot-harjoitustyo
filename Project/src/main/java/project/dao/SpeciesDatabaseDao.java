@@ -19,6 +19,7 @@ public class SpeciesDatabaseDao extends DatabaseDao implements SpeciesDao {
     
     /**
      * Sets database address in SpeciesDatabaseDao.
+     * 
      * @param databaseAddress the address of the database
      */
     public SpeciesDatabaseDao(String databaseAddress) {
@@ -29,7 +30,9 @@ public class SpeciesDatabaseDao extends DatabaseDao implements SpeciesDao {
     
     /**
      * Creates Species table if it doesn't exist.
+     * 
      * @param conn the database connection
+     * 
      * @throws SQLException Accessing database failed.
      */
     public void createSchemaIfNotExists(Connection conn) throws SQLException {
@@ -45,9 +48,12 @@ public class SpeciesDatabaseDao extends DatabaseDao implements SpeciesDao {
     
     /**
      * Adds new Species to database.
+     * 
      * @param species new Species
+     * 
      * @throws Exception Adding to database failed.
      */
+    @Override
     public void addSpecies(Species species) throws Exception {
         try (Connection conn = DriverManager.getConnection(databaseAddress)) {
             createSchemaIfNotExists(conn);            
@@ -60,6 +66,7 @@ public class SpeciesDatabaseDao extends DatabaseDao implements SpeciesDao {
                 stmt.setString(4, species.getAbbreviation());
                 stmt.execute();
             }
+            conn.close();
         }
     }
 
@@ -67,11 +74,13 @@ public class SpeciesDatabaseDao extends DatabaseDao implements SpeciesDao {
     /**
      * Finds Species by id and modifies it.
      * If any of the fields is left empty, it is not modified.
+     * 
      * @param id the species id
      * @param englishName English name of the species
      * @param scientificName scientific name of the species
      * @param finnishName Finnish name of the species
      * @param abbreviation 3+3 abbreviation of the species
+     * 
      * @throws Exception Accessing database failed.
      */
     @Override
@@ -92,13 +101,18 @@ public class SpeciesDatabaseDao extends DatabaseDao implements SpeciesDao {
                 }
             } catch (Exception e) {
             }
+            conn.close();
         }
     }
     
     
     /**
      * Creates a Species from a database search result and lists them as StoreableObjects.
+     * 
      * @param result the database query result
+     * 
+     * @return the list as StorableObjects
+     * 
      * @throws Exception Accessing database failed.
      */
     @Override
@@ -121,6 +135,10 @@ public class SpeciesDatabaseDao extends DatabaseDao implements SpeciesDao {
     /**
      * Returns a Species if found by id from the database.
      * @param id the species id
+     * 
+     * @return the list of Species
+     * 
+     * @throws Exception Searching database failed.
      */
     @Override
     public Species findSpeciesById(int id) throws Exception {
@@ -131,8 +149,12 @@ public class SpeciesDatabaseDao extends DatabaseDao implements SpeciesDao {
     /**
      * Returns a Species if found by name from the database.
      * SearchField specifies the name field to search.
+     * 
      * @param name the name of the wanted Species
      * @param searchField the field to search
+     * 
+     * @return the Species
+     * 
      * @throws Exception Searching database failed.
      */
     @Override
@@ -143,6 +165,9 @@ public class SpeciesDatabaseDao extends DatabaseDao implements SpeciesDao {
 
     /**
      * Returns all Species in the database.
+     * 
+     * @return the list of Species
+     * 
      * @throws Exception Searching database failed.
      */
     @Override
@@ -153,8 +178,12 @@ public class SpeciesDatabaseDao extends DatabaseDao implements SpeciesDao {
     
     /**
      * Returns all Species with searchTerm in searchField.
-     * @param searchTerm searched term
+     * 
+     * @param searchTerm the search term
      * @param searchField the field to search
+     * 
+     * @return a list of Species
+     * 
      * @throws Exception Searching database failed.
      */
     @Override
@@ -165,6 +194,9 @@ public class SpeciesDatabaseDao extends DatabaseDao implements SpeciesDao {
     
     /**
      * Converts returned StorableObjects to Species.
+     * 
+     * @return a list of Species
+     * 
      * @param objects the list of objects
      */
     private List<Species> convertToSpecies(List<StoreableObject> objects) {

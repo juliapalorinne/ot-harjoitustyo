@@ -1,18 +1,30 @@
 package project.domain;
 
-
+/**
+ * Place class.
+ */
 public class Place extends StoreableObject {
-    
     private String country;
     private String city;
     private String spot;
     private String type;
 
-
+    /**
+     * Creates a new Place.
+     */
     public Place() {
         
     }
     
+    /**
+     * Creates a new Place with id.
+     * 
+     * @param id id
+     * @param country the country where the place is
+     * @param city the city where the place is
+     * @param spot the exact spot
+     * @param type the type of the place
+     */
     public Place(int id, String country, String city, String spot, String type) {
         this.id = id;
         this.country = country;
@@ -20,7 +32,15 @@ public class Place extends StoreableObject {
         this.spot = spot;
         this.type = type;
     }
-
+    
+    /**
+     * Creates a new Place.
+     * 
+     * @param country the country where the place is
+     * @param city the city where the place is
+     * @param spot the exact spot
+     * @param type the type of the place
+     */
     public Place(String country, String city, String spot, String type) {
         this.country = country;
         this.city = city;

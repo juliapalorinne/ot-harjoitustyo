@@ -46,10 +46,16 @@ public class FakeUserDatabaseDao implements UserDao {
     
     @Override
     public User findUserById(int id) throws Exception {
-        List<User> users = new ArrayList<>();
+        List<User> foundUsers = new ArrayList<>();
         
-        if (users.size() == 1) {
-            return users.get(0);
+        for (User u : users) {
+            if (id == u.getId()) {
+                foundUsers.add(u);
+            }
+        }
+        
+        if (foundUsers.size() == 1) {
+            return foundUsers.get(0);
         }
         return null;
     }
@@ -57,11 +63,17 @@ public class FakeUserDatabaseDao implements UserDao {
     
     @Override
     public User findUserByName(String name, String searchField) throws Exception {
-        List<User> users = new ArrayList<>();
+        List<User> foundUsers = new ArrayList<>();
+        if (searchField.equals("username")) {
+            for (User u : users) {
+                if (name.equals(u.getUsername())) {
+                    foundUsers.add(u);
+                }
+            }
+        }
         
-        
-        if (users.size() == 1) {
-            return users.get(0);
+        if (foundUsers.size() == 1) {
+            return foundUsers.get(0);
         }
         return null;
     }
@@ -71,7 +83,12 @@ public class FakeUserDatabaseDao implements UserDao {
 
     @Override
     public void remove(int id) throws Exception {
-        users.remove(id);
+        for (int i = 0; i < users.size(); i++) {
+            User u = users.get(i);
+            if (id == u.getId()) {
+                users.remove(u);
+            }
+        }
     }
     
     

@@ -17,7 +17,9 @@ public abstract class DatabaseDao {
     protected String databaseAddress;
     protected String tableName;
     
-    
+    /**
+     * Opens a database.
+     */
     public DatabaseDao() {
         
     }
@@ -25,7 +27,9 @@ public abstract class DatabaseDao {
     
     /**
      * Deletes a StorableObject from the database.
+     * 
      * @param id the id of the StorableObject
+     * 
      * @throws Exception Deleting from database failed.
      */
     public void remove(int id) throws Exception {
@@ -33,17 +37,20 @@ public abstract class DatabaseDao {
             PreparedStatement stmt = conn.prepareStatement("DELETE FROM " + tableName + " WHERE id = ?");
             stmt.setInt(1, id);
             stmt.executeUpdate();
+            conn.close();
         }
     }
      
     
     /**
      * Searched database to find a StorableObject by id.
+     * 
      * @param id the id of the searched StorableObject
-     * @throws Exception Searching database failed.
      * 
      * @return returns the StorableObject with matching id.
      * If no StorableObject is found returns null.
+     * 
+     * @throws Exception Searching database failed.
      */
     public StoreableObject findById(int id) throws Exception {
         List<StoreableObject> objects;
@@ -57,6 +64,7 @@ public abstract class DatabaseDao {
                 objects = createListFromResult(result);
             } catch (Exception e) {
             }
+            conn.close();
         }
         
         if (objects.size() == 1) {
@@ -69,12 +77,14 @@ public abstract class DatabaseDao {
     /**
      * Searched database by name and returns a StorableObject.
      * SearchField specifies the name field to search.
+     * 
      * @param name searched name
      * @param searchField the column in which to search
-     * @throws Exception Searching database failed.
      * 
      * @return returns the StorableObject with matching name in the searchField.
      * If no StorableObject is found returns null.
+     * 
+     * @throws Exception Searching database failed.
      */
     public StoreableObject findByName(String name, String searchField) throws Exception {
         List<StoreableObject> objects;
@@ -89,6 +99,7 @@ public abstract class DatabaseDao {
                 objects  = createListFromResult(result);
             } catch (Exception e) {
             }
+            conn.close();
         }
         
         if (objects.size() == 1) {
@@ -100,10 +111,11 @@ public abstract class DatabaseDao {
 
     /**
      * Returns all StorableObjects in the database.
-     * @throws Exception Searching database failed.
      * 
      * @return returns a list of all StorableObjects.
      * If no StorableObject is found returns an empty list.
+     * 
+     * @throws Exception Searching database failed.
      */
     public List<StoreableObject> getAll() throws Exception {
         List<StoreableObject> objects;
@@ -116,20 +128,22 @@ public abstract class DatabaseDao {
             } catch (Exception e) {
                 System.out.println("Database is empty.");
             }
+            conn.close();
         }
-
         return objects;
     }
     
     
     /**
      * Returns all StorableObjects with searchTerm in searchField.
+     * 
      * @param searchTerm searched term
      * @param searchField the column in which to search
-     * @throws Exception Searching database failed.
      * 
      * @return returns list of StorableObjects with matching term in the searchField.
      * If no StorableObject is found returns empty list.
+     * 
+     * @throws Exception Searching database failed.
      */
     public List<StoreableObject> search(String searchTerm, String searchField) throws Exception {
         List<StoreableObject> objects;
@@ -144,13 +158,22 @@ public abstract class DatabaseDao {
                 ResultSet result = p.executeQuery();
                 objects = createListFromResult(result);
             } catch (Exception e) {
-                
             }
+            conn.close();
         }
         return objects;
     }
-
     
+
+    /**
+     * Creates a list of StoreableObjects from the search result.
+     * 
+     * @param result the database search result
+     * 
+     * @return the list of StoreableObjects
+     * 
+     * @throws Exception Searching database failed.
+     */
     protected List<StoreableObject> createListFromResult(ResultSet result) throws Exception {
         List<StoreableObject> o = new ArrayList<>();
         while (result.next()) {
@@ -164,7 +187,9 @@ public abstract class DatabaseDao {
     
     /**
      * Creates an SQL statement with searchField to search for one StorableObject.
+     * 
      * @param searchField the column in which to search
+     * 
      * @return created SQL statement
      */
     protected String createSearchOneStatementByField(String searchField) {
@@ -176,7 +201,9 @@ public abstract class DatabaseDao {
     
     /**
      * Creates an SQL statement with searchField to search for multiple StorableObjects.
+     * 
      * @param searchField the column in which to search
+     * 
      * @return created SQL statement
      */
     protected String createSearchAllStatementByField(String searchField) {
@@ -189,10 +216,12 @@ public abstract class DatabaseDao {
     /**
      * Creates an SQL statement to modify a StorableObject.
      * Inserts the searchTerm in the searchField.
+     * 
      * @param searchTerm searched term
      * @param searchField the column in which to search
      * @param id the id of the modified StoreableObject
      * @param conn the database connection
+     * 
      * @throws Exception Accessing database failed.
      */
     protected void createModifyStatement(String searchField, String searchTerm, int id, Connection conn) throws Exception {

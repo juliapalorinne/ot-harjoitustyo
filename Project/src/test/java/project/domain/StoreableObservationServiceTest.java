@@ -1,7 +1,5 @@
-
 package project.domain;
 
-import java.io.File;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -12,11 +10,10 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
 import project.dao.FakeObservationDatabaseDao;
 
 
-public class ObservationServiceTest {
+public class StoreableObservationServiceTest {
 
     private StoreableObservationService observationService;
     private FakeObservationDatabaseDao observationDao;
@@ -100,11 +97,19 @@ public class ObservationServiceTest {
     
     @Test
     public void findByIdReturnsCorrectObservation() throws Exception {
-        StoreableObservation o = observationService.findObservationById(1);
-        assertEquals(220, o.getSpeciesId());
+        StoreableObservation o1 = observationService.findObservationById(1);
+        StoreableObservation o2 = observationService.findObservationById(8);
+        
+        assertEquals(220, o1.getSpeciesId());
+        assertEquals(null, o2);
+        
     }
     
-    
+    @Test
+    public void findAllReturnsEmptyListWhenUserNotLoggedIn() throws Exception {
+        observationService.setLoggedUser(null);
+        assertEquals(0, observationService.getAll().size());
+    }
     
 
     

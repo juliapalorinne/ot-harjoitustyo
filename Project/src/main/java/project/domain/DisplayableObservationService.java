@@ -31,6 +31,14 @@ public class DisplayableObservationService {
     
     private List<DisplayableObservation> obsList;
     
+    
+    /**
+     * Starts DisplayableObservationService.
+     * 
+     * @param o StoreableObservationService
+     * @param s SpeciesService
+     * @param p PlaceService
+     */
     public DisplayableObservationService(StoreableObservationService o, SpeciesService s, PlaceService p) {
         obsList = new ArrayList<>();
         this.observationService = o;
@@ -38,6 +46,14 @@ public class DisplayableObservationService {
         this.placeService = p;
     }
     
+    
+    /**
+     * Tries to create a new DisplayableObservation.
+     * 
+     * @param obs StoreableObservation
+     * 
+     * @throws Exception Creating Observation failed.
+     */
     public void addObservation(StoreableObservation obs) throws Exception {
         DisplayableObservation d = new DisplayableObservation();
         d.setId(obs.getId());
@@ -53,33 +69,52 @@ public class DisplayableObservationService {
         } else {
             d.setPrivacy(false);    // Observation is public
         }
-        if (!obsList.contains(d)) {
-            obsList.add(d);
-        }
+        d.setSavingTime(obs.getSavingTime());
+        obsList.add(d);
     }
     
     
+    /**
+     * Gets the list of all DisplayableObservations.
+     * 
+     * @return the list of Observations
+     * 
+     * @throws Exception Getting the Observation list failed.
+     */
     public List<DisplayableObservation> getAll() throws Exception {
         return obsList;
     }
     
     
+    /**
+     * Redraw the list of DisplayableObservations.
+     * Get the list of StorableObservations and converts them to DisplayableObservations.
+     * 
+     * @throws Exception Getting the Observation list failed.
+     */
     public void redrawObservationList() throws Exception {
         List<StoreableObservation> observationlist = observationService.getAll();
-        observationlist.forEach(obs-> {
+        obsList = new ArrayList<>();
+        observationlist.forEach((StoreableObservation obs) -> {
             try {
                 addObservation(obs);
             } catch (Exception ex) {
                 Logger.getLogger(DisplayableObservationService.class.getName()).log(Level.SEVERE, null, ex);
             }
+
         });     
     }
     
-    public List<DisplayableObservation> getObservationsBySearchTerm(String searchTerm) throws Exception {
-        List<DisplayableObservation> searchResult = new ArrayList<>();
-        return searchResult;
-    }
     
+    /**
+     * Gets a DisplayableObservation by id.
+     * 
+     * @param id id
+     * 
+     * @return the DisplayableObservation
+     * 
+     * @throws Exception 
+     */
     public DisplayableObservation getOne(int id) throws Exception {
         for (DisplayableObservation d : obsList) {
             if (d.getId() == id) {
@@ -90,31 +125,60 @@ public class DisplayableObservationService {
     }
     
     
+    /**
+     * Filters DisplayableObservations by Place.
+     * 
+     * @param searchTerm the search term
+     * 
+     * @return the list of DisplayableObservations
+     * 
+     * @throws Exception Filtering Observations failed.
+     */
     public List<DisplayableObservation> filterByPlace(String searchTerm) throws Exception {
         String s = searchTerm.toLowerCase();
         List<DisplayableObservation> obs = getAll();
         List<DisplayableObservation> result = new ArrayList<>();
         
         obs.stream()
-                .filter(o -> o.getPlace().toLowerCase().contains(s))
-                .forEach(o -> result.add(o));
+                .filter(d -> d.getPlace().toLowerCase().contains(s))
+                .forEach(d -> result.add(d));
         
         return result;
     }
     
+    
+    /**
+     * Filters DisplayableObservations by Species.
+     * 
+     * @param searchTerm the search term
+     * 
+     * @return the list of DisplayableObservations
+     * 
+     * @throws Exception Filtering Observations failed.
+     */
     public List<DisplayableObservation> filterBySpecies(String searchTerm) throws Exception {
         String s = searchTerm.toLowerCase();
         List<DisplayableObservation> obs = getAll();
         List<DisplayableObservation> result = new ArrayList<>();
         
-        for (DisplayableObservation d : obs) {
-            if (d.getSpecies().toLowerCase().contains(s)) {
-                result.add(d);
-            }
-        }
+        obs.stream()
+                .filter(d -> d.getSpecies().toLowerCase().contains(s))
+                .forEach(d -> result.add(d));
+        
         return result;
     }
     
+    
+    /**
+     * Filters DisplayableObservations by Species and Place.
+     * 
+     * @param species the Species as text
+     * @param place the Place as text
+     * 
+     * @return the list of DisplayableObservations
+     * 
+     * @throws Exception Filtering Observations failed.
+     */
     public List<DisplayableObservation> filterBySpeciesAndPlace(String species, String place) throws Exception {
         List<DisplayableObservation> sList = filterBySpecies(species);
         List<DisplayableObservation> result = new ArrayList<>();
@@ -127,6 +191,12 @@ public class DisplayableObservationService {
         return result;
     }
     
+    
+    /**
+     * Creates a list of columns to show DisplayableObservations in a table.
+     * 
+     * @return the list of columns
+     */
     public ArrayList<TableColumn> getColumns() {
         TableColumn<DisplayableObservation, String> speciesCol = new TableColumn("Species");
         speciesCol.setCellValueFactory(new PropertyValueFactory<>("species"));
@@ -140,7 +210,7 @@ public class DisplayableObservationService {
         placeCol.setCellValueFactory(new PropertyValueFactory<>("place"));
         placeCol.setMaxWidth(1f * Integer.MAX_VALUE * 35);
         
-        TableColumn<DisplayableObservation, Date> dateCol = new TableColumn("Date");
+        TableColumn<DisplayableObservation, String> dateCol = new TableColumn("Date");
         dateCol.setCellValueFactory(new PropertyValueFactory<>("date"));
         dateCol.setMaxWidth(1f * Integer.MAX_VALUE * 10);
         

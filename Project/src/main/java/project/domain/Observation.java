@@ -3,7 +3,9 @@ package project.domain;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-
+/**
+ * Observation abstract class.
+ */
 public abstract class Observation extends StoreableObject {
     
     protected int individuals;
@@ -11,6 +13,9 @@ public abstract class Observation extends StoreableObject {
     protected LocalTime time;
     protected String info;
     
+    /**
+     * Creates a new Observation.
+     */
     public Observation() {
         
     }

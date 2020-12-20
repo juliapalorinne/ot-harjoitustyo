@@ -20,41 +20,40 @@ import project.domain.PlaceService;
 import project.domain.SpeciesService;
 
 public class ObservationTableScene extends LoggedInScene {
-    
     private TableView table;
     private final Button addButton;
     private final Button searchButton;
     private final Button listSpeciesButton;
     private final Button listPlacesButton;
     private final Button logoutButton;
-    private final ShowSpeciesListScene showSpecies;
-    private final ShowPlaceListScene showPlaces;
     
+    private final LoginScene loginScene;
     
     public ObservationTableScene(StoreableObservationService observationService,
-            SpeciesService speciesService, PlaceService placeService) {
+            SpeciesService speciesService, PlaceService placeService, LoginScene scene) {
         
-        this.displayObsService = new DisplayableObservationService(observationService, speciesService, placeService);
+        this.speciesService = speciesService;
+        this.placeService = placeService;
+        this.observationService = observationService;
+        this.loginScene = scene;
         this.observations = FXCollections.observableArrayList();
         addButton = inputWindow.createButton("Add new observation");
         searchButton = inputWindow.createButton("Search observations");
         logoutButton = inputWindow.createButton("Logout");
         listSpeciesButton = inputWindow.createButton("Show species list");
         listPlacesButton = inputWindow.createButton("Show place list");
-        showSpecies = new ShowSpeciesListScene(speciesService, this);
-        showPlaces = new ShowPlaceListScene(placeService, this);
-        this.showOne = new ShowOneObservationScene(observationService, speciesService, placeService);
     }  
     
     
-    public Scene observationScene(Stage stage) throws Exception {
-        Scene observationScene = new Scene(createTable(stage), 800, 600);
-        return observationScene;
+    public void setObservationScene(Stage stage) throws Exception {
+        Scene observationScene = new Scene(createTableView(stage), 800, 600);
+        stage.setScene(observationScene);
     }
     
     
-    private VBox createTable(Stage stage) throws Exception {
-        HBox infoBox = inputWindow.infoBox("Double click observation to open or modify. " + successMessage().getText());
+    private VBox createTableView(Stage stage) throws Exception {
+        displayObsService = new DisplayableObservationService(observationService, speciesService, placeService);
+        HBox infoBox = inputWindow.infoBox("Double click observation to open or modify. " + successMessage.getText());
         table = new TableView();
         table.setEditable(true);
         table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
@@ -68,56 +67,80 @@ public class ObservationTableScene extends LoggedInScene {
 
         table.setOnMouseClicked((MouseEvent event) -> {
             if (event.getClickCount() == 2) { 
-                Clicked(stage);
+                clicked(stage);
             }
         });
         
-        listSpeciesButton().setOnAction(e-> {
-            try {
-                stage.setScene(showSpecies.speciesScene(stage));
-            } catch (Exception ex) {
-                successMessage.setText("Could not open the species list. Try again!");
-            }
+        listSpeciesButton.setOnAction(e-> {
+            showSpeciesList(stage);
         });
         
-        listPlacesButton().setOnAction(e-> {
-            try {
-                stage.setScene(showPlaces.placeScene(stage));
-            } catch (Exception ex) {
-                successMessage.setText("Could not open the place list. Try again!");
-            }
+        listPlacesButton.setOnAction(e-> {
+            showPlaceList(stage);
         });
+        
+        addButton.setOnAction(e -> {
+            addNewObservation(stage);
+        });
+        
+        searchButton.setOnAction(e -> {
+            searchObservations(stage);
+        });  
+        
+        logoutButton.setOnAction(e -> {
+            logOut(stage);
+        });        
         
         VBox vbox = inputWindow.createNewWindow();
-        vbox.getChildren().addAll(labelBar(), infoBox, table, searchObservations(), createObservation());
+        vbox.getChildren().addAll(labelBar(), infoBox, table, searchObservation(), createObservation());
         VBox.setVgrow(table, Priority.ALWAYS);
         return vbox;
-    }  
+    } 
     
-    private void Clicked(Stage stage) {
+    private void clicked(Stage stage) {
         try {
             DisplayableObservation o = (DisplayableObservation) table.getSelectionModel().getSelectedItem();
-            stage.setScene(showOne.showOneScene(stage, this, o));
+            ShowOneObservationScene showOne = new ShowOneObservationScene(observationService, speciesService, placeService);
+            showOne.setShowOneScene(stage, o, this);
         } catch(Exception e) {
             successMessage.setText("Could not open the observation. Try again!");
         }
     }
     
-    
-    private HBox createObservation() {
-        HBox createForm = new HBox(10);
-        Region spacer = new Region();
-        HBox.setHgrow(spacer, Priority.ALWAYS);
-        createForm.getChildren().addAll(listSpeciesButton(), spacer, addButton());
-        return createForm;
+    private void showSpeciesList(Stage stage) {
+        try {
+            ShowSpeciesListScene speciesList = new ShowSpeciesListScene(speciesService, this);
+            speciesList.setSpeciesListScene(stage);
+        } catch (Exception ex) {
+            successMessage.setText("Could not open the species list. Try again!");
+        }
     }
     
-    public HBox searchObservations() {
-        HBox searchForm = new HBox(10);
-        Region spacer = new Region();
-        HBox.setHgrow(spacer, Priority.ALWAYS);
-        searchForm.getChildren().addAll(listPlacesButton(), spacer, searchButton());
-        return searchForm;
+    private void showPlaceList(Stage stage) {
+        try {
+            ShowPlaceListScene showPlaces = new ShowPlaceListScene(placeService, this);
+            stage.setScene(showPlaces.placeScene(stage));
+        } catch (Exception ex) {
+            successMessage.setText("Could not open the place list. Try again!");
+        }
+    }
+    
+    private void addNewObservation(Stage stage) {
+        try {
+            NewObservationScene newScene = new NewObservationScene(observationService, speciesService, placeService);
+            stage.setScene(newScene.createNewObservationScene(stage, this));
+        } catch (Exception ex) {
+            successMessage.setText("Could not open the add observation view. Try again!");
+        }
+    }
+    
+    private void searchObservations(Stage stage) {
+        try {
+            SearchScene searchScene = new SearchScene(observationService, speciesService, placeService);
+            searchScene.setSearchScene(stage, this);
+        } catch (Exception ex) {
+            successMessage.setText("Could not open the search view. Try again!");
+        }
     }
     
     private HBox labelBar() {
@@ -125,32 +148,31 @@ public class ObservationTableScene extends LoggedInScene {
         Region menuSpacer = new Region();
         HBox.setHgrow(menuSpacer, Priority.ALWAYS);
         Label label = inputWindow.createBigLabel("Observations", 200);
-        menuPane.getChildren().addAll(label, menuSpacer, logoutButton()); 
+        menuPane.getChildren().addAll(label, menuSpacer, logoutButton); 
         return menuPane;
     }
     
-    public Button addButton() {
-        return this.addButton;
+    private HBox searchObservation() {
+        HBox searchForm = new HBox(10);
+        Region spacer = new Region();
+        HBox.setHgrow(spacer, Priority.ALWAYS);
+        searchForm.getChildren().addAll(listPlacesButton, spacer, searchButton);
+        return searchForm;
     }
     
-    public Button searchButton() {
-        return this.searchButton;
+    private HBox createObservation() {
+        HBox createForm = new HBox(10);
+        Region spacer = new Region();
+        HBox.setHgrow(spacer, Priority.ALWAYS);
+        createForm.getChildren().addAll(listSpeciesButton, spacer, addButton);
+        return createForm;
     }
     
-    public Button logoutButton() {
-        return this.logoutButton;
-    }  
-    
-    public Button listSpeciesButton() {
-        return this.listSpeciesButton;
-    } 
-    
-    public Button listPlacesButton() {
-        return this.listPlacesButton;
-    } 
-    
-    
-    
-    
-    
+    private void logOut(Stage stage) {
+        try {
+            loginScene.setLoginScene(stage);
+        } catch (Exception ex) {
+            successMessage.setText("Could not log out. Try again!");
+        }
+    }
 }

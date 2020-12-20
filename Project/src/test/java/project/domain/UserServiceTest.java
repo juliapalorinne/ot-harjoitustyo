@@ -1,9 +1,5 @@
 package project.domain;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.List;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -32,17 +28,25 @@ public class UserServiceTest {
     }
     
     @Test
-    public void userCanLogIn() throws Exception {
+    public void existingUserCanLogInAndOut() throws Exception {
         userService.login("matilda_m", "matildansalasana");
         assertEquals(userService.getUserById(4), userService.getLoggedUser());
-    }
-
-    @Test
-    public void nonexistingUserCannotLogIn() throws Exception {
-        userService.login("taina", "tainansalasana");
+        userService.logout();
         assertEquals(null, userService.getLoggedUser());
     }
     
+    @Test
+    public void existingUserCannotLogInWithWrongPassword() throws Exception {
+        userService.login("matilda_m", "jokumuusalasana");
+        assertEquals(null, userService.getLoggedUser());
+    }
+
+    @Test
+    public void nonExistingUserCannotLogIn() throws Exception {
+        userService.login("taina", "tainansalasana");
+        assertEquals(null, userService.getLoggedUser());
+    }
+
     @Test
     public void getAllReturnsAllUsers() throws Exception {
         assertEquals(4, userService.getAllUsers().size());
@@ -53,6 +57,13 @@ public class UserServiceTest {
         userService.removeUser(1);
         assertEquals(3, userService.getAllUsers().size());
         assertEquals(null, userService.getUserById(1));
+    }
+    
+    @Test
+    public void userCanBeFoundByUsername() throws Exception {
+        User u = userService.getUserByName("keijo_k", "username");
+        assertEquals("Keijo Kokeilija", u.getName());
+        
     }
    
     
