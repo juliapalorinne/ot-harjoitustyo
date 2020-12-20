@@ -2,9 +2,7 @@
 
 ## Lintuhavaintosovellus
 
-Sovellus on tarkoitettu lintuhavaintojen tallentamiseen ja vanhojen havaintojen tarkasteluun. Käyttäjä voi tallentaa sovelluksella havaintoja ja liittää niihin paikkoja ja lajeja. Lisäksi havainnoista tallennetaan päivämäärä, kellonaika, yksilöiden lukumäärä ja muut tiedot. Käyttäjä voi hakea havaintoja omista havainnoistaan paikan ja lajin perusteella.
-
-Sovellukseen on pian tulossa toiminnot havaintojen, lajien ja paikkojen muokkaamiseen ja poistamiseen sekä toisten käyttäjien havaintojen tarkastelemiseen.
+Sovellus on tarkoitettu lintuhavaintojen tallentamiseen ja vanhojen havaintojen tarkasteluun. Käyttäjä voi tallentaa sovelluksella havaintoja ja liittää niihin paikkoja ja lajeja. Lisäksi havainnoista tallennetaan päivämäärä, kellonaika, yksilöiden lukumäärä ja muut tiedot. Käyttäjä voi hakea havaintoja omista havainnoistaan esimerkiksi paikan, lajin ja ajan perusteella. Käyttäjä voi myös muokata havaintoja, lajeja ja paikkoja sekä tarkastella ja hakea toisten käyttäjien julkiseksi määrittelemiä havaintoja.
 
 
 ## Dokumentaatio
@@ -30,7 +28,7 @@ Ohjelmasta voi luoda jar-tiedoston komennolla <code>mvn package</code>.
 
 Testit voi suorittaa komennolla <code>mvn test</code>.
 
-Testikattavuusraportin saa näkyviin komennolla <code>mvn jacoco:report</code>. ja testiraportti tallentuu seuraavaan tiedostoon *target/site/jacoco/index.html*.
+Testikattavuusraportin saa näkyviin komennolla <code>mvn jacoco:report</code> ja testiraportti tallentuu tiedostoon *target/site/jacoco/index.html*.
 
 Checkstyle-raportin saa näkyviin komennolla <code>mvn jxr:jxr checkstyle:checkstyle</code> ja testiraportti tallentuu tiedostoon */target/site/checkstyle.html*.
 
