@@ -26,8 +26,10 @@ public abstract class LoggedInScene {
     protected DisplayableObservationService displayObsService;
     protected SpeciesService speciesService;
     protected PlaceService placeService;
+    protected UserService userService;
     protected Label successMessage;
     protected ObservableList<DisplayableObservation> observations;
+    protected ObservableList<DisplayableObservation> observationsByAllUsers;
     protected Button returnButton;
     protected Button addNewSpeciesButton;
     protected Button addNewPlaceButton;
@@ -60,6 +62,23 @@ public abstract class LoggedInScene {
             }
             if (!observations.contains(o)) {
                 observations.add(o);
+            }
+        }
+    }    
+    
+    protected void redrawObservationListOfAllUsers() throws Exception {
+        displayObsService.redrawObservationListOfAllUsers();
+        List<DisplayableObservation> obs = displayObsService.getAllByAllUsers();
+        for (DisplayableObservation o : obs) {
+            for (int i = 0; i < observationsByAllUsers.size(); i++) {
+                if (observationsByAllUsers.get(i).getId() == o.getId()) {
+                    if (!observationsByAllUsers.get(i).getSavingTime().equals(o.getSavingTime())) {
+                        observationsByAllUsers.set(i, o);
+                    }
+                }
+            }
+            if (!observationsByAllUsers.contains(o)) {
+                observationsByAllUsers.add(o);
             }
         }
     }    

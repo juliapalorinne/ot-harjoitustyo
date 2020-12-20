@@ -12,6 +12,7 @@ public class DisplayableObservation extends Observation {
     private String fullSpecies;
     private String place;
     private boolean privacy;
+    private String user;
     
     /**
      * Creates a new DisplayableObservation.
@@ -31,9 +32,11 @@ public class DisplayableObservation extends Observation {
      * @param time time
      * @param info the additional info
      * @param privacy 0 for public, 1 for private Observation
+     * @param user the name of the User
      * @param savingTime date and time of saving the Observation
      */
-    public DisplayableObservation(int id, String species, int individuals, String place, LocalDate date, LocalTime time, String info, boolean privacy, LocalDateTime savingTime) {
+    public DisplayableObservation(int id, String species, int individuals, String place, LocalDate date, 
+            LocalTime time, String info, boolean privacy, String user, LocalDateTime savingTime) {
         this.id = id;
         this.species = species;
         this.individuals = individuals;
@@ -42,6 +45,7 @@ public class DisplayableObservation extends Observation {
         this.time = time;
         this.info = info;
         this.privacy = privacy;
+        this.user = user;
         this.savingTime = savingTime;
     }
 
@@ -62,6 +66,10 @@ public class DisplayableObservation extends Observation {
         this.privacy = p;
     }
     
+    public void setUser(String user) {
+        this.user = user;
+    }
+    
     public String getSpecies() {
         return species;
     }
@@ -76,5 +84,9 @@ public class DisplayableObservation extends Observation {
     
     public boolean getPrivacy() {
         return privacy;
+    }
+    
+    public String getUser() {
+        return user;
     }
 }

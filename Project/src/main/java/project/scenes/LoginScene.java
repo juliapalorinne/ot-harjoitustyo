@@ -42,7 +42,7 @@ public class LoginScene {
     }
 
     private VBox loginScene(Stage stage) {
-        ObservationTableScene observationTable = new ObservationTableScene(observationService, speciesService, placeService, this);
+        ObservationTableScene observationTable = new ObservationTableScene(observationService, speciesService, placeService, userService, this);
         VBox loginPane = inputWindow.createNewWindow();
         setInputFields(loginPane);
         

@@ -93,6 +93,18 @@ public class StoreableObservationService {
     
     
     /**
+     * Lists all Observations saved by any User.
+     * 
+     * @return The list of all Observations by all Users.
+     * 
+     * @throws Exception Getting observation list failed.
+     */
+    public List<StoreableObservation> getAllByAllUsers() throws Exception {
+        return observationDao.getAllObservations();
+    }
+    
+    
+    /**
      * Lists all Observations saved by the logged User with the searchTerm in the searchField.
      * 
      * @param searchTerm search term

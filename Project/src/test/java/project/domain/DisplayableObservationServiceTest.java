@@ -15,6 +15,7 @@ public class DisplayableObservationServiceTest {
     private DisplayableObservationService dObservationService;
     private PlaceService placeService;
     private SpeciesService speciesService;
+    private UserService userService;
     
     
     @Before
@@ -42,10 +43,12 @@ public class DisplayableObservationServiceTest {
         speciesService.createSpecies("Whinchat", "Saxicola rubetra", "pensastasku", "saxrub");
         speciesService.createSpecies("Gray heron", "Ardea cinerea", "harmaahaikara", "ardcin");
         
+        userService = new UserService(observationService);
+        
         observationService.createObservation(speciesService.getSpeciesById(1), 2, placeService.getPlaceById(1), date, time, "p", 1);
         observationService.createObservation(speciesService.getSpeciesById(2), 2, placeService.getPlaceById(1), date, time, "p", 0);
         observationService.createObservation(speciesService.getSpeciesById(2), 2, placeService.getPlaceById(2), date, time, "p", 0);
-        dObservationService = new DisplayableObservationService(observationService, speciesService, placeService);
+        dObservationService = new DisplayableObservationService(observationService, speciesService, placeService, userService);
         dObservationService.redrawObservationList();
     }
     

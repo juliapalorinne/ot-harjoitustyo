@@ -10,7 +10,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
@@ -22,31 +21,36 @@ import project.domain.PlaceService;
 import project.domain.SpeciesService;
 import project.domain.UserService;
 
-public class SearchScene extends LoggedInScene {
+public class ShowAllObservationsScene extends LoggedInScene {
     private ChoiceBox<String> selection;
     private TableView table;
     private TextField textInput;
 
-    public SearchScene(StoreableObservationService observationService, 
+    public ShowAllObservationsScene(StoreableObservationService observationService, 
             SpeciesService speciesService, PlaceService placeService, UserService userService) throws Exception {
         this.displayObsService = new DisplayableObservationService(observationService, speciesService, placeService, userService);
         this.observations = FXCollections.observableArrayList();
+        this.observationsByAllUsers = FXCollections.observableArrayList();
         this.speciesService = speciesService;
         this.placeService = placeService;
+        this.userService = userService;
     } 
 
-    public void setSearchScene(Stage stage, ObservationTableScene observationTable) throws Exception {
-        Scene searchScene = new Scene(createSearchView(stage, observationTable), 800, 600);
-        stage.setScene(searchScene);
+    public void setAllUsersScene(Stage stage, ObservationTableScene observationTable) throws Exception {
+        Scene allUsersScene = new Scene(createObservationView(stage, observationTable), 800, 600);
+        stage.setScene(allUsersScene);
     }
     
-    private VBox createSearchView(Stage stage, ObservationTableScene observationTable) throws Exception {
+    private VBox createObservationView(Stage stage, ObservationTableScene observationTable) throws Exception {
         VBox vbox = inputWindow.createNewWindow();
         textInput = createSearchBar(vbox);        
-        table = createTableView();
+        createTableView();
 
-        FilteredList<DisplayableObservation> flObs = new FilteredList(observations, p -> true);
+        FilteredList<DisplayableObservation> flObs = new FilteredList(observationsByAllUsers, p -> true);
         table.setItems(flObs);
+        
+        ArrayList<TableColumn> columns = displayObsService.getColumnsWithAllUsers();
+        table.getColumns().addAll(columns);
         
         textInput.setOnKeyReleased(keyEvent -> {
             selectSearchField(flObs);
@@ -58,16 +62,6 @@ public class SearchScene extends LoggedInScene {
                 flObs.setPredicate(null);
             }
         });
-        
-        table.setOnMouseClicked((MouseEvent event) -> {
-            if (event.getClickCount() == 2) { 
-                clicked(stage, observationTable);
-            }
-        });
-        
-        ArrayList<TableColumn> columns = displayObsService.getColumns();
-        table.getColumns().addAll(columns);
-        
         
         returnButton.setOnAction(e -> {
             returnToObservationTable(stage, observationTable);
@@ -83,10 +77,11 @@ public class SearchScene extends LoggedInScene {
         searchBar.setPadding(new Insets(10));
         Label label = inputWindow.createBigLabel("Search observations", 200);
         selection = inputWindow.createChoiceBox();
-        selection.getItems().addAll("Species", "Place", "Date", "Time", "Info");
+        selection.getItems().addAll("Species", "Place", "Date", "Time", "Info", "User");
         selection.setValue("Species");
         
         Label smallLabel = inputWindow.createSmallLabel("Search", 100);
+        
         textInput = inputWindow.createTextField(300);
         
         searchBar.getChildren().addAll(smallLabel, selection, textInput);
@@ -95,13 +90,13 @@ public class SearchScene extends LoggedInScene {
         return textInput;
     }
     
-    private TableView createTableView() throws Exception {
+    private void createTableView() throws Exception {
         table = new TableView();
         table.setEditable(true);
-        table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);        
-        redrawObservationList();
-        table.setItems(observations);
-        return table;
+        table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        
+        redrawObservationListOfAllUsers();
+        table.setItems(observationsByAllUsers);
     }
     
     private void selectSearchField(FilteredList<DisplayableObservation> flObs) {
@@ -115,16 +110,8 @@ public class SearchScene extends LoggedInScene {
             flObs.setPredicate(o -> o.getTime().toString().contains(textInput.getText().toLowerCase().trim()));
         } else if (selection.getValue().equals("Info")) {
             flObs.setPredicate(o -> o.getInfo().toLowerCase().contains(textInput.getText().toLowerCase().trim()));
-        }
-    }
-    
-    private void clicked(Stage stage, ObservationTableScene observationTable) {
-        try {
-            DisplayableObservation o = (DisplayableObservation) table.getSelectionModel().getSelectedItem();
-            ShowOneObservationScene showOne = new ShowOneObservationScene(observationService, speciesService, placeService);
-            showOne.setShowOneScene(stage, o, observationTable);
-        } catch(Exception e) {
-            successMessage.setText("Could not open the observation. Try again!");
+        } else if (selection.getValue().equals("User")) {
+            flObs.setPredicate(o -> o.getUser().toLowerCase().contains(textInput.getText().toLowerCase().trim()));
         }
     }
     

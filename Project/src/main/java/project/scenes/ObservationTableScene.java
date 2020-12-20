@@ -18,9 +18,11 @@ import project.domain.DisplayableObservationService;
 import project.domain.StoreableObservationService;
 import project.domain.PlaceService;
 import project.domain.SpeciesService;
+import project.domain.UserService;
 
 public class ObservationTableScene extends LoggedInScene {
     private TableView table;
+    private final Button showAllObservationsButton;
     private final Button addButton;
     private final Button searchButton;
     private final Button listSpeciesButton;
@@ -30,13 +32,15 @@ public class ObservationTableScene extends LoggedInScene {
     private final LoginScene loginScene;
     
     public ObservationTableScene(StoreableObservationService observationService,
-            SpeciesService speciesService, PlaceService placeService, LoginScene scene) {
+            SpeciesService speciesService, PlaceService placeService, UserService userService, LoginScene scene) {
         
         this.speciesService = speciesService;
         this.placeService = placeService;
         this.observationService = observationService;
+        this.userService = userService;
         this.loginScene = scene;
         this.observations = FXCollections.observableArrayList();
+        showAllObservationsButton = inputWindow.createButton("Show observations by all users");
         addButton = inputWindow.createButton("Add new observation");
         searchButton = inputWindow.createButton("Search observations");
         logoutButton = inputWindow.createButton("Logout");
@@ -46,14 +50,14 @@ public class ObservationTableScene extends LoggedInScene {
     
     
     public void setObservationScene(Stage stage) throws Exception {
-        Scene observationScene = new Scene(createTableView(stage), 800, 600);
+        Scene observationScene = new Scene(createTableView(stage), 800, 650);
         stage.setScene(observationScene);
     }
     
     
     private VBox createTableView(Stage stage) throws Exception {
-        displayObsService = new DisplayableObservationService(observationService, speciesService, placeService);
-        HBox infoBox = inputWindow.infoBox("Double click observation to open or modify. " + successMessage.getText());
+        displayObsService = new DisplayableObservationService(observationService, speciesService, placeService, userService);
+        HBox infoBox = inputWindow.infoBox("Double click observation to open or modify.");
         table = new TableView();
         table.setEditable(true);
         table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
@@ -62,13 +66,16 @@ public class ObservationTableScene extends LoggedInScene {
         table.setItems(observations);
         
         ArrayList<TableColumn> columns = displayObsService.getColumns();
-        
         table.getColumns().addAll(columns);
 
         table.setOnMouseClicked((MouseEvent event) -> {
             if (event.getClickCount() == 2) { 
                 clicked(stage);
             }
+        });
+        
+        showAllObservationsButton.setOnAction(e-> {
+            showAllObservations(stage);
         });
         
         listSpeciesButton.setOnAction(e-> {
@@ -92,13 +99,14 @@ public class ObservationTableScene extends LoggedInScene {
         });        
         
         VBox vbox = inputWindow.createNewWindow();
-        vbox.getChildren().addAll(labelBar(), infoBox, table, searchObservation(), createObservation());
+        vbox.getChildren().addAll(labelBar(), infoBox, successMessage, table, showAllObservationsButton, searchObservation(), createObservation());
         VBox.setVgrow(table, Priority.ALWAYS);
         return vbox;
     } 
     
     private void clicked(Stage stage) {
         try {
+            successMessage.setText("");
             DisplayableObservation o = (DisplayableObservation) table.getSelectionModel().getSelectedItem();
             ShowOneObservationScene showOne = new ShowOneObservationScene(observationService, speciesService, placeService);
             showOne.setShowOneScene(stage, o, this);
@@ -107,8 +115,19 @@ public class ObservationTableScene extends LoggedInScene {
         }
     }
     
+    private void showAllObservations(Stage stage) {
+        try {
+            successMessage.setText("");
+            ShowAllObservationsScene showAll = new ShowAllObservationsScene(observationService, speciesService, placeService, userService);
+            showAll.setAllUsersScene(stage, this);
+        } catch (Exception ex) {
+            successMessage.setText("Could not open the observations by all users. Try again!");
+        }
+    }
+    
     private void showSpeciesList(Stage stage) {
         try {
+            successMessage.setText("");
             ShowSpeciesListScene speciesList = new ShowSpeciesListScene(speciesService, this);
             speciesList.setSpeciesListScene(stage);
         } catch (Exception ex) {
@@ -118,6 +137,7 @@ public class ObservationTableScene extends LoggedInScene {
     
     private void showPlaceList(Stage stage) {
         try {
+            successMessage.setText("");
             ShowPlaceListScene showPlaces = new ShowPlaceListScene(placeService, this);
             stage.setScene(showPlaces.placeScene(stage));
         } catch (Exception ex) {
@@ -127,6 +147,7 @@ public class ObservationTableScene extends LoggedInScene {
     
     private void addNewObservation(Stage stage) {
         try {
+            successMessage.setText("");
             NewObservationScene newScene = new NewObservationScene(observationService, speciesService, placeService);
             stage.setScene(newScene.createNewObservationScene(stage, this));
         } catch (Exception ex) {
@@ -136,7 +157,8 @@ public class ObservationTableScene extends LoggedInScene {
     
     private void searchObservations(Stage stage) {
         try {
-            SearchScene searchScene = new SearchScene(observationService, speciesService, placeService);
+            successMessage.setText("");
+            SearchScene searchScene = new SearchScene(observationService, speciesService, placeService, userService);
             searchScene.setSearchScene(stage, this);
         } catch (Exception ex) {
             successMessage.setText("Could not open the search view. Try again!");
@@ -170,6 +192,7 @@ public class ObservationTableScene extends LoggedInScene {
     
     private void logOut(Stage stage) {
         try {
+            successMessage.setText("");
             loginScene.setLoginScene(stage);
         } catch (Exception ex) {
             successMessage.setText("Could not log out. Try again!");
