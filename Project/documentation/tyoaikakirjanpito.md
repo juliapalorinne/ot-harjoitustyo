@@ -28,5 +28,9 @@ Päivämäärä | Tehtävä | Käytetty aika
 8.12.2020 | JavaDoc | 2 h
 10.12.2020 | Ulkoasun kehittäminen, hakuominaisuuden parantelu, näkymän luominen yksittäisen havainnon tarkasteluun ja muokkaukseen | 6 h
 11.12.2020 | Näkymän luominen yksittäisen lajin ja paikan tarkasteluun ja muokkaukseen | 3 h
+18.12.2020 | Refaktorointi | 2 h
+19.12.2020 | Refaktorointi ja ongelmien korjaaminen | 3 h
+20.12.2020 | Toisten käyttäjien havaintojen tarkastelu ja hakeminen | 3 h
+20.12.2020 | Dokumentaatio, JavaDoc ja Checkstyle | 2 h
  | | 
-24.11.2020 | **YHTEENSÄ**| **51 h**
+24.11.2020 | **YHTEENSÄ**| **61 h**
