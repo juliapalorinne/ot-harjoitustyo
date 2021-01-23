@@ -126,7 +126,6 @@ public abstract class DatabaseDao {
                 ResultSet result = stmt.executeQuery("SELECT * FROM " + tableName);
                 objects  = createListFromResult(result);
             } catch (Exception e) {
-                System.out.println("Database is empty.");
             }
             conn.close();
         }
